@@ -6,6 +6,13 @@ use Core\Container;
 use Core\Router;
 use Core\View;
 use Dotenv\Dotenv;
+use App\Interfaces\ClientRepositoryInterface;
+use App\Interfaces\UtilisateurRepositoryInterface;
+use App\Interfaces\RememberTokenRepositoryInterface;
+use App\Repositories\ClientRepository;
+use App\Repositories\UtilisateurRepository;
+use App\Repositories\RememberTokenRepository;
+
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -17,7 +24,9 @@ define('VIEW_PATH', dirname(__DIR__) . '/views');
 
 $container = new Container();
 
-
+$container->bind(ClientRepositoryInterface::class, fn () => new ClientRepository());
+$container->bind(UtilisateurRepositoryInterface::class, fn () => new UtilisateurRepository());
+$container->bind(RememberTokenRepositoryInterface::class, fn () => new RememberTokenRepository());
 
 $router = new Router($container);
 require __DIR__ . '/../routes/web.php';
