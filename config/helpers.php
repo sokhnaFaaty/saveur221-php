@@ -9,3 +9,7 @@ function hasRole(string $role) {
     }
     return $_SESSION["user"]["role"] == $role;
 }
+function flash(string $type, string $message): void
+{
+    $_SESSION['flash'] = ['type' => $type, 'message' => $message];
+}
