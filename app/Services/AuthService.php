@@ -124,4 +124,5 @@ class AuthService
         setcookie(self::COOKIE_NAME, '', ['expires' => time() - 3600, 'path' => '/']);
     }
     
+    
 }
