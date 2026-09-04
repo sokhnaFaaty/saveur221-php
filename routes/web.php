@@ -11,3 +11,5 @@ use App\Controllers\AuthController;
 $router->get('/connexion', [AuthController::class, 'showLogin']);
 $router->post('/connexion', [AuthController::class, 'login']);
 $router->get('/deconnexion', [AuthController::class, 'logout']);
+$router->get('/inscription', [AuthController::class, 'showRegister']);
+$router->post('/inscription', [AuthController::class, 'register']);
