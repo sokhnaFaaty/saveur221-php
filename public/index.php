@@ -18,6 +18,8 @@ use App\Repositories\CommandeRepository;
 use App\Repositories\CategorieRepository;
 use App\Interfaces\ProduitRepositoryInterface;
 use App\Repositories\ProduitRepository;
+use App\Interfaces\FactureRepositoryInterface;
+use App\Repositories\FactureRepository;
 
 
 
@@ -39,6 +41,7 @@ $container->bind(RememberTokenRepositoryInterface::class, fn () => new RememberT
 $container->bind(CategorieRepositoryInterface::class, fn () => new CategorieRepository());
 $container-> bind(ProduitRepositoryInterface::class, fn () => new ProduitRepository());
 $container->bind(CommandeRepositoryInterface::class, fn ($c) => new CommandeRepository($c->make(ProduitRepositoryInterface::class)));
+$container->bind(FactureRepositoryInterface::class, fn () => new FactureRepository());
 $router = new Router($container);
 require __DIR__ . '/../routes/web.php';
 
