@@ -16,11 +16,22 @@ class CommandeService
     public function __construct(
         private CommandeRepositoryInterface $commandes,
         private ProduitRepositoryInterface $produits,
+        private NotificationService $notifications,
     ) {}
 
     public function passerCommande(int $clientId, array $panier): Commande
     {
-        return $this->commandes->create($clientId, $panier);
+    $commande = $this->commandes->create($clientId, $panier);
+
+    $this->notifications->notifierNouvelleCommande($commande->numCommande, $commande->id);
+
+    foreach ($commande->lignes as $ligne) {
+        $produit = $this->produits->findById($ligne->produitId);
+        if ($produit->estEnRupture() || $produit->stockFaible()) {
+            $this->notifications->notifierStockFaible($produit->libelle, $produit->id, $produit->estEnRupture());
+        }
+    }
+     return $commande;
     }
 
     public function consulterCommande(int $id): Commande
