@@ -23,10 +23,15 @@ class ProduitController extends Controller
     }
 
     public function show(int $id): string
-    {
-        $produit = $this->produitService->listerProduits(); // remplace par findById expose plus bas
-        return View::render('produits/show', ['title' => 'Detail produit', 'produits' => $produit], null);
+{
+    try {
+        $produit = $this->produitService->consulterProduit($id);
+        return View::render('produits/show', ['title' => $produit->libelle, 'produit' => $produit], null);
+    } catch (AppException $e) {
+        http_response_code(404);
+        return View::render('errors/404', ['title' => 'Produit introuvable'], null);
     }
+}
 
     // Prive : GERANT/ADMIN uniquement
     public function store(): never

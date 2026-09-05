@@ -34,4 +34,5 @@ interface ProduitRepositoryInterface
     public function diminuerStock(int $id, int $quantite): void;
 
     public function restaurerStock(int $id, int $quantite): void;
+    
 }

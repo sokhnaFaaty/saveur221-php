@@ -91,4 +91,10 @@ class ProduitService
             throw new CategorieInexistanteException('Categorie invalide.');
         }
     }
+
+    public function consulterProduit(int $id): Produit
+{
+    return $this->produits->findById($id)
+        ?? throw new ProduitInexistantException("Aucun produit trouve avec l'id $id");
+}
 }
