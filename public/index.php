@@ -26,7 +26,8 @@ use App\Repositories\PaiementRepository;
 use App\Repositories\RecuRepository;
 use App\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\NotificationRepository;
-
+use App\Interfaces\AvisRepositoryInterface;
+use App\Repositories\AvisRepository;
 
 
 
@@ -52,6 +53,7 @@ $container->bind(FactureRepositoryInterface::class, fn () => new FactureReposito
 $container->bind(PaiementRepositoryInterface::class, fn () => new PaiementRepository());
 $container->bind(RecuRepositoryInterface::class, fn () => new RecuRepository());
 $container->bind(NotificationRepositoryInterface::class, fn () => new NotificationRepository());
+$container->bind(AvisRepositoryInterface::class, fn () => new AvisRepository());
 
 $router = new Router($container);
 require __DIR__ . '/../routes/web.php';
