@@ -45,6 +45,9 @@ $router->get('/commandes/{id}/facture', [CommandeController::class, 'facture'], 
 $router->get('/paiements', [PaiementController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/commandes/{commandeId}/paiements', [PaiementController::class, 'store'], ['auth', 'role:GERANT,ADMIN']);
 
+$router->get('/notifications', [NotificationController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
+$router->post('/notifications/{id}/lue', [NotificationController::class, 'markRead'], ['auth', 'role:GERANT,ADMIN']);
+
 $router->post('/commandes/{commandeId}/avis', [AvisController::class, 'store'], ['auth', 'role:CLIENT']);
 $router->get('/avis', [AvisController::class, 'index'], ['auth', 'role:ADMIN']);
 $router->post('/avis/{id}/delete', [AvisController::class, 'delete'], ['auth', 'role:ADMIN']);
