@@ -12,6 +12,9 @@ use App\Interfaces\RememberTokenRepositoryInterface;
 use App\Repositories\ClientRepository;
 use App\Repositories\UtilisateurRepository;
 use App\Repositories\RememberTokenRepository;
+use App\Interfaces\CategorieRepositoryInterface;
+use App\Repositories\CategorieRepository;
+
 
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -27,6 +30,7 @@ $container = new Container();
 $container->bind(ClientRepositoryInterface::class, fn () => new ClientRepository());
 $container->bind(UtilisateurRepositoryInterface::class, fn () => new UtilisateurRepository());
 $container->bind(RememberTokenRepositoryInterface::class, fn () => new RememberTokenRepository());
+$container->bind(CategorieRepositoryInterface::class, fn () => new CategorieRepository());
 
 $router = new Router($container);
 require __DIR__ . '/../routes/web.php';
