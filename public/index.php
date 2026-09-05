@@ -13,7 +13,13 @@ use App\Repositories\ClientRepository;
 use App\Repositories\UtilisateurRepository;
 use App\Repositories\RememberTokenRepository;
 use App\Interfaces\CategorieRepositoryInterface;
+use App\Interfaces\CommandeRepositoryInterface;
+use App\Repositories\CommandeRepository;
 use App\Repositories\CategorieRepository;
+use App\Interfaces\ProduitRepositoryInterface;
+use App\Repositories\ProduitRepository;
+
+
 
 
 
@@ -31,7 +37,8 @@ $container->bind(ClientRepositoryInterface::class, fn () => new ClientRepository
 $container->bind(UtilisateurRepositoryInterface::class, fn () => new UtilisateurRepository());
 $container->bind(RememberTokenRepositoryInterface::class, fn () => new RememberTokenRepository());
 $container->bind(CategorieRepositoryInterface::class, fn () => new CategorieRepository());
-
+$container-> bind(ProduitRepositoryInterface::class, fn () => new ProduitRepository());
+$container->bind(CommandeRepositoryInterface::class, fn ($c) => new CommandeRepository($c->make(ProduitRepositoryInterface::class)));
 $router = new Router($container);
 require __DIR__ . '/../routes/web.php';
 
