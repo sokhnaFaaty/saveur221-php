@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Services\AuthService;
 use App\Services\ClientService;
 use Core\View;
+use Exceptions\AppException;
 use Exceptions\AuthException;
 
 class AuthController extends Controller

@@ -139,6 +139,15 @@ CREATE TABLE avis (
     deleted_at TIMESTAMP NULL
 );
 
+CREATE TABLE notifications (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(30) NOT NULL CHECK (type IN ('NOUVELLE_COMMANDE', 'STOCK_FAIBLE', 'NOUVEL_AVIS')),
+    message TEXT NOT NULL,
+    lien VARCHAR(255),
+    role_cible VARCHAR(20) NOT NULL CHECK (role_cible IN ('GERANT', 'ADMIN')),
+    lue BOOLEAN NOT NULL DEFAULT false,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
 -- ============================================================
 -- DONNEES DE TEST (2 utilisateurs pour tester la connexion Java)
 -- Mots de passe en clair : admin123 / gerant123 (deja hashes en SHA-256)
