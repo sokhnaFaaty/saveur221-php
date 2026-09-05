@@ -21,7 +21,7 @@ $router->post('/categories', [CategorieController::class, 'store'], ['auth', 'ro
 $router->post('/categories/{id}/update', [CategorieController::class, 'update'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/categories/{id}/delete', [CategorieController::class, 'delete'], ['auth', 'role:GERANT,ADMIN']);
 
-->get('/produits', [ProduitController::class, 'index']);
+$router->get('/produits', [ProduitController::class, 'index']);
 $router->get('/produits/{id}', [ProduitController::class, 'show']);
 $router->post('/produits', [ProduitController::class, 'store'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/produits/{id}/delete', [ProduitController::class, 'delete'], ['auth', 'role:GERANT,ADMIN']);
