@@ -20,6 +20,10 @@ use App\Interfaces\ProduitRepositoryInterface;
 use App\Repositories\ProduitRepository;
 use App\Interfaces\FactureRepositoryInterface;
 use App\Repositories\FactureRepository;
+use App\Interfaces\PaiementRepositoryInterface;
+use App\Interfaces\RecuRepositoryInterface;
+use App\Repositories\PaiementRepository;
+use App\Repositories\RecuRepository;
 
 
 
@@ -42,6 +46,8 @@ $container->bind(CategorieRepositoryInterface::class, fn () => new CategorieRepo
 $container-> bind(ProduitRepositoryInterface::class, fn () => new ProduitRepository());
 $container->bind(CommandeRepositoryInterface::class, fn ($c) => new CommandeRepository($c->make(ProduitRepositoryInterface::class)));
 $container->bind(FactureRepositoryInterface::class, fn () => new FactureRepository());
+$container->bind(PaiementRepositoryInterface::class, fn () => new PaiementRepository());
+$container->bind(RecuRepositoryInterface::class, fn () => new RecuRepository());
 $router = new Router($container);
 require __DIR__ . '/../routes/web.php';
 
