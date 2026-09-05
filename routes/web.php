@@ -35,3 +35,5 @@ $router->get('/commandes', [CommandeController::class, 'index'], ['auth', 'role:
 $router->get('/commandes/{id}', [CommandeController::class, 'show'], ['auth']);
 $router->post('/commandes/{id}/statut', [CommandeController::class, 'changerStatut'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/commandes/{id}/annuler', [CommandeController::class, 'annuler'], ['auth']);
+
+$router->get('/commandes/{id}/facture', [CommandeController::class, 'facture'], ['auth']);

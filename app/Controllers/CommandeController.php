@@ -10,7 +10,11 @@ use Exceptions\AppException;
 
 class CommandeController extends Controller
 {
-    public function __construct(private CommandeService $commandeService) {}
+    public function __construct(
+        private CommandeService $commandeService,
+            private \App\Interfaces\FactureRepositoryInterface $factures,
+
+    ) {}
 
     // Client : passe une commande a partir du panier (JSON envoye par le JS)
     public function store(): never
@@ -72,4 +76,16 @@ class CommandeController extends Controller
         }
         View::redirect('/commandes');
     }
+
+    public function facture(int $id): string
+{
+    $commande = $this->commandeService->consulterCommande($id);
+    $facture = $this->factures->findByCommande($id);
+
+    return View::render('commandes/facture', [
+        'title'    => $facture?->numero ?? 'Facture',
+        'commande' => $commande,
+        'facture'  => $facture,
+    ], null);
+}
 }

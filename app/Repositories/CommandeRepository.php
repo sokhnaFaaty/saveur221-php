@@ -95,6 +95,12 @@ class CommandeRepository implements CommandeRepositoryInterface
 
             Database::executeUpdate('UPDATE commandes SET total = ? WHERE id = ?', [$total, $commandeId]);
 
+            $numeroFacture = sprintf('FAC-%s-%05d', date('Y'), $commandeId);
+Database::executeUpdate(
+    'INSERT INTO factures (numero, montant_total, commande_id) VALUES (?, ?, ?)',
+    [$numeroFacture, $total, $commandeId]
+);
+
             $pdo->commit();
             return $this->findById($commandeId);
         } catch (\Throwable $e) {
