@@ -36,7 +36,7 @@ class Commande
         );
     }
 
-    // Traduction directe de Statut.peutTransitionnerVers() en Java.
+    
     public function peutTransitionnerVers(string $cible): bool
     {
         if (in_array($this->statut, [self::RETIREE, self::ANNULEE], true)) {
