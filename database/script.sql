@@ -102,6 +102,8 @@ CREATE TABLE paiements (
     commande_id INTEGER NOT NULL REFERENCES commandes(id)
 );
 
+
+
 -- ============================================================
 -- 8. FACTURES
 -- ============================================================
@@ -161,3 +163,6 @@ VALUES
 ALTER TABLE ligne_commandes ADD COLUMN instructions_speciales TEXT;
 ALTER TABLE produits ADD COLUMN temps_preparation INTEGER;
 ALTER TABLE produits ADD COLUMN calories INTEGER;
+
+ALTER TABLE paiements ADD COLUMN moyen VARCHAR(20) NOT NULL DEFAULT 'ESPECES'
+    CHECK (moyen IN ('WAVE', 'ORANGE_MONEY', 'ESPECES'));
