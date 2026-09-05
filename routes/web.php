@@ -9,6 +9,7 @@ use App\Controllers\AuthController;
 use App\Controllers\CategorieController;
 use App\Controllers\ProduitController;
 use App\Controllers\CommandeController;
+use App\Controllers\PaiementController;
 
 
 $router->get('/', [HomeController::class, 'index']);
@@ -37,3 +38,6 @@ $router->post('/commandes/{id}/statut', [CommandeController::class, 'changerStat
 $router->post('/commandes/{id}/annuler', [CommandeController::class, 'annuler'], ['auth']);
 
 $router->get('/commandes/{id}/facture', [CommandeController::class, 'facture'], ['auth']);
+
+$router->get('/paiements', [PaiementController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
+$router->post('/commandes/{commandeId}/paiements', [PaiementController::class, 'store'], ['auth', 'role:GERANT,ADMIN']);
