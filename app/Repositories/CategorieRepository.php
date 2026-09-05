@@ -55,7 +55,7 @@ class CategorieRepository implements CategorieRepositoryInterface
     public function delete(int $id): void
     {
         if ($this->contientDesProduits($id)) {
-            throw new \Exceptions\ValidationException(
+            throw new \Exceptions\CategorieNonSupprimableException(
                 'Impossible de supprimer : cette categorie contient des produits.'
             );
         }
