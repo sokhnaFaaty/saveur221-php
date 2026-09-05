@@ -11,6 +11,8 @@ use App\Controllers\ProduitController;
 use App\Controllers\CommandeController;
 use App\Controllers\PaiementController;
 use App\Controllers\NotificationController;
+use App\Controllers\AvisController;
+
 
 
 $router->get('/', [HomeController::class, 'index']);
@@ -42,4 +44,8 @@ $router->get('/commandes/{id}/facture', [CommandeController::class, 'facture'], 
 
 $router->get('/paiements', [PaiementController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/commandes/{commandeId}/paiements', [PaiementController::class, 'store'], ['auth', 'role:GERANT,ADMIN']);
+
+$router->post('/commandes/{commandeId}/avis', [AvisController::class, 'store'], ['auth', 'role:CLIENT']);
+$router->get('/avis', [AvisController::class, 'index'], ['auth', 'role:ADMIN']);
+$router->post('/avis/{id}/delete', [AvisController::class, 'delete'], ['auth', 'role:ADMIN']);
 
