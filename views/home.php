@@ -68,17 +68,17 @@ $images = [
 
 <section class="grid grid-cols-2 md:grid-cols-4 gap-6 my-12">
     <?php foreach ([
-        ['fa-fire', 'Braise Artisanale', 'Cuisson au feu de bois'],
-        ['fa-clock', '30 a 45 Minutes', 'Livraison rapide Dakar'],
-        ['fa-shield-halved', 'Wave & OM 0% Frais', 'Paiement 100% Securise'],
-        ['fa-box', 'Chaud & Hermetique', 'Conditionnement isotherme'],
-    ] as [$icone, $titre, $sous]): ?>
-    <div class="flex gap-3">
-        <div class="w-11 h-11 rounded-lg bg-primary-light flex items-center justify-center text-primary shrink-0">
+        ['fa-fire', 'Braise Artisanale', 'Cuisson au feu de bois', 'bg-red-50', 'text-red-700', 'text-red-700'],
+        ['fa-clock', '30 a 45 Minutes', 'Livraison rapide Dakar', 'bg-amber-50', 'text-amber-500', ''],
+        ['fa-shield-halved', 'Wave & OM 0% Frais', 'Paiement 100% Securise', 'bg-green-50', 'text-green-600', ''],
+        ['fa-box', 'Chaud & Hermetique', 'Conditionnement isotherme', 'bg-gray-50', 'text-gray-700', ''],
+    ] as [$icone, $titre, $sous, $fond, $couleurIcone, $couleurTitre]): ?>
+    <div class="flex gap-3 bg-white rounded-xl p-4 shadow-md">
+        <div class="w-11 h-11 rounded-lg <?= $fond ?> flex items-center justify-center <?= $couleurIcone ?> shrink-0">
             <i class="fa-solid <?= $icone ?>"></i>
         </div>
         <div>
-            <strong class="block text-sm"><?= $titre ?></strong>
+            <strong class="block text-sm <?= $couleurTitre ?>"><?= $titre ?></strong>
             <span class="text-xs text-gray-500"><?= $sous ?></span>
         </div>
     </div>
@@ -138,16 +138,37 @@ $images = [
     </div>
 </section>
 
-<section class="bg-primary-light rounded-2xl grid md:grid-cols-2 gap-10 p-10 items-center mb-14">
-    <div>
-        <p class="text-primary font-bold text-xs uppercase tracking-wide mb-2">L'art & la tradition Teranga</p>
-        <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Une cuisine authentique, mijotee avec generosite</h2>
-        <p class="text-gray-600 text-sm leading-relaxed">
-            Chez Saveur221, chaque marmite raconte une histoire. Nos poissons Thiof sont selectionnes chaque matin
-            sur la cote dakaroise, nos viandes marinees aux herbes fraiches et grillees au bois d'acacia.
-        </p>
+<section class="bg-[#F6EFE0] ml-[calc(50%_-_50vw)] mr-[calc(50%_-_50vw)] my-16">
+    <div class="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-2 gap-10 items-center">
+        <div>
+            <span class="inline-block bg-red-600 text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full mb-4">L'Art &amp; la Tradition Teranga</span>
+            <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Une cuisine authentique, mijotee avec generosite</h2>
+            <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                Chez Saveur221, chaque marmite raconte une histoire. Nos poissons Thiof sont selectionnes chaque matin
+                sur la cote dakaroise, nos viandes marinees aux herbes fraiches et grillees au bois d'acacia.
+            </p>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <i class="fa-solid fa-fire text-primary mb-2"></i>
+                    <strong class="block text-sm mb-1">Le Veritable Roff</strong>
+                    <span class="text-xs text-gray-500">Thiof entier mijote dans sa sauce roff.</span>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <i class="fa-solid fa-fish text-amber-600 mb-2"></i>
+                    <strong class="block text-sm mb-1">Accompagnement</strong>
+                    <span class="text-xs text-gray-500">Riz parfume, legumes fondants &amp; piments.</span>
+                </div>
+            </div>
+        </div>
+        <div class="relative">
+            <img src="<?= $images['brochettes'] ?>" alt="Brochettes au feu de bois" class="rounded-2xl w-full h-80 md:h-[420px] object-cover shadow-xl">
+            <div class="absolute bottom-4 left-4 bg-white rounded-lg px-4 py-3 shadow-lg">
+                <p class="text-sm font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fa-solid fa-hat-chef text-primary"></i> Prepare par nos Maitres Cuisiniers
+                </p>
+            </div>
+        </div>
     </div>
-    <img src="<?= $images['brochettes'] ?>" alt="" class="rounded-xl w-full h-64 object-cover">
 </section>
 
 <section class="mb-14">
