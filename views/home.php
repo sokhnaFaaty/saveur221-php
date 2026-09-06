@@ -1,48 +1,68 @@
 <?php
 /** @var \App\Models\Categorie[] $categories */
 /** @var \App\Models\Produit[] $plats */
+
+$images = [
+    'hero'          => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788727588/saveur221/images/cotelettes-grillees.jpg',
+    'grillade'      => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725699/saveur221/images/grillade-dibiterie.jpg',
+    'thieboudienne' => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725692/saveur221/images/thieboudienne-rouge.jpg',
+    'brochettes'    => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725696/saveur221/images/brochette-dibi.jpg',
+    'categories'    => [
+        1 => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725692/saveur221/images/thieboudienne-rouge.jpg',
+        2 => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725699/saveur221/images/grillade-dibiterie.jpg',
+        3 => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788726508/saveur221/images/thiakry-dessert.jpg',
+        4 => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788726510/saveur221/images/bissap-boisson.jpg',
+    ],
+];
 ?>
 
-<section class="relative rounded-2xl overflow-hidden mt-6 bg-gray-900">
-    <div class="absolute inset-0 bg-black/50"></div>
-    <div class="relative grid md:grid-cols-[1.4fr,1fr] gap-10 p-10 md:p-16 items-center">
-        <div class="text-white">
-            <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
-                La Haute Gastronomie <span class="text-primary">Senegalaise</span> chez Vous
-            </h1>
-            <p class="text-gray-200 mb-6 max-w-md">
-                Degustez nos recettes emblematiques mijotees dans le respect des traditions :
-                Thieboudiene Penda Mbaye au Thiof frais, Yassa au Poulet braise, Dibi d'agneau au feu de bois.
-            </p>
-            <div class="flex flex-wrap gap-3 mb-6">
-                <a href="/produits" class="px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
-                    Commander maintenant
-                </a>
-                <a href="#incontournables" class="px-6 py-3 rounded-lg border border-white/30 text-white font-semibold hover:bg-white/10 transition">
-                    Decouvrez le Thieboudiene du Chef
-                </a>
-            </div>
-            <div class="flex flex-wrap gap-5 text-sm text-gray-300">
-                <span>100% Ingredients Locaux Frais</span>
-                <span>Paiement Wave et OM 0% frais</span>
-                <span>Emballages thermo-scelles</span>
-            </div>
-        </div>
-
-        <?php if (!empty($plats[0])): $vedette = $plats[0]; ?>
-        <div class="bg-gray-900 border border-white/10 rounded-xl overflow-hidden shadow-2xl">
-            <img src="<?= htmlspecialchars($vedette->image ?? '') ?>" alt="<?= htmlspecialchars($vedette->libelle) ?>" class="h-48 w-full object-cover">
-            <div class="p-5 text-white">
-                <span class="inline-block bg-primary text-xs px-3 py-1 rounded-md mb-3">Plat Signature</span>
-                <h3 class="font-bold text-lg mb-1"><?= htmlspecialchars($vedette->libelle) ?></h3>
-                <p class="text-sm text-gray-300 mb-4"><?= htmlspecialchars((string) $vedette->description) ?></p>
-                <div class="flex items-center justify-between">
-                    <span class="text-primary font-extrabold text-xl"><?= number_format($vedette->prix, 0) ?> FCFA</span>
-                    <button class="px-4 py-2 bg-primary rounded-lg text-sm font-semibold hover:bg-primary-dark transition">Ajouter</button>
+<section class="relative overflow-hidden ml-[calc(50%_-_50vw)] mr-[calc(50%_-_50vw)]">
+    <div class="relative h-[550px] bg-cover bg-center" style="background-image:url('<?= $images['hero'] ?>')">
+        <div class="absolute inset-0 bg-black/55"></div>
+        <div class="relative h-full grid md:grid-cols-[1.4fr,1fr] gap-10 items-center p-10 md:p-16">
+            <div class="text-white">
+                <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
+                    La Haute Gastronomie <span class="text-primary">Senegalaise</span> chez Vous
+                </h1>
+                <p class="text-gray-200 mb-6 max-w-md">
+                    Degustez nos recettes emblematiques mijotees dans le respect des traditions :
+                    Thieboudiene Penda Mbaye au Thiof frais, Yassa au Poulet braise, Dibi d'agneau au feu de bois.
+                </p>
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <a href="/produits" class="px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
+                        Commander maintenant
+                    </a>
+                    <a href="#incontournables" class="px-6 py-3 rounded-lg border border-white/30 text-white font-semibold hover:bg-white/10 transition">
+                        Decouvrez le Thieboudiene du Chef
+                    </a>
+                </div>
+                <div class="flex flex-wrap gap-5 text-sm text-gray-300">
+                    <span>100% Ingredients Locaux Frais</span>
+                    <span>Paiement Wave et OM 0% frais</span>
+                    <span>Emballages thermo-scelles</span>
                 </div>
             </div>
+
+            <?php if (!empty($plats[0])): $vedette = $plats[0]; ?>
+            <div class="z-10 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10 bg-[#111827]/90 backdrop-blur-md">
+                <div class="relative h-48">
+                    <img src="<?= htmlspecialchars((string) ($vedette->image ?: $images['thieboudienne'])) ?>" alt="Thieboudienne Penda Mbaye" class="w-full h-full object-cover">
+                    <span class="absolute top-3 right-3 flex items-center gap-1.5 bg-white/95 text-amber-500 text-sm font-bold px-2.5 py-1 rounded-full shadow-lg">
+                        <i class="fa-solid fa-star"></i> 4.9/5
+                    </span>
+                </div>
+                <div class="p-5 text-white">
+                    <span class="inline-block bg-primary text-white text-xs px-3 py-1 rounded-md mb-3">Plat Signature</span>
+                    <h3 class="font-bold text-lg mb-1">Thieboudienne Penda Mbaye</h3>
+                    <p class="text-sm text-gray-300 mb-4"><?= htmlspecialchars((string) $vedette->description) ?></p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-primary font-extrabold text-xl"><?= number_format($vedette->prix, 0) ?> FCFA</span>
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary-dark transition">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
-        <?php endif; ?>
     </div>
 </section>
 
@@ -73,9 +93,8 @@
         <?php foreach ($categories as $categorie): ?>
         <a href="/produits?categorie=<?= $categorie->id ?>" class="group rounded-xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition duration-300">
             <div class="h-32 overflow-hidden">
-                <img src="<?= htmlspecialchars('/assets/img/categories/' . $categorie->id . '.jpg') ?>" alt=""
-                     class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-                     onerror="this.src='https://placehold.co/300x200?text=Saveur221'">
+                <img src="<?= htmlspecialchars($images['categories'][$categorie->id] ?? $images['grillade']) ?>" alt=""
+                     class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
             <div class="p-3">
                 <h3 class="font-semibold text-sm"><?= htmlspecialchars($categorie->libelle) ?></h3>
@@ -94,9 +113,8 @@
         <?php foreach (array_slice($plats, 0, 4) as $plat): ?>
         <div class="group rounded-xl border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition duration-300">
             <div class="relative h-36 overflow-hidden">
-                <img src="<?= htmlspecialchars($plat->image ?? '') ?>" alt="<?= htmlspecialchars($plat->libelle) ?>"
-                     class="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-                     onerror="this.src='https://placehold.co/300x200?text=Saveur221'">
+                <img src="<?= htmlspecialchars($plat->image ?: $images['thieboudienne']) ?>" alt="<?= htmlspecialchars($plat->libelle) ?>"
+                     class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                 <span class="absolute top-2 left-2 bg-white text-[11px] font-bold px-2 py-1 rounded">
                     <?= htmlspecialchars((string) $plat->categorieLibelle) ?>
                 </span>
@@ -129,8 +147,7 @@
             sur la cote dakaroise, nos viandes marinees aux herbes fraiches et grillees au bois d'acacia.
         </p>
     </div>
-    <img src="/assets/img/brochettes.jpg" alt="" class="rounded-xl w-full h-64 object-cover"
-         onerror="this.src='https://placehold.co/600x400?text=Saveur221'">
+    <img src="<?= $images['brochettes'] ?>" alt="" class="rounded-xl w-full h-64 object-cover">
 </section>
 
 <section class="mb-14">
@@ -157,8 +174,8 @@
             ['Commandez & Reglez', 'Connectez-vous et reglez en toute securite via Wave, Orange Money.'],
             ['Retirez au comptoir', 'Votre commande vous attend bien chaude au comptoir de retrait.'],
         ] as $i => [$titre, $texte]): ?>
-        <div class="bg-white rounded-xl p-5">
-            <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm mb-3"><?= $i + 1 ?></span>
+        <div class="bg-white rounded-xl p-5 shadow-sm">
+            <span class="w-12 h-12 rounded-full text-white flex items-center justify-center font-extrabold text-lg mb-4 shadow-md" style="background-color:#B83518"><?= $i + 1 ?></span>
             <h3 class="font-bold text-sm mb-1"><?= $titre ?></h3>
             <p class="text-xs text-gray-500"><?= $texte ?></p>
         </div>
@@ -169,7 +186,12 @@
 <section class="bg-gray-900 rounded-2xl p-10 text-center mb-16">
     <h2 class="text-white text-2xl font-extrabold mb-3">Une envie soudaine de bon Thieb ou de Dibi chaud ?</h2>
     <p class="text-gray-300 text-sm mb-6">Passez votre commande en ligne en moins de 2 minutes.</p>
-    <a href="/produits" class="inline-block px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
-        Parcourir le catalogue
-    </a>
+    <div class="flex flex-wrap items-center justify-center gap-3">
+        <a href="/produits" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
+            <i class="fa-solid fa-utensils"></i> Parcourir le catalogue
+        </a>
+        <a href="tel:+221785405593" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-black border border-white text-white font-semibold hover:bg-white/10 transition">
+            <i class="fa-solid fa-phone"></i> Appeler le restaurant (+221 78 540 55 93)
+        </a>
+    </div>
 </section>
