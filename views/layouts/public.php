@@ -31,32 +31,38 @@ $user = $_SESSION['user'] ?? null;
 <div class="max-w-7xl mx-auto px-6">
 
     <header class="flex items-center justify-between py-5 border-b border-gray-100">
-        <a href="/" class="flex items-center gap-2 text-xl font-extrabold">
-            <span class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">S</span>
-            Saveur <span class="text-primary">221</span>
-        </a>
-        <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
-            <a href="/" class="hover:text-primary transition">Accueil</a>
-            <a href="/produits" class="hover:text-primary transition">Catalogues & Menus</a>
-        </nav>
-        <div class="flex items-center gap-3">
-            <?php if ($user && in_array($user['role'], ['GERANT', 'ADMIN'], true)): ?>
-                <a href="/produits" class="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition">
-                    Espace <?= $user['role'] === 'ADMIN' ? 'Admin' : 'Gerant' ?>
-                </a>
-            <?php endif; ?>
-            <?php if ($user && $user['role'] === 'CLIENT'): ?>
-                <a href="#" class="px-4 py-2 rounded-lg bg-primary-light text-primary text-sm font-semibold">Mon Panier</a>
-            <?php endif; ?>
-            <?php if ($user): ?>
-                <span class="text-sm font-semibold hidden sm:inline"><?= htmlspecialchars($user['prenom']) ?></span>
-                <a href="/deconnexion" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold hover:border-primary hover:text-primary transition">Deconnexion</a>
-            <?php else: ?>
-                <a href="/connexion" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold hover:border-primary hover:text-primary transition">Connexion</a>
-                <a href="/inscription" class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition">Creer un compte</a>
-            <?php endif; ?>
-        </div>
-    </header>
+    <a href="/" class="flex items-center gap-2 text-xl font-extrabold">
+        <span class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+            <i class="fa-solid fa-utensils"></i>
+        </span>
+        Saveur <span class="text-primary">221</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
+        <a href="/" class="hover:text-primary transition">Accueil</a>
+        <a href="/produits" class="hover:text-primary transition">Catalogues & Menus</a>
+    </nav>
+    <div class="flex items-center gap-3">
+        <?php if ($user && in_array($user['role'], ['GERANT', 'ADMIN'], true)): ?>
+            <a href="/produits" class="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition flex items-center gap-2">
+                <i class="fa-solid fa-table-cells"></i> Espace <?= $user['role'] === 'ADMIN' ? 'Admin' : 'Gerant' ?>
+            </a>
+        <?php endif; ?>
+        <?php if ($user && $user['role'] === 'CLIENT'): ?>
+            <a href="#" class="px-4 py-2 rounded-lg bg-primary-light text-primary text-sm font-semibold flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping"></i> Mon Panier
+            </a>
+        <?php endif; ?>
+        <?php if ($user): ?>
+            <span class="text-sm font-semibold hidden sm:inline"><?= htmlspecialchars($user['prenom']) ?></span>
+            <a href="/deconnexion" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold hover:border-primary hover:text-primary transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Deconnexion
+            </a>
+        <?php else: ?>
+            <a href="/connexion" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold hover:border-primary hover:text-primary transition">Connexion</a>
+            <a href="/inscription" class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition">Creer un compte</a>
+        <?php endif; ?>
+    </div>
+</header>
 
     <?php if ($flash = $_SESSION['flash'] ?? null): unset($_SESSION['flash']); ?>
         <div class="mt-5 px-4 py-3 rounded-lg text-sm font-semibold <?= $flash['type'] === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' ?>">
