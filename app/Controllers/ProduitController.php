@@ -40,6 +40,7 @@ class ProduitController extends Controller
     public function store(): never
     {
         try {
+            $imageUrl = $this->uploads->upload($_FILES['image'] ?? []);
             $this->produitService->ajouterProduit([
                 'libelle'           => $this->value('libelle'),
                 'description'       => $this->value('description'),
@@ -49,6 +50,7 @@ class ProduitController extends Controller
                 'seuil_alerte'      => (int) $this->value('seuil_alerte', 5),
                 'temps_preparation' => (int) $this->value('temps_preparation', 0),
                 'calories'          => (int) $this->value('calories', 0),
+                'image'             => $imageUrl,
             ]);
             flash('success', 'Produit ajoute avec succes.');
         } catch (AppException $e) {
@@ -62,6 +64,30 @@ class ProduitController extends Controller
         try {
             $this->produitService->supprimerProduit($id);
             flash('success', 'Produit supprime.');
+        } catch (AppException $e) {
+            flash('error', $e->getMessage());
+        }
+        View::redirect('/produits');
+    }
+
+        public function update(int $id): never
+    {
+        try {
+            $imageUrl = $this->uploads->upload($_FILES['image'] ?? []);
+            $data = [
+                'libelle'           => $this->value('libelle'),
+                'description'       => $this->value('description'),
+                'prix'              => $this->value('prix'),
+                'categorie_id'      => $this->value('categorie_id'),
+                'seuil_alerte'      => $this->value('seuil_alerte', 5),
+                'temps_preparation' => $this->value('temps_preparation', 0),
+                'calories'          => $this->value('calories', 0),
+            ];
+            if ($imageUrl !== null) {
+                $data['image'] = $imageUrl; // remplace seulement si une nouvelle image a ete envoyee
+            }
+            $this->produitService->modifierProduit($id, $data);
+            flash('success', 'Produit modifie avec succes.');
         } catch (AppException $e) {
             flash('error', $e->getMessage());
         }
