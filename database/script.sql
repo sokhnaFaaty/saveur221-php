@@ -175,3 +175,7 @@ ALTER TABLE produits ADD COLUMN calories INTEGER;
 
 ALTER TABLE paiements ADD COLUMN moyen VARCHAR(20) NOT NULL DEFAULT 'ESPECES'
     CHECK (moyen IN ('WAVE', 'ORANGE_MONEY', 'ESPECES'));
+    
+INSERT INTO clients (nom, prenom, telephone, adresse, email, mot_de_passe)
+VALUES ('Ndiaye', 'Aminata', '771111111', 'Almadies, Dakar', 'aminata@test.sn',
+'$2b$10$Tm22tPNarZLIDbUX7PukROubKzhe7Gv4.9PpkQwFS6CyAMvAK8y8K');
