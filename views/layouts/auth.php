@@ -29,7 +29,7 @@ $title = $title ?? '';
 <body class="font-sans h-screen bg-primary text-gray-800 flex">
 
     <aside class="relative hidden lg:flex flex-col w-[30%] shrink-0 h-screen overflow-hidden">
-        <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('/assets/img/maquettes/grillade.jpg')"></div>
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725699/saveur221/images/grillade-dibiterie.jpg')"></div>
         <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
 
         <a href="/" class="relative z-20 inline-flex items-center gap-2 text-white font-extrabold text-xl px-10 py-8">
@@ -43,21 +43,18 @@ $title = $title ?? '';
             <div class="relative w-[340px] h-[400px]">
                 <div class="absolute top-0 left-0 w-44 h-44 rounded-full overflow-hidden"
                      style="box-shadow:0 18px 35px -8px rgba(0,0,0,.55);">
-                    <img src="/assets/img/maquettes/ThieboudienneRouge.jpg" alt=""
-                         class="w-full h-full object-cover"
-                         onerror="this.onerror=null;this.src='https://placehold.co/240x240/B83518/ffffff?text=Saveur+221'">
+                    <img src="https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725692/saveur221/images/thieboudienne-rouge.jpg" alt="Thieboudienne"
+                         class="w-full h-full object-cover">
                 </div>
                 <div class="absolute top-36 left-28 w-36 h-36 rounded-full overflow-hidden"
                      style="box-shadow:0 18px 35px -8px rgba(0,0,0,.55);">
-                    <img src="/assets/img/maquettes/yassa.jpg" alt=""
-                         class="w-full h-full object-cover"
-                         onerror="this.onerror=null;this.src='https://placehold.co/200x200/B83518/ffffff?text=Saveur+221'">
+                    <img src="https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725693/saveur221/images/yassa-poulet.jpg" alt="Yassa poulet"
+                         class="w-full h-full object-cover">
                 </div>
                 <div class="absolute top-[272px] left-8 w-32 h-32 rounded-full overflow-hidden"
                      style="box-shadow:0 18px 35px -8px rgba(0,0,0,.55);">
-                    <img src="/assets/img/maquettes/brochette.jpg" alt=""
-                         class="w-full h-full object-cover"
-                         onerror="this.onerror=null;this.src='https://placehold.co/220x220/B83518/ffffff?text=Saveur+221'">
+                    <img src="https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725696/saveur221/images/brochette-dibi.jpg" alt="Brochettes"
+                         class="w-full h-full object-cover">
                 </div>
             </div>
         </div>
