@@ -28,4 +28,9 @@ class Validator
     {
         return strlen($motDePasse) >= 6;
     }
+    
+    public static function estNumerique(mixed $valeur): bool
+{
+    return is_numeric($valeur);
+}
 }
