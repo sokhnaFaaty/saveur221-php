@@ -59,17 +59,6 @@ class ProduitController extends Controller
         View::redirect('/produits');
     }
 
-    public function delete(int $id): never
-    {
-        try {
-            $this->produitService->supprimerProduit($id);
-            flash('success', 'Produit supprime.');
-        } catch (AppException $e) {
-            flash('error', $e->getMessage());
-        }
-        View::redirect('/produits');
-    }
-
         public function update(int $id): never
     {
         try {
@@ -88,6 +77,17 @@ class ProduitController extends Controller
             }
             $this->produitService->modifierProduit($id, $data);
             flash('success', 'Produit modifie avec succes.');
+        } catch (AppException $e) {
+            flash('error', $e->getMessage());
+        }
+        View::redirect('/produits');
+    }
+    
+    public function delete(int $id): never
+    {
+        try {
+            $this->produitService->supprimerProduit($id);
+            flash('success', 'Produit supprime.');
         } catch (AppException $e) {
             flash('error', $e->getMessage());
         }
