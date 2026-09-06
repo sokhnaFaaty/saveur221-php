@@ -10,11 +10,12 @@
 </form>
 
 <?php if (hasRole('GERANT') || hasRole('ADMIN')): ?>
-<form method="post" action="/produits">
+<form method="post" action="/produits" enctype="multipart/form-data">
     <input type="text" name="libelle" placeholder="Nom du plat" required>
-    <input type="number" name="prix" placeholder="Prix" step="0.01" required>
-    <input type="number" name="quantite_stock" placeholder="Stock initial" required>
-    <input type="number" name="categorie_id" placeholder="ID categorie" required>
+    <input type="text" name="prix" placeholder="Prix" required>
+    <input type="text" name="quantite_stock" placeholder="Stock initial" required>
+    <input type="text" name="categorie_id" placeholder="ID categorie" required>
+    <input type="file" name="image" accept="image/png,image/jpeg,image/webp">
     <button type="submit">Ajouter</button>
 </form>
 <?php endif; ?>
