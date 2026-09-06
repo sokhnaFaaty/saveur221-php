@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Services\CategorieService;
 use App\Services\ProduitService;
 use Core\View;
 use Exceptions\AppException;
@@ -12,29 +13,61 @@ class ProduitController extends Controller
 {
     public function __construct(
         private ProduitService $produitService,
+    private CategorieService $categorieService,
         private \App\Services\UploadService $uploads,
-        ) {}
+
+    ) {}
 
     // Public : visiteur, client, ou staff - tout le monde peut consulter le catalogue
     public function index(): string
     {
         $terme = trim((string) $this->value('q', ''));
-        $produits = $terme === '' ? $this->produitService->listerProduits()
-                                   : $this->produitService->rechercherProduit($terme);
+        $categorieId = $this->value('categorie');
+    $categorieId = ($categorieId !== null && $categorieId !== '') ? (int) $categorieId : null;
+    $dispoUniquement = $this->value('dispo') === 'disponibles';
 
-        return View::render('produits/index', ['title' => 'Notre carte & menus', 'produits' => $produits], null);
+    if ($terme !== '') {
+        $produits = $this->produitService->rechercherProduit($terme);
+    } elseif ($categorieId !== null) {
+        $produits = $this->produitService->listerParCategorie($categorieId);
+    } else {
+        $produits = $this->produitService->listerProduits();
     }
+
+    if ($dispoUniquement) {
+        $produits = array_values(array_filter($produits, fn ($p) => $p->disponible()));
+    }
+
+    return View::render('produits/index', [
+        'title'       => 'Notre carte & menus',
+        'produits'    => $produits,
+        'categories'  => $this->categorieService->listerCategories(),
+        'categorieId' => $categorieId,
+        'terme'       => $terme,
+        'dispo'       => $this->value('dispo', 'tous'),
+    ], 'layouts/public');
+    }
+
 
     public function show(int $id): string
 {
     try {
         $produit = $this->produitService->consulterProduit($id);
-        return View::render('produits/show', ['title' => $produit->libelle, 'produit' => $produit], null);
+           $suggestions = array_filter(
+            $this->produitService->listerProduitsDisponibles(),
+            fn ($p) => $p->id !== $produit->id
+        );
+        return View::render('produits/show', [
+            'title'       => $produit->libelle,
+            'produit'     => $produit,
+            'suggestions' => array_slice($suggestions, 0, 4),
+        ], 'layouts/public');
     } catch (AppException $e) {
         http_response_code(404);
-        return View::render('errors/404', ['title' => 'Produit introuvable'], null);
+        return View::render('errors/404', ['title' => 'Produit introuvable'], 'layouts/public');
     }
-}
+    }
+
 
     // Prive : GERANT/ADMIN uniquement
     public function store(): never

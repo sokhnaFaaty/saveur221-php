@@ -48,4 +48,9 @@ class Produit
     {
         return $this->quantiteStock > 0 && $this->quantiteStock <= $this->seuilAlerte;
     }
+
+    public function estEnRupture(): bool
+    {
+        return $this->quantiteStock <= 0;
+    }
 }

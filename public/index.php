@@ -54,6 +54,7 @@ $container->bind(PaiementRepositoryInterface::class, fn () => new PaiementReposi
 $container->bind(RecuRepositoryInterface::class, fn () => new RecuRepository());
 $container->bind(NotificationRepositoryInterface::class, fn () => new NotificationRepository());
 $container->bind(AvisRepositoryInterface::class, fn () => new AvisRepository());
+$container->bind(\App\Interfaces\PaiementRepositoryInterface::class, fn () => new \App\Repositories\PaiementRepository());
 
 $router = new Router($container);
 require __DIR__ . '/../routes/web.php';

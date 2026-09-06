@@ -12,6 +12,8 @@ use App\Controllers\CommandeController;
 use App\Controllers\PaiementController;
 use App\Controllers\NotificationController;
 use App\Controllers\AvisController;
+use App\Controllers\DashboardController;
+
 
 
 
@@ -22,6 +24,8 @@ $router->post('/connexion', [AuthController::class, 'login']);
 $router->get('/deconnexion', [AuthController::class, 'logout']);
 $router->get('/inscription', [AuthController::class, 'showRegister']);
 $router->post('/inscription', [AuthController::class, 'register']);
+
+$router->get('/dashboard', [DashboardController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
 
 $router->get('/categories', [CategorieController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/categories', [CategorieController::class, 'store'], ['auth', 'role:GERANT,ADMIN']);

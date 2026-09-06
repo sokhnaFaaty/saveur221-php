@@ -20,9 +20,13 @@ class AuthService
         private RememberTokenRepositoryInterface $tokens,
     ) {}
 
-    public function authentifier(string $email, string $motDePasse, bool $seSouvenir = false): array
+    public function authentifier(string $identifiant, string $motDePasse, bool $seSouvenir = false): array
     {
-        $client = $this->clients->findByEmail($email);
+        $identifiant = (string) preg_replace('/\s+/', '', $identifiant);
+        $client = $this->clients->findByEmail($identifiant);
+        if ($client === null && !str_contains($identifiant, '@')) {
+            $client = $this->clients->findByTelephone($identifiant);
+        }
 
         if ($client !== null) {
             if (!password_verify($motDePasse, $client->motDePasse)) {
@@ -35,7 +39,7 @@ class AuthService
             ], $seSouvenir);
         }
 
-        $utilisateur = $this->utilisateurs->findByEmail($email);
+        $utilisateur = $this->utilisateurs->findByEmail($identifiant);
 
         if ($utilisateur !== null) {
             if (!password_verify($motDePasse, $utilisateur->motDePasse)) {
@@ -51,7 +55,7 @@ class AuthService
             ], $seSouvenir);
         }
 
-        throw new AuthException('Aucun compte associe a cet email.');
+        throw new AuthException('Aucun compte associe a cet email ou numero de telephone.');
     }
 
     public function loginFromRememberToken(): bool
