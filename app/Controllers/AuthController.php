@@ -20,7 +20,7 @@ class AuthController extends Controller
 
     public function showLogin(): string
     {
-        return View::render('auth/connexion', ['title' => 'Connexion'], null);
+        return View::render('auth/connexion', ['title' => 'Connexion'], 'layouts/public');
     }
 
     public function login(): never
@@ -48,7 +48,7 @@ class AuthController extends Controller
     
     public function showRegister(): string
     {
-        return View::render('auth/inscription', ['title' => 'Inscription'], null);
+        return View::render('auth/inscription', ['title' => 'Inscription'], 'layouts/public');
     }
 
     

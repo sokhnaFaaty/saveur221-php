@@ -48,13 +48,15 @@
 
 <section class="grid grid-cols-2 md:grid-cols-4 gap-6 my-12">
     <?php foreach ([
-        ['Braise Artisanale', 'Cuisson au feu de bois'],
-        ['30 a 45 Minutes', 'Livraison rapide Dakar'],
-        ['Wave & OM 0% Frais', 'Paiement 100% Securise'],
-        ['Chaud & Hermetique', 'Conditionnement isotherme'],
-    ] as [$titre, $sous]): ?>
+        ['fa-fire', 'Braise Artisanale', 'Cuisson au feu de bois'],
+        ['fa-clock', '30 a 45 Minutes', 'Livraison rapide Dakar'],
+        ['fa-shield-halved', 'Wave & OM 0% Frais', 'Paiement 100% Securise'],
+        ['fa-box', 'Chaud & Hermetique', 'Conditionnement isotherme'],
+    ] as [$icone, $titre, $sous]): ?>
     <div class="flex gap-3">
-        <div class="w-11 h-11 rounded-lg bg-primary-light flex items-center justify-center text-primary shrink-0">●</div>
+        <div class="w-11 h-11 rounded-lg bg-primary-light flex items-center justify-center text-primary shrink-0">
+            <i class="fa-solid <?= $icone ?>"></i>
+        </div>
         <div>
             <strong class="block text-sm"><?= $titre ?></strong>
             <span class="text-xs text-gray-500"><?= $sous ?></span>
