@@ -26,7 +26,7 @@ class Validator
 
     public static function estMotDePasseValide(string $motDePasse): bool
     {
-        return strlen($motDePasse) >= 6;
+        return strlen($motDePasse) >= 8;
     }
     
     public static function estNumerique(mixed $valeur): bool

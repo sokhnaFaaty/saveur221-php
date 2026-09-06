@@ -29,7 +29,7 @@ class ClientService
             throw new ValidationException('Le numero de telephone n\'est pas valide (Senegal ou Gambie).');
         }
         if (!Validator::estMotDePasseValide($data['mot_de_passe'])) {
-            throw new ValidationException('Le mot de passe doit contenir au moins 6 caracteres.');
+            throw new ValidationException('Le mot de passe doit contenir au moins 8 caracteres.');
         }
 
         if ($this->clients->findByEmail($data['email']) !== null) {
@@ -46,7 +46,7 @@ class ClientService
             'adresse'      => $data['adresse'] ?? null,
             'email'        => $data['email'],
             'mot_de_passe' => password_hash($data['mot_de_passe'], PASSWORD_DEFAULT),
-            'image'        => null,
+            'image'        => $data['image'] ?? null,
         ]);
     }
 }
