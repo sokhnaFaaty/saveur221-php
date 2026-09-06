@@ -81,6 +81,12 @@ class ProduitService
         if (!Validator::estRempli($data['libelle'] ?? null)) {
             throw new ValidationException('Le libelle du produit est obligatoire.');
         }
+
+         foreach (['prix', 'quantite_stock', 'categorie_id', 'seuil_alerte', 'temps_preparation', 'calories'] as $champ) {
+        if (isset($data[$champ]) && !Validator::estNumerique($data[$champ])) {
+            throw new ValidationException("Le champ \"$champ\" doit etre un nombre.");
+        }
+    }
         if (($data['prix'] ?? -1) < 0) {
             throw new ValidationException('Le prix ne peut pas etre negatif.');
         }
