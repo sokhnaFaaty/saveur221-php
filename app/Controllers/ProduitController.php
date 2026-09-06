@@ -10,7 +10,10 @@ use Exceptions\AppException;
 
 class ProduitController extends Controller
 {
-    public function __construct(private ProduitService $produitService) {}
+    public function __construct(
+        private ProduitService $produitService,
+        private \App\Services\UploadService $uploads,
+        ) {}
 
     // Public : visiteur, client, ou staff - tout le monde peut consulter le catalogue
     public function index(): string
