@@ -80,8 +80,8 @@
                 <label for="mot_de_passe" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
                     Mot de passe <span class="text-primary">*</span>
                 </label>
-                <input type="password" id="mot_de_passe" name="mot_de_passe" minlength="8"
-                       autocomplete="new-password" placeholder="Au moins 8 caracteres"
+                <input type="password" id="mot_de_passe" name="mot_de_passe" minlength="6"
+                       autocomplete="new-password" placeholder="Au moins 6 caracteres"
                        class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm placeholder-gray-400
                               focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
             </div>

@@ -25,7 +25,7 @@
             <?php foreach ($produits as $plat): ?>
             <tr class="hover:bg-gray-50">
                 <td class="px-4 py-3 flex items-center gap-3">
-                    <img src="<?= htmlspecialchars($plat->image ?: '/assets/img/produits/thieboudienneRouge.jpg') ?>" class="w-10 h-10 rounded-lg object-cover">
+                    <img src="<?= htmlspecialchars($plat->image ?: '/assets/img/maquettes/ThieboudienneRouge.jpg') ?>" class="w-10 h-10 rounded-lg object-cover">
                     <div>
                         <p class="font-semibold"><?= htmlspecialchars($plat->libelle) ?></p>
                         <?php if ($plat->tempsPreparation): ?><p class="text-xs text-gray-400">~<?= $plat->tempsPreparation ?> min prep</p><?php endif; ?>

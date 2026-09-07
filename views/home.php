@@ -131,9 +131,11 @@ $images = [
                 <p class="text-xs text-gray-500 mb-3 line-clamp-2"><?= htmlspecialchars((string) $plat->description) ?></p>
                 <div class="flex items-center justify-between">
                     <span class="font-extrabold text-primary"><?= number_format($plat->prix, 0) ?> FCFA</span>
-                    <a href="/produits/<?= $plat->id ?>" class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">
+                    <button
+                        onclick='ajouterAuPanier({ id: <?= $plat->id ?>, nom: <?= json_encode($plat->libelle) ?>, prix: <?= $plat->prix ?>, image: <?= json_encode($plat->image ?: "/assets/img/maquettes/ThieboudienneRouge.jpg") ?> })'
+                        class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">
                         Commander
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
