@@ -14,6 +14,10 @@ class ClientService
 {
     public function __construct(private ClientRepositoryInterface $clients) {}
 
+    public function listerClients(): array
+{
+    return $this->clients->findAll();
+}
     public function inscrire(array $data): Client
     {
         foreach (['nom', 'prenom', 'telephone', 'email', 'mot_de_passe'] as $champ) {
