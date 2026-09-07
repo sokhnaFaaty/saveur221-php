@@ -48,8 +48,15 @@ class ProduitController extends Controller
     // ], 'layouts/public');
  if (hasRole('GERANT') || hasRole('ADMIN')) {
         $terme = trim((string) $this->value('q', ''));
-        $produits = $terme === '' ? $this->produitService->listerProduits() : $this->produitService->rechercherProduit($terme);
-        return View::render('produits/gestion', ['title' => 'Gestion des Menus & Plats', 'produits' => $produits], 'layouts/dashboard');
+        $tous = $terme === '' ? $this->produitService->listerProduits() : $this->produitService->rechercherProduit($terme);
+        $pagination = paginer($tous, (int) $this->value('page', 1));
+        return View::render('produits/gestion', [
+            'title' => 'Gestion des Menus & Plats',
+            'produits' => $pagination['items'],
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'vue' => $this->value('vue', 'tableau'),
+        ], 'layouts/dashboard');
     }
 
     $terme = trim((string) $this->value('q', ''));
@@ -113,6 +120,21 @@ class ProduitController extends Controller
 {
     return View::render('produits/form', ['title' => 'Nouveau plat', 'produit' => null, 'categories' => $this->categorieService->listerCategories()], 'layouts/dashboard');
 }
+
+    public function modifier(int $id): string
+    {
+        try {
+            $produit = $this->produitService->consulterProduit($id);
+            return View::render('produits/form', [
+                'title' => 'Modifier un plat',
+                'produit' => $produit,
+                'categories' => $this->categorieService->listerCategories(),
+            ], 'layouts/dashboard');
+        } catch (AppException $e) {
+            http_response_code(404);
+            return View::render('errors/404', ['title' => 'Produit introuvable'], 'layouts/dashboard');
+        }
+    }
 
         public function update(int $id): never
     {

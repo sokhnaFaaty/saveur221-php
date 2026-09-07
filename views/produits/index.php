@@ -85,11 +85,9 @@
                             Commander
                         </button>
                         <?php if (hasRole('GERANT') || hasRole('ADMIN')): ?>
-                        <form method="post" action="/produits/<?= $plat->id ?>/delete" onsubmit="return confirm('Supprimer ?')">
-                            <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition">
-                                <i class="fa-regular fa-trash-can text-sm"></i>
-                            </button>
-                        </form>
+                        <button type="button" onclick='demanderConfirmation({titre:"Supprimer ce plat",message:"Cette operation est irreversible.",cible:<?= json_encode($plat->libelle) ?>,actionUrl:"/produits/<?= $plat->id ?>/delete"})' class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition">
+                            <i class="fa-regular fa-trash-can text-sm"></i>
+                        </button>
                         <?php endif; ?>
                         <?php else: ?>
                         <span class="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-400 text-xs font-semibold">Epuise</span>

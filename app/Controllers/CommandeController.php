@@ -51,12 +51,18 @@ class CommandeController extends Controller
     // GERANT/ADMIN : toutes les commandes
     public function index(): string
     {
-       $statutFiltre = $this->value('statut');
-    $commandes = $statutFiltre ? $this->commandeService->listerParStatut((string) $statutFiltre) : $this->commandeService->listerCommandes();
+        $statutFiltre = $this->value('statut');
+        $toutes = $statutFiltre ? $this->commandeService->listerParStatut((string) $statutFiltre) : $this->commandeService->listerCommandes();
+        $pagination = paginer($toutes, (int) $this->value('page', 1));
 
-    return View::render('commandes/gestion', [
-        'title' => 'Gestion des Commandes Clients', 'commandes' => $commandes, 'statutFiltre' => $statutFiltre,
-    ], 'layouts/dashboard');
+        return View::render('commandes/gestion', [
+            'title' => 'Gestion des Commandes Clients',
+            'commandes' => $pagination['items'],
+            'statutFiltre' => $statutFiltre,
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'vue' => $this->value('vue', 'cartes'),
+        ], 'layouts/dashboard');
     }
 
     public function changerStatut(int $id): never

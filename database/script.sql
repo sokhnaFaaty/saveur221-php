@@ -148,6 +148,18 @@ CREATE TABLE notifications (
     lue BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+-- ============================================================
+-- 11. REMEMBER TOKENS ("Se souvenir de moi" sur la page de login)
+-- ============================================================
+CREATE TABLE remember_tokens (
+    id SERIAL PRIMARY KEY,
+    user_type VARCHAR(20) NOT NULL CHECK (user_type IN ('CLIENT', 'UTILISATEUR')),
+    user_id INTEGER NOT NULL,
+    token_hash VARCHAR(64) NOT NULL UNIQUE,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
 -- ============================================================
 -- DONNEES DE TEST (2 utilisateurs pour tester la connexion Java)
 -- Mots de passe en clair : admin123 / gerant123 (deja hashes en SHA-256)

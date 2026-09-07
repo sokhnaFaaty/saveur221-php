@@ -16,6 +16,53 @@ $libelleAction = ['EN_ATTENTE' => 'Lancer en Cuisine', 'EN_PREPARATION' => 'Marq
     <?php endforeach; ?>
 </form>
 
+<div class="flex items-center gap-2 bg-gray-100 rounded-lg p-1 mb-6 w-fit">
+    <a href="?<?= http_build_query(array_merge($_GET, ['vue' => 'tableau'])) ?>"
+       class="px-3 py-1.5 rounded-md text-sm font-semibold flex items-center gap-2 <?= $vue === 'tableau' ? 'bg-white shadow-sm' : 'text-gray-500' ?>">
+        <i class="fa-solid fa-list"></i> Tableau
+    </a>
+    <a href="?<?= http_build_query(array_merge($_GET, ['vue' => 'cartes'])) ?>"
+       class="px-3 py-1.5 rounded-md text-sm font-semibold flex items-center gap-2 <?= $vue === 'cartes' ? 'bg-white shadow-sm' : 'text-gray-500' ?>">
+        <i class="fa-solid fa-table-cells-large"></i> Cartes
+    </a>
+</div>
+
+<?php if ($vue === 'tableau'): ?>
+<div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+    <table class="min-w-full text-sm">
+        <thead class="bg-gray-50 text-left text-xs uppercase text-gray-500">
+            <tr>
+                <th class="px-4 py-3">N&deg; Commande</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Statut</th><th class="px-4 py-3">Total</th><th class="px-4 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-50">
+        <?php foreach ($commandes as $commande): ?>
+            <tr class="hover:bg-gray-50">
+                <td class="px-4 py-3 font-semibold"><?= htmlspecialchars($commande->numCommande) ?></td>
+                <td class="px-4 py-3 text-gray-500"><?= htmlspecialchars($commande->dateCommande) ?></td>
+                <td class="px-4 py-3"><span class="text-xs font-semibold px-2 py-0.5 rounded-full <?= $couleursStatut[$commande->statut] ?? '' ?>"><?= str_replace('_', ' ', $commande->statut) ?></span></td>
+                <td class="px-4 py-3 font-bold text-primary"><?= number_format($commande->total, 0) ?> FCFA</td>
+                <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                        <?php if (isset($prochainStatut[$commande->statut])): ?>
+                        <form method="post" action="/commandes/<?= $commande->id ?>/statut">
+                            <input type="hidden" name="statut" value="<?= $prochainStatut[$commande->statut] ?>">
+                            <button class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition"><?= $libelleAction[$commande->statut] ?></button>
+                        </form>
+                        <?php endif; ?>
+                        <?php if (!in_array($commande->statut, ['RETIREE', 'ANNULEE'], true)): ?>
+                        <button type="button" onclick='demanderConfirmation({titre:"Annuler la commande",message:"L annulation restaure le stock et est irreversible.",cible:<?= json_encode($commande->numCommande) ?>,actionUrl:"/commandes/<?= $commande->id ?>/annuler"})' class="px-3 py-1.5 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition">Annuler</button>
+                        <?php endif; ?>
+                        <a href="/commandes/<?= $commande->id ?>/facture" class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-semibold hover:border-primary transition"><i class="fa-regular fa-file-lines"></i> Facture</a>
+                    </div>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        <?php if ($commandes === []): ?><tr><td colspan="5" class="text-center text-gray-400 py-10">Aucune commande.</td></tr><?php endif; ?>
+        </tbody>
+    </table>
+</div>
+<?php else: ?>
 <div class="space-y-4">
     <?php foreach ($commandes as $commande): ?>
     <div class="bg-white rounded-xl p-5 shadow-sm">
@@ -53,9 +100,7 @@ $libelleAction = ['EN_ATTENTE' => 'Lancer en Cuisine', 'EN_PREPARATION' => 'Marq
                 </form>
                 <?php endif; ?>
                 <?php if (!in_array($commande->statut, ['RETIREE', 'ANNULEE'], true)): ?>
-                <form method="post" action="/commandes/<?= $commande->id ?>/annuler" onsubmit="return confirm('Annuler cette commande ?')">
-                    <button class="px-4 py-2 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition">Annuler</button>
-                </form>
+                <button type="button" onclick='demanderConfirmation({titre:"Annuler la commande",message:"L annulation restaure le stock et est irreversible.",cible:<?= json_encode($commande->numCommande) ?>,actionUrl:"/commandes/<?= $commande->id ?>/annuler"})' class="px-4 py-2 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition">Annuler</button>
                 <?php endif; ?>
             </div>
             <div class="flex items-center gap-2">
@@ -66,3 +111,6 @@ $libelleAction = ['EN_ATTENTE' => 'Lancer en Cuisine', 'EN_PREPARATION' => 'Marq
     <?php endforeach; ?>
     <?php if ($commandes === []): ?><p class="text-center text-gray-400 py-16">Aucune commande.</p><?php endif; ?>
 </div>
+<?php endif; ?>
+
+<?php include VIEW_PATH . '/partials/pagination.php'; ?>

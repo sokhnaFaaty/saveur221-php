@@ -74,6 +74,32 @@ $user = $_SESSION['user'] ?? null;
 
 <script src="/assets/js/panier.js"></script>
 
+<div id="modal-confirmation" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6">
+        <div class="flex items-start gap-3 mb-4">
+            <span class="w-10 h-10 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                <i class="fa-regular fa-trash-can"></i>
+            </span>
+            <div>
+                <h3 data-titre class="font-bold"></h3>
+                <p class="text-xs text-gray-400">Attention: cette action necessite votre confirmation</p>
+            </div>
+        </div>
+        <p data-message class="text-sm text-gray-600 mb-3"></p>
+        <div class="bg-gray-50 rounded-lg px-3 py-2 mb-5 text-sm">
+            <p class="text-xs text-gray-400 font-bold">ELEMENT CIBLE</p>
+            <p data-cible class="font-semibold"></p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button type="button" onclick="fermerConfirmation()" class="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold hover:bg-gray-50 transition">Annuler</button>
+            <form method="post" class="flex-1">
+                <button type="submit" class="w-full py-2.5 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition">Supprimer</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/assets/js/confirm-modal.js"></script>
+
 <body class="font-sans text-gray-800 bg-white">
 
     <div class="max-w-7xl mx-auto px-6 pt-20">

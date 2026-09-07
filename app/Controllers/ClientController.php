@@ -17,16 +17,21 @@ class ClientController extends Controller
 
     public function index(): string
     {
-        $clients = $this->clientService->listerClients();
+        $tous = $this->clientService->listerClients();
+        $pagination = paginer($tous, (int) $this->value('page', 1));
+
         $nbCommandesParClient = [];
-        foreach ($clients as $client) {
+        foreach ($tous as $client) {
             $nbCommandesParClient[$client->id] = count($this->commandes->findByClient($client->id));
         }
 
         return View::render('clients/index', [
             'title' => 'Repertoire des Clients',
-            'clients' => $clients,
+            'clients' => $pagination['items'],
             'nbCommandesParClient' => $nbCommandesParClient,
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'vue' => $this->value('vue', 'tableau'),
         ], 'layouts/dashboard');
     }
 }

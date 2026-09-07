@@ -14,7 +14,14 @@ class StaffController extends Controller
 
     public function index(): string
     {
-        return View::render('staff/index', ['title' => 'Gestion des Utilisateurs Staff', 'staff' => $this->utilisateurService->listerUtilisateurs()], 'layouts/dashboard');
+        $pagination = paginer($this->utilisateurService->listerUtilisateurs(), (int) $this->value('page', 1));
+        return View::render('staff/index', [
+            'title' => 'Gestion des Utilisateurs Staff',
+            'staff' => $pagination['items'],
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'vue' => $this->value('vue', 'tableau'),
+        ], 'layouts/dashboard');
     }
 
     public function store(): never
