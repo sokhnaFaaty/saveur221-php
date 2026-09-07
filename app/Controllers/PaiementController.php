@@ -15,10 +15,9 @@ class PaiementController extends Controller
     // GERANT/ADMIN : la caisse
     public function index(): string
     {
-        return View::render('paiements/index', [
-            'title'     => 'Caisse & reglements',
-            'paiements' => $this->paiementService->listerTousLesPaiements(),
-        ], null);
+         return View::render('paiements/gestion', [
+        'title' => 'Caisse & Reglements', 'paiements' => $this->paiementService->listerTousLesPaiements(),
+    ], 'layouts/dashboard');
     }
 
     public function store(int $commandeId): never
@@ -26,8 +25,8 @@ class PaiementController extends Controller
         try {
             $this->paiementService->enregistrerPaiement(
                 $commandeId,
-                (float) $this->value('montant', 0),
-                (string) $this->value('moyen', 'ESPECES')
+                $this->value('montant', ''),
+                (string) $this->value('moyen', '')
             );
             flash('success', 'Paiement enregistre.');
         } catch (AppException $e) {

@@ -5,7 +5,7 @@
 <?php endif; ?>
 
 <form method="post" action="/categories">
-    <input type="text" name="libelle" placeholder="Nom de la categorie" required>
+    <input type="text" name="libelle" placeholder="Nom de la categorie">
     <input type="text" name="description" placeholder="Description">
     <button type="submit">Creer</button>
 </form>

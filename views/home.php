@@ -122,6 +122,9 @@ $images = [
                     <?= $plat->disponible() ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' ?>">
                     <?= $plat->disponible() ? 'En stock' : 'Epuise' ?>
                 </span>
+                <span class="absolute bottom-2 left-2 bg-black/60 text-white text-[11px] px-2 py-0.5 rounded flex items-center gap-1">
+    <i class="fa-regular fa-clock"></i> <?= $plat->tempsPreparation ?? '?' ?> mn
+</span>
             </div>
             <div class="p-4">
                 <h3 class="font-bold text-sm mb-1"><?= htmlspecialchars($plat->libelle) ?></h3>

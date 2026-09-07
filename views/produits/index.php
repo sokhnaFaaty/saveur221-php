@@ -43,10 +43,10 @@
 
     <?php if (hasRole('GERANT') || hasRole('ADMIN')): ?>
     <form method="post" action="/produits" enctype="multipart/form-data" class="bg-gray-50 border border-gray-100 rounded-xl p-5 mb-8 flex flex-wrap gap-3 items-end">
-        <input type="text" name="libelle" placeholder="Nom du plat" required class="px-3 py-2 rounded-lg border border-gray-200 text-sm">
-        <input type="text" name="prix" placeholder="Prix" required class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-28">
-        <input type="text" name="quantite_stock" placeholder="Stock" required class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-24">
-        <input type="text" name="categorie_id" placeholder="ID categorie" required class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-32">
+        <input type="text" name="libelle" placeholder="Nom du plat" class="px-3 py-2 rounded-lg border border-gray-200 text-sm">
+        <input type="text" name="prix" placeholder="Prix" class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-28">
+        <input type="text" name="quantite_stock" placeholder="Stock" class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-24">
+        <input type="text" name="categorie_id" placeholder="ID categorie" class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-32">
         <input type="file" name="image" accept="image/png,image/jpeg,image/webp" class="text-sm">
         <button type="submit" class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition">Ajouter</button>
     </form>

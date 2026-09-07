@@ -9,6 +9,7 @@ use App\Interfaces\PaiementRepositoryInterface;
 use App\Models\Paiement;
 use Exceptions\CommandeInexistanteException;
 use Exceptions\MontantPaiementInvalideException;
+use Exceptions\ValidationException;
 
 class PaiementService
 {
@@ -21,8 +22,16 @@ class PaiementService
         private CommandeRepositoryInterface $commandes,
     ) {}
 
-    public function enregistrerPaiement(int $commandeId, float $montant, string $moyen): Paiement
+    public function enregistrerPaiement(int $commandeId, mixed $montantBrut, string $moyen): Paiement
     {
+        if (!Validator::estRempli((string) $montantBrut) || !Validator::estNumerique($montantBrut)) {
+            throw new MontantPaiementInvalideException('Le montant est obligatoire et doit etre un nombre.');
+        }
+        if (!in_array($moyen, [Paiement::WAVE, Paiement::ORANGE_MONEY, Paiement::ESPECES], true)) {
+            throw new ValidationException('Moyen de paiement invalide.');
+        }
+
+        $montant = (float) $montantBrut;
         if ($montant <= 0) {
             throw new MontantPaiementInvalideException('Le montant doit etre positif.');
         }
@@ -31,11 +40,8 @@ class PaiementService
             ?? throw new CommandeInexistanteException("Aucune commande trouvee avec l'id $commandeId");
 
         $montantRestant = $commande->total - $this->paiements->sommePaiements($commandeId);
-
         if ($montant > $montantRestant) {
-            throw new MontantPaiementInvalideException(
-                sprintf('Le montant depasse le reste a payer (%.0f restant)', $montantRestant)
-            );
+            throw new MontantPaiementInvalideException(sprintf('Le montant depasse le reste a payer (%.0f restant)', $montantRestant));
         }
 
         return $this->paiements->create($commandeId, $montant, $moyen);
