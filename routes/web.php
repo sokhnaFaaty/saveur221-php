@@ -14,6 +14,9 @@ use App\Controllers\NotificationController;
 use App\Controllers\AvisController;
 use App\Controllers\DashboardController;
 use App\Controllers\StockController;
+use App\Controllers\ClientController;
+use App\Controllers\StaffController;
+use App\Controllers\ProfilController;
 
 
 
@@ -63,3 +66,11 @@ $router->post('/avis/{id}/delete', [AvisController::class, 'delete'], ['auth', '
 
 $router->get('/stocks', [StockController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/stocks/{id}/approvisionner', [StockController::class, 'approvisionner'], ['auth', 'role:GERANT,ADMIN']);
+
+
+$router->get('/clients', [ClientController::class, 'index'], ['auth', 'role:ADMIN']);
+$router->get('/staff', [StaffController::class, 'index'], ['auth', 'role:ADMIN']);
+$router->post('/staff', [StaffController::class, 'store'], ['auth', 'role:ADMIN']);
+$router->post('/staff/{id}/toggle', [StaffController::class, 'toggle'], ['auth', 'role:ADMIN']);
+$router->post('/staff/{id}/delete', [StaffController::class, 'delete'], ['auth', 'role:ADMIN']);
+$router->get('/profil', [ProfilController::class, 'index'], ['auth']);
