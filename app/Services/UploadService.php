@@ -92,34 +92,54 @@ class UploadService
     private function uploadVersCloudinary(string $tmpName): string
     {
         $timestamp = time();
-        $signature = sha1('timestamp=' . $timestamp . $this->cloudinary['api_secret']);
+        $paramsAEnvoyer = [
+            'timestamp' => (string) $timestamp,
+            'overwrite' => 'true',
+            'folder'    => 'saveur221/produits',
+        ];
+
+        // La signature doit couvrir TOUS les parametres non-whitelistes envoyes (timestamp + overwrite + folder)
+        ksort($paramsAEnvoyer);
+        $stringASigner = $this->stringASigner($paramsAEnvoyer);
+        $signature = sha1($stringASigner . $this->cloudinary['api_secret']);
 
         $ch = curl_init('https://api.cloudinary.com/v1_1/' . $this->cloudinary['cloud_name'] . '/image/upload');
         curl_setopt_array($ch, [
             CURLOPT_POST => true,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POSTFIELDS => [
+            CURLOPT_POSTFIELDS => array_merge($paramsAEnvoyer, [
                 'file'      => new \CURLFile($tmpName),
                 'api_key'   => (string) $this->cloudinary['api_key'],
-                'timestamp' => (string) $timestamp,
                 'signature' => $signature,
-                'folder'    => 'saveur221/produits',
-            ],
+            ]),
         ]);
 
         $reponse = curl_exec($ch);
         $erreur = curl_error($ch);
+        $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         curl_close($ch);
 
         if ($erreur !== '' || !is_string($reponse)) {
-            throw new ValidationException('Echec de la communication avec Cloudinary.');
+            throw new ValidationException('Echec de la communication avec Cloudinary (' . $erreur . ').');
         }
 
         $donnees = json_decode($reponse, true);
         if (!is_array($donnees) || empty($donnees['secure_url'])) {
-            throw new ValidationException("Cloudinary a refuse l'image.");
+            $message = $donnees['error']['message'] ?? $donnees['message'] ?? $reponse;
+            throw new ValidationException("Cloudinary a refuse l'image (HTTP $code) : $message");
         }
 
         return (string) $donnees['secure_url'];
+    }
+
+    private function stringASigner(array $params): string
+    {
+        $chaines = [];
+        foreach ($params as $cle => $valeur) {
+            if (is_string($valeur) && $valeur !== '') {
+                $chaines[] = $cle . '=' . $valeur;
+            }
+        }
+        return implode('&', $chaines);
     }
 }

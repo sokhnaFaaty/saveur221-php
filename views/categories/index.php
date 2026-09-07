@@ -1,4 +1,4 @@
-<h1>Categories du menu</h1>
+<h1>Catégories du menu</h1>
 
 <?php if ($flash = $_SESSION['flash'] ?? null): unset($_SESSION['flash']); ?>
     <p><?= htmlspecialchars($flash['message']) ?></p>
@@ -7,7 +7,7 @@
 <form method="post" action="/categories">
     <input type="text" name="libelle" placeholder="Nom de la categorie">
     <input type="text" name="description" placeholder="Description">
-    <button type="submit">Creer</button>
+    <button type="submit">Créer</button>
 </form>
 
 <ul>

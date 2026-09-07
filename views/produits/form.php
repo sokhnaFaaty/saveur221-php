@@ -34,10 +34,42 @@
             <textarea name="description" rows="3" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm"><?= htmlspecialchars($produit->description ?? '') ?></textarea>
         </div>
         <div>
-            <label class="block text-sm font-semibold mb-1">Image</label>
-            <input type="file" name="image" accept="image/png,image/jpeg,image/webp" class="text-sm">
-            <?php if ($produit && $produit->image): ?><p class="text-xs text-gray-400 mt-1">Laisser vide pour conserver l'image actuelle.</p><?php endif; ?>
+            <label class="block text-sm font-semibold mb-2">Image <span class="text-xs font-normal text-gray-400">(choisissez une option)</span></label>
+            <div class="space-y-3">
+                <div class="flex items-center gap-2">
+                    <input type="radio" name="image_option" value="file" id="opt_file" checked class="accent-red-600">
+                    <label for="opt_file" class="text-sm font-semibold">Option A : Téléverser un fichier</label>
+                </div>
+                <div class="pl-6" id="bloc-file">
+                    <input type="file" name="image_file" accept="image/png,image/jpeg,image/webp" class="text-sm">
+                </div>
+
+                <div class="flex items-center gap-2 pt-1">
+                    <input type="radio" name="image_option" value="url" id="opt_url" class="accent-red-600">
+                    <label for="opt_url" class="text-sm font-semibold">Option B : Lien internet</label>
+                </div>
+                <div class="pl-6 hidden" id="bloc-url">
+                    <input type="text" name="image_url" value="<?= htmlspecialchars((string) ($produit->image ?? '')) ?>"
+                           placeholder="https://example.com/image.jpg"
+                           class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+                </div>
+            </div>
+            <?php if ($produit && $produit->image): ?><p class="text-xs text-gray-400 mt-2">Laisser vide pour conserver l'image actuelle.</p><?php endif; ?>
         </div>
         <button type="submit" class="w-full py-2.5 rounded-lg bg-primary text-white font-semibold text-sm hover:bg-primary-dark transition">Enregistrer</button>
     </form>
 </div>
+<script>
+    document.querySelectorAll('input[name="image_option"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+            const utiliserFichier = document.getElementById('opt_file').checked;
+            document.getElementById('bloc-file').classList.toggle('hidden', !utiliserFichier);
+            document.getElementById('bloc-url').classList.toggle('hidden', utiliserFichier);
+            if (utiliserFichier) {
+                document.querySelector('input[name="image_url"]').value = '';
+            } else {
+                document.querySelector('input[name="image_file"]').value = '';
+            }
+        });
+    });
+</script>

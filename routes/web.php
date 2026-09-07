@@ -25,6 +25,8 @@ use App\Controllers\StatistiqueController;
 
 $router->get('/', [HomeController::class, 'index']);
 
+$router->get('/catalogue', [ProduitController::class, 'indexPublic']);
+
 $router->get('/connexion', [AuthController::class, 'showLogin']);
 $router->post('/connexion', [AuthController::class, 'login']);
 $router->get('/deconnexion', [AuthController::class, 'logout']);

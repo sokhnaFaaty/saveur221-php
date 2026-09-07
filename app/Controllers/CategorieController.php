@@ -14,21 +14,17 @@ class CategorieController extends Controller
 
     public function index(): string
     {
-        if (hasRole('GERANT') || hasRole('ADMIN')) {
-            $terme = trim((string) $this->value('q', ''));
-            $toutes = $terme === '' ? $this->categorieService->listerCategories() : $this->categorieService->rechercherCategorie($terme);
-            $pagination = paginer($toutes, (int) $this->value('page', 1));
+        $terme = trim((string) $this->value('q', ''));
+        $toutes = $terme === '' ? $this->categorieService->listerCategories() : $this->categorieService->rechercherCategorie($terme);
+        $pagination = paginer($toutes, (int) $this->value('page', 1));
 
-            return View::render('categories/gestion', [
-                'title' => 'Categories du Menu',
-                'categories' => $pagination['items'],
-                'page' => $pagination['page'],
-                'totalPages' => $pagination['totalPages'],
-                'vue' => $this->value('vue', 'cartes'),
-            ], 'layouts/dashboard');
-        }
-
-        return View::render('categories/liste-publique', ['title' => 'Categories', 'categories' => $this->categorieService->listerCategories()], 'layouts/public');
+        return View::render('categories/gestion', [
+            'title' => 'Categories du Menu',
+            'categories' => $pagination['items'],
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'vue' => $this->value('vue', 'cartes'),
+        ], 'layouts/dashboard');
     }
 
     public function store(): never

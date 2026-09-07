@@ -114,12 +114,12 @@ $user = $_SESSION['user'] ?? null;
                 </a>
                 <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
                     <a href="/" class="hover:text-primary transition">Accueil</a>
-                    <a href="/produits" class="hover:text-primary transition">Catalogues & Menus</a>
+                    <a href="/catalogue" class="hover:text-primary transition">Catalogues & Menus</a>
                 </nav>
                 <div class="flex items-center gap-3">
                     <?php if ($user && in_array($user['role'], ['GERANT', 'ADMIN'], true)): ?>
-                        <a href="/produits" class="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition flex items-center gap-2">
-                            <i class="fa-solid fa-table-cells"></i> Espace <?= $user['role'] === 'ADMIN' ? 'Admin' : 'Gerant' ?>
+                        <a href="/dashboard" class="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition flex items-center gap-2">
+                            <i class="fa-solid fa-table-cells"></i> Espace <?= $user['role'] === 'ADMIN' ? 'Admin' : 'Gérant' ?>
                         </a>
                     <?php endif; ?>
                     <?php if ($user && $user['role'] === 'CLIENT'): ?>
@@ -131,11 +131,11 @@ $user = $_SESSION['user'] ?? null;
                     <?php if ($user): ?>
                         <span class="text-sm font-semibold hidden sm:inline"><?= htmlspecialchars($user['prenom']) ?></span>
                         <a href="/deconnexion" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold hover:border-primary hover:text-primary transition flex items-center gap-2">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Deconnexion
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
                         </a>
                     <?php else: ?>
                         <a href="/connexion" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold hover:border-primary hover:text-primary transition">Connexion</a>
-                        <a href="/inscription" class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition">Creer un compte</a>
+                        <a href="/inscription" class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition">Créer un compte</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -159,24 +159,24 @@ $user = $_SESSION['user'] ?? null;
                     </span>
                     Saveur <span class="text-primary">221</span>
                 </div>
-                <p class="text-sm mb-3">La haute gastronomie senegalaise preparee avec passion. Ingredients frais locaux, cuisson au feu de bois.</p>
+                <p class="text-sm mb-3">La haute gastronomie sénégalaise préparée avec passion. Ingrédients frais locaux, cuisson au feu de bois.</p>
                 <a href="/inscription" class="text-sm font-semibold text-primary hover:underline">Devenir client</a>
             </div>
             <div>
                 <h4 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Navigation</h4>
                 <nav class="space-y-2.5 text-sm">
                     <a href="/" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Accueil</a>
-                    <a href="/produits" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Notre carte &amp; menus</a>
+                    <a href="/catalogue" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Notre carte &amp; menus</a>
                     <a href="/connexion" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Connexion</a>
-                    <a href="/inscription" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Creer un compte</a>
+                    <a href="/inscription" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Créer un compte</a>
                 </nav>
             </div>
             <div>
                 <h4 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Acces direct</h4>
                 <ul class="space-y-2.5 text-sm">
-                    <li class="flex items-start gap-2.5"><i class="fa-solid fa-location-dot text-primary mt-0.5"></i> Route des Almadies, Dakar, Senegal</li>
+                    <li class="flex items-start gap-2.5"><i class="fa-solid fa-location-dot text-primary mt-0.5"></i> Route des Almadies, Dakar, Sénégal</li>
                     <li class="flex items-start gap-2.5"><i class="fa-solid fa-phone text-primary mt-0.5"></i> +221 78 540 55 93</li>
-                    <li class="flex items-start gap-2.5"><i class="fa-solid fa-clock text-primary mt-0.5"></i> Ouvert 7j/7 de 11h30 a 23h30</li>
+                    <li class="flex items-start gap-2.5"><i class="fa-solid fa-clock text-primary mt-0.5"></i> Ouvert 7j/7 de 11h30 à 23h30</li>
                 </ul>
                 <h5 class="text-xs font-bold uppercase tracking-widest text-gray-500 mt-5 mb-2">Modalité</h5>
                 <p class="text-sm">Commande en ligne&nbsp;: retrait au comptoir ou livraison.</p>

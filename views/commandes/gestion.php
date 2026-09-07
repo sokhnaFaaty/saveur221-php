@@ -7,7 +7,7 @@ $prochainStatut = ['EN_ATTENTE' => 'EN_PREPARATION', 'EN_PREPARATION' => 'PRETE'
 $libelleAction = ['EN_ATTENTE' => 'Lancer en Cuisine', 'EN_PREPARATION' => 'Marquer Prete au Comptoir', 'PRETE' => 'Marquer Retiree'];
 ?>
 <h1 class="text-2xl font-extrabold mb-1">Gestion des Commandes Clients</h1>
-<p class="text-sm text-gray-500 mb-6">Suivi des statuts (En attente &rarr; En preparation &rarr; Prete &rarr; Retiree) et gestion du comptoir.</p>
+<p class="text-sm text-gray-500 mb-6">Suivi des statuts (En attente &rarr; En préparation &rarr; Prête &rarr; Retirée) et gestion du comptoir.</p>
 
 <form method="get" action="/commandes" class="flex flex-wrap gap-2 mb-6">
     <a href="/commandes" class="px-4 py-2 rounded-lg text-sm font-semibold <?= !$statutFiltre ? 'bg-primary text-white' : 'bg-white border border-gray-200' ?>">Tous</a>

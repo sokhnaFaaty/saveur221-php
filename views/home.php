@@ -22,24 +22,24 @@ $images = [
         <div class="relative h-full grid md:grid-cols-[1.4fr,1fr] gap-10 items-center p-10 md:p-16">
             <div class="text-white">
                 <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
-                    La Haute Gastronomie <span class="text-primary">Senegalaise</span> chez Vous
+                    La Haute Gastronomie <span class="text-primary">Sénégalaise</span> chez Vous
                 </h1>
                 <p class="text-gray-200 mb-6 max-w-md">
-                    Degustez nos recettes emblematiques mijotees dans le respect des traditions :
-                    Thieboudiene Penda Mbaye au Thiof frais, Yassa au Poulet braise, Dibi d'agneau au feu de bois.
+                    Dégustez nos recettes emblématiques mijotées dans le respect des traditions :
+                    Thiéboudiène Penda Mbaye au Thiof frais, Yassa au Poulet braisé, Dibi d'agneau au feu de bois.
                 </p>
                 <div class="flex flex-wrap gap-3 mb-6">
-                    <a href="/produits" class="px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
+                    <a href="/catalogue" class="px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
                         Commander maintenant
                     </a>
                     <a href="#incontournables" class="px-6 py-3 rounded-lg border border-white/30 text-white font-semibold hover:bg-white/10 transition">
-                        Decouvrez le Thieboudiene du Chef
+                        Découvrez le Thiéboudiène du Chef
                     </a>
                 </div>
                 <div class="flex flex-wrap gap-5 text-sm text-gray-300">
-                    <span>100% Ingredients Locaux Frais</span>
+                    <span>100% Ingrédients Locaux Frais</span>
                     <span>Paiement Wave et OM 0% frais</span>
-                    <span>Emballages thermo-scelles</span>
+                    <span>Emballages thermo-scellés</span>
                 </div>
             </div>
 
@@ -69,9 +69,9 @@ $images = [
 <section class="grid grid-cols-2 md:grid-cols-4 gap-6 my-12">
     <?php foreach ([
         ['fa-fire', 'Braise Artisanale', 'Cuisson au feu de bois', 'bg-red-50', 'text-red-700', 'text-red-700'],
-        ['fa-clock', '30 a 45 Minutes', 'Livraison rapide Dakar', 'bg-amber-50', 'text-amber-500', ''],
-        ['fa-shield-halved', 'Wave & OM 0% Frais', 'Paiement 100% Securise', 'bg-green-50', 'text-green-600', ''],
-        ['fa-box', 'Chaud & Hermetique', 'Conditionnement isotherme', 'bg-gray-50', 'text-gray-700', ''],
+        ['fa-clock', '30 à 45 Minutes', 'Livraison rapide Dakar', 'bg-amber-50', 'text-amber-500', ''],
+        ['fa-shield-halved', 'Wave & OM 0% Frais', 'Paiement 100% Sécurisé', 'bg-green-50', 'text-green-600', ''],
+        ['fa-box', 'Chaud & Hermétique', 'Conditionnement isotherme', 'bg-gray-50', 'text-gray-700', ''],
     ] as [$icone, $titre, $sous, $fond, $couleurIcone, $couleurTitre]): ?>
     <div class="flex gap-3 bg-white rounded-xl p-4 shadow-md">
         <div class="w-11 h-11 rounded-lg <?= $fond ?> flex items-center justify-center <?= $couleurIcone ?> shrink-0">
@@ -87,11 +87,11 @@ $images = [
 
 <section class="mb-14">
     <p class="text-primary font-bold text-xs uppercase tracking-wide mb-1">Explorez notre carte</p>
-    <h2 class="text-2xl font-extrabold mb-6">Categories de Plats & Specialites</h2>
+    <h2 class="text-2xl font-extrabold mb-6">Catégories de Plats & Spécialités</h2>
 
     <div class="grid grid-cols-2 md:grid-cols-5 gap-5">
         <?php foreach ($categories as $categorie): ?>
-        <a href="/produits?categorie=<?= $categorie->id ?>" class="group rounded-xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition duration-300">
+        <a href="/catalogue?categorie=<?= $categorie->id ?>" class="group rounded-xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition duration-300">
             <div class="h-32 overflow-hidden">
                 <img src="<?= htmlspecialchars($images['categories'][$categorie->id] ?? $images['grillade']) ?>" alt=""
                      class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
@@ -107,7 +107,7 @@ $images = [
 
 <section id="incontournables" class="mb-14">
     <p class="text-primary font-bold text-xs uppercase tracking-wide mb-1">Les incontournables</p>
-    <h2 class="text-2xl font-extrabold mb-6">Plats Coup de Coeur de Dakar</h2>
+    <h2 class="text-2xl font-extrabold mb-6">Plats Coup de Cœur de Dakar</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <?php foreach (array_slice($plats, 0, 4) as $plat): ?>
@@ -120,7 +120,7 @@ $images = [
                 </span>
                 <span class="absolute top-2 right-2 text-[11px] font-bold px-2 py-1 rounded
                     <?= $plat->disponible() ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' ?>">
-                    <?= $plat->disponible() ? 'En stock' : 'Epuise' ?>
+                    <?= $plat->disponible() ? 'En stock' : 'Épuisé' ?>
                 </span>
                 <span class="absolute bottom-2 left-2 bg-black/60 text-white text-[11px] px-2 py-0.5 rounded flex items-center gap-1">
     <i class="fa-regular fa-clock"></i> <?= $plat->tempsPreparation ?? '?' ?> mn
@@ -147,21 +147,21 @@ $images = [
     <div class="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-2 gap-10 items-center">
         <div>
             <span class="inline-block bg-red-600 text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full mb-4">L'Art &amp; la Tradition Teranga</span>
-            <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Une cuisine authentique, mijotee avec generosite</h2>
+            <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Une cuisine authentique, mijotée avec générosité</h2>
             <p class="text-gray-600 text-sm leading-relaxed mb-6">
-                Chez Saveur221, chaque marmite raconte une histoire. Nos poissons Thiof sont selectionnes chaque matin
-                sur la cote dakaroise, nos viandes marinees aux herbes fraiches et grillees au bois d'acacia.
+                Chez Saveur221, chaque marmite raconte une histoire. Nos poissons Thiof sont sélectionnés chaque matin
+                sur la côte dakaroise, nos viandes marinées aux herbes fraîches et grillées au bois d'acacia.
             </p>
             <div class="grid grid-cols-2 gap-4">
                 <div class="bg-white rounded-xl p-4 shadow-sm">
                     <i class="fa-solid fa-fire text-primary mb-2"></i>
-                    <strong class="block text-sm mb-1">Le Veritable Roff</strong>
-                    <span class="text-xs text-gray-500">Thiof entier mijote dans sa sauce roff.</span>
+                    <strong class="block text-sm mb-1">Le Véritable Roff</strong>
+                    <span class="text-xs text-gray-500">Thiof entier mijoté dans sa sauce roff.</span>
                 </div>
                 <div class="bg-white rounded-xl p-4 shadow-sm">
                     <i class="fa-solid fa-fish text-amber-600 mb-2"></i>
                     <strong class="block text-sm mb-1">Accompagnement</strong>
-                    <span class="text-xs text-gray-500">Riz parfume, legumes fondants &amp; piments.</span>
+                    <span class="text-xs text-gray-500">Riz parfumé, légumes fondants &amp; piments.</span>
                 </div>
             </div>
         </div>
@@ -169,7 +169,7 @@ $images = [
             <img src="<?= $images['brochettes'] ?>" alt="Brochettes au feu de bois" class="rounded-2xl w-full h-80 md:h-[420px] object-cover shadow-xl">
             <div class="absolute bottom-4 left-4 bg-white rounded-lg px-4 py-3 shadow-lg">
                 <p class="text-sm font-bold text-gray-900 flex items-center gap-2">
-                    <i class="fa-solid fa-hat-chef text-primary"></i> Prepare par nos Maitres Cuisiniers
+                    <i class="fa-solid fa-hat-chef text-primary"></i> Préparé par nos Maîtres Cuisiniers
                 </p>
             </div>
         </div>
@@ -177,7 +177,7 @@ $images = [
 </section>
 
 <section class="mb-14">
-    <p class="text-primary font-bold text-xs uppercase tracking-wide mb-1">Temoignages clients</p>
+    <p class="text-primary font-bold text-xs uppercase tracking-wide mb-1">Témoignages clients</p>
     <h2 class="text-2xl font-extrabold mb-6">Ce que Dakar dit de Saveur221</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -193,11 +193,11 @@ $images = [
 
 <section class="bg-primary-light/40 rounded-2xl p-10 mb-14">
     <h2 class="text-xl font-extrabold mb-1">Comment fonctionne Saveur221 ?</h2>
-    <p class="text-sm text-gray-500 mb-6">Un processus simple, rapide et transparent en 3 etapes</p>
+    <p class="text-sm text-gray-500 mb-6">Un processus simple, rapide et transparent en 3 étapes</p>
     <div class="grid md:grid-cols-3 gap-6">
         <?php foreach ([
-            ['Choisissez vos plats', 'Selectionnez vos specialites preferees et personnalisez vos instructions.'],
-            ['Commandez & Reglez', 'Connectez-vous et reglez en toute securite via Wave, Orange Money.'],
+            ['Choisissez vos plats', 'Sélectionnez vos spécialités préférées et personnalisez vos instructions.'],
+            ['Commandez & Réglez', 'Connectez-vous et réglez en toute sécurité via Wave, Orange Money.'],
             ['Retirez au comptoir', 'Votre commande vous attend bien chaude au comptoir de retrait.'],
         ] as $i => [$titre, $texte]): ?>
         <div class="bg-white rounded-xl p-5 shadow-sm">
@@ -213,7 +213,7 @@ $images = [
     <h2 class="text-white text-2xl font-extrabold mb-3">Une envie soudaine de bon Thieb ou de Dibi chaud ?</h2>
     <p class="text-gray-300 text-sm mb-6">Passez votre commande en ligne en moins de 2 minutes.</p>
     <div class="flex flex-wrap items-center justify-center gap-3">
-        <a href="/produits" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
+        <a href="/catalogue" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
             <i class="fa-solid fa-utensils"></i> Parcourir le catalogue
         </a>
         <a href="tel:+221785405593" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-black border border-white text-white font-semibold hover:bg-white/10 transition">

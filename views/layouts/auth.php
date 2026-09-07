@@ -64,7 +64,7 @@ $title = $title ?? '';
             </div>
         </div>
 
-        <p class="relative z-10 text-white text-sm text-center font-semibold px-6 py-8">La teranga a votre service.</p>
+        <p class="relative z-10 text-white text-sm text-center font-semibold px-6 py-8">La teranga à votre service.</p>
     </aside>
 
     <main class="relative flex-1 h-screen flex flex-col items-center px-6 py-6 overflow-y-auto">

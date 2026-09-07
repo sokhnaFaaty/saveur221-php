@@ -3,7 +3,7 @@
 /** @var \App\Models\Produit[] $suggestions */
 ?>
 <div class="my-8">
-    <a href="/produits" class="text-sm text-gray-500 hover:text-primary transition inline-flex items-center gap-2 mb-6">
+    <a href="/catalogue" class="text-sm text-gray-500 hover:text-primary transition inline-flex items-center gap-2 mb-6">
         <i class="fa-solid fa-arrow-left"></i> Retour a la carte
     </a>
 

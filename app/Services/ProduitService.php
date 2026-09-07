@@ -20,11 +20,9 @@ class ProduitService
 
     public function ajouterProduit(array $data): Produit
     {
-        $this->validerDonnees($data);
+        $this->validerDonnees($data, null);
         return $this->produits->create($data);
-    }
-
-    public function listerProduits(): array
+    }    public function listerProduits(): array
     {
         return $this->produits->findAll();
     }
@@ -59,7 +57,7 @@ class ProduitService
         if ($this->produits->findById($id) === null) {
             throw new ProduitInexistantException("Aucun produit trouve avec l'id $id");
         }
-        $this->validerDonnees($data);
+        $this->validerDonnees($data, $id);
         $this->produits->update($id, $data);
     }
 
@@ -80,10 +78,22 @@ class ProduitService
         $this->produits->restaurerStock($id, $quantite);
     }
 
-    private function validerDonnees(array $data): void
+    private function validerDonnees(array $data, ?int $idExclu = null): void
     {
         if (!Validator::estRempli($data['libelle'] ?? null)) {
             throw new ValidationException('Le libelle du produit est obligatoire.');
+        }
+
+        $libelle = trim((string) $data['libelle']);
+        $libelleNormalise = mb_strtolower(str_replace(' ', '', $libelle));
+        foreach ($this->produits->findAll() as $existant) {
+            if ($idExclu !== null && $existant->id === $idExclu) {
+                continue;
+            }
+            $existantNormalise = mb_strtolower(str_replace(' ', '', (string) $existant->libelle));
+            if ($existantNormalise === $libelleNormalise) {
+                throw new ValidationException("Un plat porte deja le libelle \"$libelle\".");
+            }
         }
 
          foreach (['prix', 'quantite_stock', 'categorie_id', 'seuil_alerte', 'temps_preparation', 'calories'] as $champ) {

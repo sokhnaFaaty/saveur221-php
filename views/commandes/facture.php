@@ -7,7 +7,7 @@
 <p>Commande : <?= htmlspecialchars($commande->numCommande) ?></p>
 
 <table border="1" cellpadding="6">
-    <tr><th>Produit</th><th>Quantite</th><th>Prix unitaire</th><th>Sous-total</th></tr>
+    <tr><th>Produit</th><th>Quantité</th><th>Prix unitaire</th><th>Sous-total</th></tr>
     <?php foreach ($commande->lignes as $ligne): ?>
     <tr>
         <td><?= htmlspecialchars((string) $ligne->produitLibelle) ?></td>

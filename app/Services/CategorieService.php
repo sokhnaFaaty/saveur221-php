@@ -18,6 +18,7 @@ class CategorieService
         if (!Validator::estRempli($libelle)) {
             throw new ValidationException('Le libelle de la categorie est obligatoire.');
         }
+        $this->verifierUnicite($libelle, null);
         return $this->categories->create(['libelle' => trim($libelle), 'description' => $description]);
     }
 
@@ -39,7 +40,23 @@ class CategorieService
         if (!Validator::estRempli($libelle)) {
             throw new ValidationException('Le libelle de la categorie est obligatoire.');
         }
+        $this->verifierUnicite($libelle, $id);
         $this->categories->update($id, ['libelle' => trim($libelle), 'description' => $description]);
+    }
+
+    private function verifierUnicite(string $libelle, ?int $idExclu): void
+    {
+        $libelle = trim($libelle);
+        $normalise = mb_strtolower(str_replace(' ', '', $libelle));
+        foreach ($this->categories->findAll() as $existant) {
+            if ($idExclu !== null && $existant->id === $idExclu) {
+                continue;
+            }
+            $existantNormalise = mb_strtolower(str_replace(' ', '', (string) $existant->libelle));
+            if ($existantNormalise === $normalise) {
+                throw new ValidationException("Une categorie porte deja le libelle \"$libelle\".");
+            }
+        }
     }
 
     public function supprimerCategorie(int $id): void
