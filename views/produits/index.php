@@ -13,32 +13,42 @@
         </div>
     </div>
 
-    <div class="flex flex-wrap gap-2 mb-6">
-        <a href="/catalogue"
-           class="px-4 py-2 rounded-lg text-sm font-semibold transition <?= $categorieId === null && $terme === '' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' ?>">
-            Toute la carte (<?= count($produits) ?>)
-        </a>
-        <?php foreach ($categories as $categorie): ?>
-        <a href="/catalogue?categorie=<?= $categorie->id ?>"
-           class="px-4 py-2 rounded-lg text-sm font-semibold transition <?= $categorieId === $categorie->id ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' ?>">
-            <?= htmlspecialchars($categorie->libelle) ?>
-        </a>
-        <?php endforeach; ?>
-    </div>
+    <!-- Barre de recherche + filtres par categorie (charte #A8291A) -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-6 space-y-4">
+        <!-- Ligne 1 : barre de recherche + toggle dispo -->
+        <form method="get" action="/catalogue" class="flex flex-wrap items-center gap-3">
+            <div class="flex-1 min-w-[200px] relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                <input type="text" name="q" value="<?= htmlspecialchars($terme) ?>" placeholder="Rechercher un plat, ingrédient (ex: Thie...)"
+                       class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#A8291A] focus:border-[#A8291A]">
+            </div>
+            <div class="flex bg-gray-100 rounded-lg p-1">
+                <button type="submit" name="dispo" value="tous"
+                        class="px-4 py-1.5 rounded-md text-sm font-semibold transition <?= $dispo === 'tous' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900' ?>">Tous</button>
+                <button type="submit" name="dispo" value="disponibles"
+                        class="px-4 py-1.5 rounded-md text-sm font-semibold transition <?= $dispo === 'disponibles' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-900' ?>">Disponibles</button>
+            </div>
+        </form>
 
-    <form method="get" action="/catalogue" class="bg-gray-900 rounded-xl p-4 flex flex-wrap items-center gap-3 mb-6">
-        <div class="flex-1 min-w-[200px] relative">
-            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-            <input type="text" name="q" value="<?= htmlspecialchars($terme) ?>" placeholder="Rechercher un plat, ingrédient (ex: Thie..."
-                   class="w-full pl-10 pr-4 py-2.5 rounded-lg bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary">
+        <!-- Ligne 2 : boutons de filtrage par categorie (boucle sur $categories) -->
+        <div class="flex flex-wrap items-center gap-2 pt-4 border-t border-gray-100">
+            <span class="text-xs font-bold uppercase tracking-wide text-gray-400 mr-1">Filtrer :</span>
+
+            <!-- Tous : actif quand aucune categorie ni recherche -->
+            <a href="/catalogue"
+               class="px-4 py-2 rounded-lg text-sm font-semibold transition <?= $categorieId === null && $terme === '' ? 'bg-[#A8291A] text-white shadow-sm' : 'bg-white border border-gray-300 text-gray-700 hover:border-[#A8291A] hover:text-[#A8291A]' ?>">
+                Tous (<?= count($produits) ?>)
+            </a>
+
+            <!-- Une maille par categorie : class active = fond #A8291A -->
+            <?php foreach ($categories as $categorie): ?>
+            <a href="/catalogue?categorie=<?= $categorie->id ?>"
+               class="px-4 py-2 rounded-lg text-sm font-semibold transition <?= $categorieId === $categorie->id ? 'bg-[#A8291A] text-white shadow-sm' : 'bg-white border border-gray-300 text-gray-700 hover:border-[#A8291A] hover:text-[#A8291A]' ?>">
+                <?= htmlspecialchars($categorie->libelle) ?>
+            </a>
+            <?php endforeach; ?>
         </div>
-        <div class="flex bg-gray-800 rounded-lg p-1">
-            <button type="submit" name="dispo" value="tous"
-                    class="px-4 py-1.5 rounded-md text-sm font-semibold <?= $dispo === 'tous' ? 'bg-white text-gray-900' : 'text-gray-300' ?>">Tous</button>
-            <button type="submit" name="dispo" value="disponibles"
-                    class="px-4 py-1.5 rounded-md text-sm font-semibold <?= $dispo === 'disponibles' ? 'bg-white text-gray-900' : 'text-gray-300' ?>">Disponibles</button>
-        </div>
-    </form>
+    </div>
 
     <p class="text-sm text-gray-500 mb-4"><strong class="text-gray-900"><?= count($produits) ?></strong> plat(s) trouvé(s)</p>
 

@@ -15,7 +15,7 @@ function flash(string $type, string $message): void
 }
 
 /** @return array{items: array, page: int, totalPages: int, total: int} */
-function paginer(array $items, int $page, int $parPage = 10): array
+function paginer(array $items, int $page, int $parPage = 6): array
 {
     $total = count($items);
     $totalPages = max(1, (int) ceil($total / $parPage));

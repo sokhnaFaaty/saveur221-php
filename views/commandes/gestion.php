@@ -10,9 +10,9 @@ $libelleAction = ['EN_ATTENTE' => 'Lancer en Cuisine', 'EN_PREPARATION' => 'Marq
 <p class="text-sm text-gray-500 mb-6">Suivi des statuts (En attente &rarr; En préparation &rarr; Prête &rarr; Retirée) et gestion du comptoir.</p>
 
 <form method="get" action="/commandes" class="flex flex-wrap gap-2 mb-6">
-    <a href="/commandes" class="px-4 py-2 rounded-lg text-sm font-semibold <?= !$statutFiltre ? 'bg-primary text-white' : 'bg-white border border-gray-200' ?>">Tous</a>
+    <a href="/commandes" class="px-4 py-2 rounded-lg text-sm font-semibold <?= !$statutFiltre ? 'bg-[#B83518] text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-[#B83518] hover:text-[#B83518] transition' ?>">Tous</a>
     <?php foreach (['EN_ATTENTE', 'EN_PREPARATION', 'PRETE', 'RETIREE', 'ANNULEE'] as $s): ?>
-    <a href="/commandes?statut=<?= $s ?>" class="px-4 py-2 rounded-lg text-sm font-semibold <?= $statutFiltre === $s ? 'bg-primary text-white' : 'bg-white border border-gray-200' ?>"><?= $s ?></a>
+    <a href="/commandes?statut=<?= $s ?>" class="px-4 py-2 rounded-lg text-sm font-semibold <?= $statutFiltre === $s ? 'bg-[#B83518] text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-[#B83518] hover:text-[#B83518] transition' ?>"><?= $s ?></a>
     <?php endforeach; ?>
 </form>
 
@@ -53,7 +53,7 @@ $libelleAction = ['EN_ATTENTE' => 'Lancer en Cuisine', 'EN_PREPARATION' => 'Marq
                         <?php if (!in_array($commande->statut, ['RETIREE', 'ANNULEE'], true)): ?>
                         <button type="button" onclick='demanderConfirmation({titre:"Annuler la commande",message:"L annulation restaure le stock et est irreversible.",cible:<?= json_encode($commande->numCommande) ?>,actionUrl:"/commandes/<?= $commande->id ?>/annuler"})' class="px-3 py-1.5 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition">Annuler</button>
                         <?php endif; ?>
-                        <a href="/commandes/<?= $commande->id ?>/facture" class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-semibold hover:border-primary transition"><i class="fa-regular fa-file-lines"></i> Facture</a>
+                        <a href="/commandes/<?= $commande->id ?>/facture" class="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-gray-600 text-xs font-semibold hover:border-[#B83518] hover:text-[#B83518] transition"><i class="fa-regular fa-file-lines"></i> Facture</a>
                     </div>
                 </td>
             </tr>
@@ -104,7 +104,7 @@ $libelleAction = ['EN_ATTENTE' => 'Lancer en Cuisine', 'EN_PREPARATION' => 'Marq
                 <?php endif; ?>
             </div>
             <div class="flex items-center gap-2">
-                <a href="/commandes/<?= $commande->id ?>/facture" class="px-3 py-2 rounded-lg border border-gray-200 text-xs font-semibold hover:border-primary transition"><i class="fa-regular fa-file-lines"></i> Facture</a>
+                <a href="/commandes/<?= $commande->id ?>/facture" class="px-3 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 text-xs font-semibold hover:border-[#B83518] hover:text-[#B83518] transition"><i class="fa-regular fa-file-lines"></i> Facture</a>
             </div>
         </div>
     </div>

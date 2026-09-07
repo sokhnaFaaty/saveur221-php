@@ -7,12 +7,6 @@ $images = [
     'grillade'      => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725699/saveur221/images/grillade-dibiterie.jpg',
     'thieboudienne' => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725692/saveur221/images/thieboudienne-rouge.jpg',
     'brochettes'    => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725696/saveur221/images/brochette-dibi.jpg',
-    'categories'    => [
-        1 => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725692/saveur221/images/thieboudienne-rouge.jpg',
-        2 => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725699/saveur221/images/grillade-dibiterie.jpg',
-        3 => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788726508/saveur221/images/thiakry-dessert.jpg',
-        4 => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788726510/saveur221/images/bissap-boisson.jpg',
-    ],
 ];
 ?>
 
@@ -46,18 +40,23 @@ $images = [
             <?php if (!empty($plats[0])): $vedette = $plats[0]; ?>
             <div class="z-10 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10 bg-[#111827]/90 backdrop-blur-md">
                 <div class="relative h-48">
-                    <img src="<?= htmlspecialchars((string) ($vedette->image ?: $images['thieboudienne'])) ?>" alt="Thieboudienne Penda Mbaye" class="w-full h-full object-cover">
+                    <img src="<?= htmlspecialchars((string) ($vedette->image ?: $images['thieboudienne'])) ?>" alt="<?= htmlspecialchars($vedette->libelle) ?>" class="w-full h-full object-cover">
                     <span class="absolute top-3 right-3 flex items-center gap-1.5 bg-white/95 text-amber-500 text-sm font-bold px-2.5 py-1 rounded-full shadow-lg">
                         <i class="fa-solid fa-star"></i> 4.9/5
                     </span>
                 </div>
                 <div class="p-5 text-white">
                     <span class="inline-block bg-primary text-white text-xs px-3 py-1 rounded-md mb-3">Plat Signature</span>
-                    <h3 class="font-bold text-lg mb-1">Thieboudienne Penda Mbaye</h3>
+                    <h3 class="font-bold text-lg mb-1"><?= htmlspecialchars($vedette->libelle) ?></h3>
                     <p class="text-sm text-gray-300 mb-4"><?= htmlspecialchars((string) $vedette->description) ?></p>
                     <div class="flex items-center justify-between">
                         <span class="text-primary font-extrabold text-xl"><?= number_format($vedette->prix, 0) ?> FCFA</span>
-                        <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary-dark transition">Ajouter</button>
+                        <div class="flex items-center gap-2">
+                            <a href="/produits/<?= $vedette->id ?>" class="w-9 h-9 flex items-center justify-center rounded-lg border border-white/30 text-white hover:bg-white/15 transition" title="Voir le détail">
+                                <i class="fa-regular fa-eye text-sm"></i>
+                            </a>
+                            <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary-dark transition" onclick='ajouterAuPanier({ id: <?= $vedette->id ?>, nom: <?= json_encode($vedette->libelle) ?>, prix: <?= $vedette->prix ?>, image: <?= json_encode($vedette->image ?: $images['thieboudienne']) ?> })'>Ajouter</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,10 +89,30 @@ $images = [
     <h2 class="text-2xl font-extrabold mb-6">Catégories de Plats & Spécialités</h2>
 
     <div class="grid grid-cols-2 md:grid-cols-5 gap-5">
-        <?php foreach ($categories as $categorie): ?>
+<?php foreach ($categories as $categorie): ?>
+        <?php
+        // Image de la categorie : 1) colonne image 2) image du 1er produit dispo
+        // de la categorie (ex: Pastels au Thon) 3) fallback par mot-cle du libelle.
+        $imageCategorie = (string) ($categorie->image ?: ($imagesParCategorie[$categorie->id] ?? ''));
+        if ($imageCategorie === '') {
+            $libelle = mb_strtolower($categorie->libelle);
+            $imageCategorie = $images['grillade'];
+            if (str_contains($libelle, 'thieboudien') || str_contains($libelle, 'plat')) {
+                $imageCategorie = '/assets/img/maquettes/ThieboudienneRouge.jpg';
+            } elseif (str_contains($libelle, 'boisson') || str_contains($libelle, 'jus') || str_contains($libelle, 'bissap')) {
+                $imageCategorie = 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788726510/saveur221/images/bissap-boisson.jpg';
+            } elseif (str_contains($libelle, 'dessert') || str_contains($libelle, 'douceur') || str_contains($libelle, 'thiakry')) {
+                $imageCategorie = '/assets/img/maquettes/thiakry.jpg';
+            } elseif (str_contains($libelle, 'grill') || str_contains($libelle, 'dibiterie') || str_contains($libelle, 'dibi')) {
+                $imageCategorie = '/assets/img/maquettes/grillade.jpg';
+            } elseif (str_contains($libelle, 'pastel') || str_contains($libelle, 'entrée') || str_contains($libelle, 'entree')) {
+                $imageCategorie = '/assets/img/maquettes/boudieune.jpg';
+            }
+        }
+        ?>
         <a href="/catalogue?categorie=<?= $categorie->id ?>" class="group rounded-xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition duration-300">
             <div class="h-32 overflow-hidden">
-                <img src="<?= htmlspecialchars($images['categories'][$categorie->id] ?? $images['grillade']) ?>" alt=""
+                <img src="<?= htmlspecialchars($imageCategorie) ?>" alt="<?= htmlspecialchars($categorie->libelle) ?>"
                      class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
             </div>
             <div class="p-3">
@@ -103,6 +122,14 @@ $images = [
         </a>
         <?php endforeach; ?>
     </div>
+
+    <?php
+    // Pagination des categories (page_categories pour ne pas interferer avec d'autres pages)
+    $page = $pageCategories ?? 1;
+    $totalPages = $totalPagesCategories ?? 1;
+    $pageVar = 'page_categories';
+    include VIEW_PATH . '/partials/pagination.php';
+    ?>
 </section>
 
 <section id="incontournables" class="mb-14">
@@ -110,7 +137,7 @@ $images = [
     <h2 class="text-2xl font-extrabold mb-6">Plats Coup de Cœur de Dakar</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <?php foreach (array_slice($plats, 0, 4) as $plat): ?>
+        <?php foreach (array_slice($plats, 0, 5) as $plat): ?>
         <div class="group rounded-xl border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition duration-300">
             <div class="relative h-36 overflow-hidden">
                 <img src="<?= htmlspecialchars($plat->image ?: $images['thieboudienne']) ?>" alt="<?= htmlspecialchars($plat->libelle) ?>"
@@ -131,11 +158,16 @@ $images = [
                 <p class="text-xs text-gray-500 mb-3 line-clamp-2"><?= htmlspecialchars((string) $plat->description) ?></p>
                 <div class="flex items-center justify-between">
                     <span class="font-extrabold text-primary"><?= number_format($plat->prix, 0) ?> FCFA</span>
-                    <button
-                        onclick='ajouterAuPanier({ id: <?= $plat->id ?>, nom: <?= json_encode($plat->libelle) ?>, prix: <?= $plat->prix ?>, image: <?= json_encode($plat->image ?: "/assets/img/maquettes/ThieboudienneRouge.jpg") ?> })'
-                        class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">
-                        Commander
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <a href="/produits/<?= $plat->id ?>" class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition" title="Voir le détail">
+                            <i class="fa-regular fa-eye text-sm"></i>
+                        </a>
+                        <button
+                            onclick='ajouterAuPanier({ id: <?= $plat->id ?>, nom: <?= json_encode($plat->libelle) ?>, prix: <?= $plat->prix ?>, image: <?= json_encode($plat->image ?: "/assets/img/maquettes/ThieboudienneRouge.jpg") ?> })'
+                            class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">
+                            Commander
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

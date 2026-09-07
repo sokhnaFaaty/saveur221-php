@@ -2,6 +2,15 @@
 
 /** @var string $content */
 $user = $_SESSION['user'] ?? null;
+$chemin = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
+$baseChemin = $base ?? '';
+if ($baseChemin !== '' && str_starts_with($chemin, $baseChemin)) {
+    $chemin = substr($chemin, strlen($baseChemin));
+}
+$chemin = $chemin === '' ? '/' : $chemin;
+$accueilActive = $chemin === '/';
+$catalogueActive = str_starts_with($chemin, '/catalogue');
+$mesCommandesActive = str_starts_with($chemin, '/mes-commandes');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -20,9 +29,9 @@ $user = $_SESSION['user'] ?? null;
                 extend: {
                     colors: {
                         primary: {
-                            DEFAULT: '#B83518',
-                            dark: '#8f2913',
-                            light: '#FDEEE9'
+                            DEFAULT: '#A8291A',
+                            dark: '#8A2013',
+                            light: '#FBECEA'
                         },
                         bgdash: '#F0F6FF',
                     },
@@ -113,8 +122,11 @@ $user = $_SESSION['user'] ?? null;
                     Saveur <span class="text-primary">221</span>
                 </a>
                 <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
-                    <a href="/" class="hover:text-primary transition">Accueil</a>
-                    <a href="/catalogue" class="hover:text-primary transition">Catalogues & Menus</a>
+                    <a href="/" class="<?= $accueilActive ? 'text-primary underline underline-offset-8' : 'hover:text-primary transition' ?>">Accueil</a>
+                    <a href="/catalogue" class="<?= $catalogueActive ? 'text-primary underline underline-offset-8' : 'hover:text-primary transition' ?>">Catalogues &amp; Menus</a>
+                    <?php if ($user && $user['role'] === 'CLIENT'): ?>
+                        <a href="/mes-commandes" class="<?= $mesCommandesActive ? 'text-primary underline underline-offset-8' : 'hover:text-primary transition' ?>">Mes commandes</a>
+                    <?php endif; ?>
                 </nav>
                 <div class="flex items-center gap-3">
                     <?php if ($user && in_array($user['role'], ['GERANT', 'ADMIN'], true)): ?>
@@ -169,6 +181,9 @@ $user = $_SESSION['user'] ?? null;
                     <a href="/catalogue" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Notre carte &amp; menus</a>
                     <a href="/connexion" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Connexion</a>
                     <a href="/inscription" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Créer un compte</a>
+                    <?php if ($user && $user['role'] === 'CLIENT'): ?>
+<a href="/mes-commandes" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Mes commandes</a>
+<?php endif; ?>
                 </nav>
             </div>
             <div>

@@ -17,6 +17,7 @@ use App\Controllers\StockController;
 use App\Controllers\ClientController;
 use App\Controllers\StaffController;
 use App\Controllers\ProfilController;
+use App\Controllers\RecuController;
 use App\Controllers\StatistiqueController;
 
 
@@ -58,6 +59,7 @@ $router->post('/commandes/{id}/statut', [CommandeController::class, 'changerStat
 $router->post('/commandes/{id}/annuler', [CommandeController::class, 'annuler'], ['auth']);
 
 $router->get('/commandes/{id}/facture', [CommandeController::class, 'facture'], ['auth']);
+$router->get('/recus/{id}', [RecuController::class, 'show'], ['auth']);
 
 $router->get('/paiements', [PaiementController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/commandes/{commandeId}/paiements', [PaiementController::class, 'store'], ['auth', 'role:GERANT,ADMIN']);

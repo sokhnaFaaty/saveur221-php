@@ -18,3 +18,5 @@
 <?php endforeach; ?>
 <?php if ($avis === []): ?><p class="col-span-2 text-center text-gray-400 py-16">Aucun avis pour le moment.</p><?php endif; ?>
 </div>
+
+<?php include VIEW_PATH . '/partials/pagination.php'; ?>

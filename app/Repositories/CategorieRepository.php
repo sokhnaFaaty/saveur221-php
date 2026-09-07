@@ -41,15 +41,15 @@ class CategorieRepository implements CategorieRepositoryInterface
 
     public function create(array $data): Categorie
     {
-        $sql = 'INSERT INTO categories (libelle, description) VALUES (?, ?) RETURNING *';
-        $rows = Database::executeSelect($sql, [$data['libelle'], $data['description'] ?? null]);
+        $sql = 'INSERT INTO categories (libelle, description, image) VALUES (?, ?, ?) RETURNING *';
+        $rows = Database::executeSelect($sql, [$data['libelle'], $data['description'] ?? null, $data['image'] ?? null]);
         return Categorie::fromRow($rows[0]);
     }
 
     public function update(int $id, array $data): void
     {
-        $sql = 'UPDATE categories SET libelle = ?, description = ? WHERE id = ?';
-        Database::executeUpdate($sql, [$data['libelle'], $data['description'] ?? null, $id]);
+        $sql = 'UPDATE categories SET libelle = ?, description = ?, image = COALESCE(?, image) WHERE id = ?';
+        Database::executeUpdate($sql, [$data['libelle'], $data['description'] ?? null, $data['image'] ?? null, $id]);
     }
 
     public function delete(int $id): void
