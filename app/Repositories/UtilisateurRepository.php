@@ -44,6 +44,17 @@ public function update(int $id, array $data): void
         [$data['nom'], $data['prenom'], $data['email'], $data['telephone'], $data['role'], $id]);
 }
 
+public function updateProfil(int $id, string $nom, string $prenom, string $email, ?string $telephone, ?string $image): void
+{
+    Database::executeUpdate('UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, image = ? WHERE id = ?',
+        [$nom, $prenom, $email, $telephone, $image, $id]);
+}
+
+public function updateMotDePasse(int $id, string $motDePasse): void
+{
+    Database::executeUpdate('UPDATE utilisateurs SET mot_de_passe = ? WHERE id = ?', [$motDePasse, $id]);
+}
+
 public function updateStatut(int $id, bool $actif): void
 {
     Database::executeUpdate('UPDATE utilisateurs SET actif = ? WHERE id = ?', [$actif, $id]);

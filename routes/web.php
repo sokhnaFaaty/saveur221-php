@@ -74,3 +74,5 @@ $router->post('/staff', [StaffController::class, 'store'], ['auth', 'role:ADMIN'
 $router->post('/staff/{id}/toggle', [StaffController::class, 'toggle'], ['auth', 'role:ADMIN']);
 $router->post('/staff/{id}/delete', [StaffController::class, 'delete'], ['auth', 'role:ADMIN']);
 $router->get('/profil', [ProfilController::class, 'index'], ['auth']);
+$router->post('/profil', [ProfilController::class, 'update'], ['auth']);
+$router->post('/profil/mot-de-passe', [ProfilController::class, 'updatePassword'], ['auth']);

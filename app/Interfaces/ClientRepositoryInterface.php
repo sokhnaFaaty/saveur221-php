@@ -15,4 +15,5 @@ public function findAll(): array;
     public function findByTelephone(string $telephone): ?Client;
     public function create(array $data): Client;
     public function update(int $id, array $data): void;
+    public function updateMotDePasse(int $id, string $motDePasse): void;
 }

@@ -68,4 +68,9 @@ public function findAll(): array
             $id,
         ]);
     }
+
+    public function updateMotDePasse(int $id, string $motDePasse): void
+    {
+        Database::executeUpdate('UPDATE clients SET mot_de_passe = ? WHERE id = ?', [$motDePasse, $id]);
+    }
 }

@@ -13,6 +13,8 @@ interface UtilisateurRepositoryInterface
     public function findAll(): array;
     public function create(array $data): \App\Models\Utilisateur;
     public function update(int $id, array $data): void;
+    public function updateProfil(int $id, string $nom, string $prenom, string $email, ?string $telephone, ?string $image): void;
+    public function updateMotDePasse(int $id, string $motDePasse): void;
     public function updateStatut(int $id, bool $actif): void;
     public function delete(int $id): void;
 }

@@ -23,7 +23,7 @@ $role = $user['role'] ?? null;
 </head>
 <body class="font-sans bg-bgdash text-gray-800 flex min-h-screen">
 
-<aside class="w-64 bg-gray-950 text-gray-300 flex flex-col shrink-0">
+<aside class="hidden md:flex w-64 bg-gray-950 text-gray-300 flex-col shrink-0">
     <div class="p-6 border-b border-white/10">
         <div class="flex items-center gap-2 text-white font-extrabold text-lg">
             <span class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
@@ -71,10 +71,11 @@ $role = $user['role'] ?? null;
 </aside>
 
 <div class="flex-1 flex flex-col min-w-0">
+    <!-- Header mobile : coin superieur -->
     <header class="bg-gray-950 text-white px-8 py-4 flex items-center justify-between">
         <div>
             <h1 class="text-lg font-bold">Saveur <span class="text-primary">221</span></h1>
-            <p class="text-xs text-gray-400">SAVEURS AUTHENTIQUES DU SENEGAL</p>
+            <p class="text-xs text-gray-400 hidden md:block">SAVEURS AUTHENTIQUES DU SENEGAL</p>
         </div>
         <div class="flex items-center gap-5">
             <button id="btn-notifications" class="relative text-gray-300 hover:text-white transition">
@@ -93,7 +94,7 @@ $role = $user['role'] ?? null;
         </div>
     </header>
 
-    <main class="flex-1 p-8">
+    <main class="flex-1 p-4 md:p-8 pb-24 md:pb-8">
         <?php if ($flash = $_SESSION['flash'] ?? null): unset($_SESSION['flash']); ?>
             <div class="mb-6 px-4 py-3 rounded-lg text-sm font-semibold <?= $flash['type'] === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' ?>">
                 <?= htmlspecialchars($flash['message']) ?>
@@ -104,6 +105,54 @@ $role = $user['role'] ?? null;
     </main>
 </div>
 
-<script src="/assets/js/notifications.js"></script>
+<script src="/assets/js/notification.js"></script>
+
+<!-- Bottom Bar mobile (remplace le menu hamburger / la sidebar) -->
+<nav class="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 pb-[env(safe-area-inset-bottom)]">
+    <div class="flex items-center justify-between py-2">
+        <a href="/produits" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-gray-600 hover:text-primary transition">
+            <span class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center">
+                <i class="fa-solid fa-utensils"></i>
+            </span>
+            Menus / Commandes
+        </a>
+
+        <div class="relative">
+            <button id="btn-plus-mobile" onclick="basculerCentreControle()" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-gray-600 hover:text-primary transition">
+                <span class="-mt-6 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg ring-4 ring-primary-light">
+                    <i id="icone-plus-mobile" class="fa-solid fa-plus text-xl"></i>
+                </span>
+                <span class="text-primary font-bold">Plus</span>
+            </button>
+
+            <div id="centre-controle" class="hidden absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 space-y-1">
+                <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 px-2 pb-1">Centre de controle</p>
+                <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm font-semibold text-gray-700"><i class="fa-solid fa-table-cells w-4 text-primary"></i> Tableau de bord</a>
+                <a href="/stocks" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm font-semibold text-gray-700"><i class="fa-solid fa-boxes-stacked w-4 text-primary"></i> Gestion des stocks</a>
+                <a href="/commandes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm font-semibold text-gray-700"><i class="fa-solid fa-receipt w-4 text-primary"></i> Commandes en direct</a>
+                <?php if ($role === 'ADMIN'): ?>
+                <a href="/staff" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm font-semibold text-gray-700"><i class="fa-solid fa-user-group w-4 text-primary"></i> Equipe Staff</a>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <a href="/profil" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-primary transition">
+            <span class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center">
+                <i class="fa-solid fa-user-shield"></i>
+            </span>
+            Mon Profil & Securite
+        </a>
+    </div>
+</nav>
+
+<script>
+    function basculerCentreControle() {
+        const panneau = document.getElementById('centre-controle');
+        const icone = document.getElementById('icone-plus-mobile');
+        const ouvre = panneau.classList.toggle('hidden');
+        icone.classList.toggle('fa-xmark', !ouvre);
+        icone.classList.toggle('fa-plus', ouvre);
+    }
+</script>
 </body>
 </html>
