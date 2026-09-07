@@ -12,13 +12,16 @@
     <form method="get" action="/produits" class="flex-1 min-w-[240px] flex flex-wrap items-center gap-3">
         <input type="text" name="q" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>" placeholder="Rechercher un plat, ingrédient"
                class="flex-1 min-w-[180px] px-4 py-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-        <select name="categorie" onchange="this.form.submit()"
-                class="px-4 py-3 rounded-lg border border-gray-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary">
-            <option value="">Toutes les catégories</option>
-            <?php foreach ($categoriesProduits as $cat): ?>
-            <option value="<?= $cat->id ?>" <?= ($categorieId ?? null) === $cat->id ? 'selected' : '' ?>><?= htmlspecialchars($cat->libelle) ?></option>
-            <?php endforeach; ?>
-        </select>
+        <div class="relative">
+            <select name="categorie" onchange="this.form.submit()"
+                    class="appearance-none w-full min-w-[220px] px-4 py-3 pr-9 rounded-lg border border-gray-200 text-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer">
+                <option value="">Toutes les catégories</option>
+                <?php foreach ($categoriesProduits as $cat): ?>
+                <option value="<?= $cat->id ?>" <?= ($categorieId ?? null) === $cat->id ? 'selected' : '' ?>><?= htmlspecialchars($cat->libelle) ?></option>
+                <?php endforeach; ?>
+            </select>
+            <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+        </div>
         <button type="submit" class="px-4 py-3 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#B83518">
             <i class="fa-solid fa-magnifying-glass"></i> Filtrer
         </button>

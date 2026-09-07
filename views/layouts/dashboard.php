@@ -72,7 +72,7 @@ $role = $user['role'] ?? null;
             '<a href="%s" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition %s">
                 <i class="fa-solid %s w-4"></i> %s
             </a>',
-            $href, $estActif($href) ? 'bg-primary text-white' : 'hover:bg-white/5 hover:text-white',
+            $href, $estActif($href) ? 'bg-[#B83518] text-white shadow-sm' : 'hover:bg-white/5 hover:text-white',
             $icone, $label
         );
         echo $lien('/dashboard', 'fa-table-cells', 'Tableau de Bord');
@@ -91,7 +91,7 @@ $role = $user['role'] ?? null;
         ?>
     </nav>
 
-    <div class="p-3 border-t border-white/10 space-y-1 text-sm font-semibold">
+    <div class="p-4 pb-6 border-t border-white/10 space-y-1.5 text-sm font-semibold">
         <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-amber-400 hover:bg-white/5 transition">
             <i class="fa-solid fa-globe w-4"></i> Voir le site public
         </a>
@@ -104,22 +104,19 @@ $role = $user['role'] ?? null;
 <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
     <!-- Header mobile : coin superieur -->
     <header class="bg-gray-950 text-white px-8 py-4 flex items-center justify-between">
-        <div>
-            <h1 class="text-lg font-bold">Saveur <span class="text-primary">221</span></h1>
-            <p class="text-xs text-gray-400 hidden md:block">SAVEURS AUTHENTIQUES DU SÉNÉGAL</p>
-        </div>
-        <div class="flex items-center gap-3">
+        <h1 class="text-lg font-bold">Saveur <span class="text-primary">221</span></h1>
+        <div class="flex items-center gap-3.5">
             <?php $avatar = $user['image'] ?? ''; ?>
-            <div class="w-10 h-10 rounded-full overflow-hidden bg-primary flex items-center justify-center shrink-0">
+            <div class="w-10 h-10 rounded-full overflow-hidden bg-[#B83518] flex items-center justify-center shrink-0">
                 <?php if ($avatar !== ''): ?>
                     <img src="<?= htmlspecialchars($avatar) ?>" alt="Avatar" class="w-full h-full object-cover">
                 <?php else: ?>
                     <i class="fa-solid fa-user text-white text-sm"></i>
                 <?php endif; ?>
             </div>
-            <div class="text-right">
-                <p class="text-sm font-semibold leading-tight"><?= htmlspecialchars(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')) ?></p>
-                <p class="text-xs text-gray-400 leading-tight"><?= htmlspecialchars($user['email'] ?? '') ?></p>
+            <div class="flex flex-col justify-center leading-tight">
+                <p class="text-sm font-semibold"><?= htmlspecialchars(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')) ?></p>
+                <p class="text-[11px] text-gray-400"><?= htmlspecialchars($role === 'GERANT' ? 'Gérant' : ($role === 'ADMIN' ? 'Administrateur' : ($role ?? ''))) ?></p>
             </div>
         </div>
     </header>
