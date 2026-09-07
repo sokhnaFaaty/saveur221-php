@@ -21,5 +21,12 @@ abstract class Controller
     {
         return $_POST[$key] ?? $_GET[$key] ?? $default;
     }
+
+    // Retourne une valeur numerique, ou $defaut si absente/vide/non numerique (jamais de required)
+    protected function valeurNumerique(string $key, mixed $defaut = 0): mixed
+    {
+        $v = $this->value($key);
+        return (is_numeric($v) && $v !== '') ? $v : $defaut;
+    }
     
 }

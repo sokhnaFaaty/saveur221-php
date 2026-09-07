@@ -2,6 +2,15 @@
 
 /** @var string $content */
 $user = $_SESSION['user'] ?? null;
+$chemin = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
+$baseChemin = $base ?? '';
+if ($baseChemin !== '' && str_starts_with($chemin, $baseChemin)) {
+    $chemin = substr($chemin, strlen($baseChemin));
+}
+$chemin = $chemin === '' ? '/' : $chemin;
+$accueilActive = $chemin === '/';
+$catalogueActive = str_starts_with($chemin, '/catalogue');
+$mesCommandesActive = str_starts_with($chemin, '/mes-commandes');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -20,9 +29,9 @@ $user = $_SESSION['user'] ?? null;
                 extend: {
                     colors: {
                         primary: {
-                            DEFAULT: '#B83518',
-                            dark: '#8f2913',
-                            light: '#FDEEE9'
+                            DEFAULT: '#A8291A',
+                            dark: '#8A2013',
+                            light: '#FBECEA'
                         },
                         bgdash: '#F0F6FF',
                     },
@@ -74,6 +83,32 @@ $user = $_SESSION['user'] ?? null;
 
 <script src="/assets/js/panier.js"></script>
 
+<div id="modal-confirmation" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6">
+        <div class="flex items-start gap-3 mb-4">
+            <span class="w-10 h-10 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                <i class="fa-regular fa-trash-can"></i>
+            </span>
+            <div>
+                <h3 data-titre class="font-bold"></h3>
+                <p class="text-xs text-gray-400">Attention: cette action necessite votre confirmation</p>
+            </div>
+        </div>
+        <p data-message class="text-sm text-gray-600 mb-3"></p>
+        <div class="bg-gray-50 rounded-lg px-3 py-2 mb-5 text-sm">
+            <p class="text-xs text-gray-400 font-bold">ELEMENT CIBLE</p>
+            <p data-cible class="font-semibold"></p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button type="button" onclick="fermerConfirmation()" class="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold hover:bg-gray-50 transition">Annuler</button>
+            <form method="post" class="flex-1">
+                <button type="submit" class="w-full py-2.5 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition">Supprimer</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/assets/js/confirm-modal.js"></script>
+
 <body class="font-sans text-gray-800 bg-white">
 
     <div class="max-w-7xl mx-auto px-6 pt-20">
@@ -87,13 +122,16 @@ $user = $_SESSION['user'] ?? null;
                     Saveur <span class="text-primary">221</span>
                 </a>
                 <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
-                    <a href="/" class="hover:text-primary transition">Accueil</a>
-                    <a href="/produits" class="hover:text-primary transition">Catalogues & Menus</a>
+                    <a href="/" class="<?= $accueilActive ? 'text-primary underline underline-offset-8' : 'hover:text-primary transition' ?>">Accueil</a>
+                    <a href="/catalogue" class="<?= $catalogueActive ? 'text-primary underline underline-offset-8' : 'hover:text-primary transition' ?>">Catalogues &amp; Menus</a>
+                    <?php if ($user && $user['role'] === 'CLIENT'): ?>
+                        <a href="/mes-commandes" class="<?= $mesCommandesActive ? 'text-primary underline underline-offset-8' : 'hover:text-primary transition' ?>">Mes commandes</a>
+                    <?php endif; ?>
                 </nav>
                 <div class="flex items-center gap-3">
                     <?php if ($user && in_array($user['role'], ['GERANT', 'ADMIN'], true)): ?>
-                        <a href="/produits" class="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition flex items-center gap-2">
-                            <i class="fa-solid fa-table-cells"></i> Espace <?= $user['role'] === 'ADMIN' ? 'Admin' : 'Gerant' ?>
+                        <a href="/dashboard" class="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition flex items-center gap-2">
+                            <i class="fa-solid fa-table-cells"></i> Espace <?= $user['role'] === 'ADMIN' ? 'Admin' : 'Gérant' ?>
                         </a>
                     <?php endif; ?>
                     <?php if ($user && $user['role'] === 'CLIENT'): ?>
@@ -105,11 +143,11 @@ $user = $_SESSION['user'] ?? null;
                     <?php if ($user): ?>
                         <span class="text-sm font-semibold hidden sm:inline"><?= htmlspecialchars($user['prenom']) ?></span>
                         <a href="/deconnexion" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold hover:border-primary hover:text-primary transition flex items-center gap-2">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Deconnexion
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
                         </a>
                     <?php else: ?>
                         <a href="/connexion" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold hover:border-primary hover:text-primary transition">Connexion</a>
-                        <a href="/inscription" class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition">Creer un compte</a>
+                        <a href="/inscription" class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition">Créer un compte</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -133,24 +171,27 @@ $user = $_SESSION['user'] ?? null;
                     </span>
                     Saveur <span class="text-primary">221</span>
                 </div>
-                <p class="text-sm mb-3">La haute gastronomie senegalaise preparee avec passion. Ingredients frais locaux, cuisson au feu de bois.</p>
+                <p class="text-sm mb-3">La haute gastronomie sénégalaise préparée avec passion. Ingrédients frais locaux, cuisson au feu de bois.</p>
                 <a href="/inscription" class="text-sm font-semibold text-primary hover:underline">Devenir client</a>
             </div>
             <div>
                 <h4 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Navigation</h4>
                 <nav class="space-y-2.5 text-sm">
                     <a href="/" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Accueil</a>
-                    <a href="/produits" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Notre carte &amp; menus</a>
+                    <a href="/catalogue" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Notre carte &amp; menus</a>
                     <a href="/connexion" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Connexion</a>
-                    <a href="/inscription" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Creer un compte</a>
+                    <a href="/inscription" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Créer un compte</a>
+                    <?php if ($user && $user['role'] === 'CLIENT'): ?>
+<a href="/mes-commandes" class="flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-angle-right text-primary text-xs"></i> Mes commandes</a>
+<?php endif; ?>
                 </nav>
             </div>
             <div>
                 <h4 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Acces direct</h4>
                 <ul class="space-y-2.5 text-sm">
-                    <li class="flex items-start gap-2.5"><i class="fa-solid fa-location-dot text-primary mt-0.5"></i> Route des Almadies, Dakar, Senegal</li>
+                    <li class="flex items-start gap-2.5"><i class="fa-solid fa-location-dot text-primary mt-0.5"></i> Route des Almadies, Dakar, Sénégal</li>
                     <li class="flex items-start gap-2.5"><i class="fa-solid fa-phone text-primary mt-0.5"></i> +221 78 540 55 93</li>
-                    <li class="flex items-start gap-2.5"><i class="fa-solid fa-clock text-primary mt-0.5"></i> Ouvert 7j/7 de 11h30 a 23h30</li>
+                    <li class="flex items-start gap-2.5"><i class="fa-solid fa-clock text-primary mt-0.5"></i> Ouvert 7j/7 de 11h30 à 23h30</li>
                 </ul>
                 <h5 class="text-xs font-bold uppercase tracking-widest text-gray-500 mt-5 mb-2">Modalité</h5>
                 <p class="text-sm">Commande en ligne&nbsp;: retrait au comptoir ou livraison.</p>

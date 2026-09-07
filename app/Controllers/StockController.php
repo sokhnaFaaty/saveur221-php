@@ -14,9 +14,12 @@ class StockController extends Controller
 
     public function index(): string
     {
+        $pagination = paginer($this->produitService->listerProduits(), (int) $this->value('page', 1));
         return View::render('stocks/index', [
             'title' => 'Gestion & Reapprovisionnement des Stocks',
-            'produits' => $this->produitService->listerProduits(),
+            'produits' => $pagination['items'],
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
         ], 'layouts/dashboard');
     }
 

@@ -14,13 +14,17 @@ class CategorieController extends Controller
 
     public function index(): string
     {
-        if (hasRole('GERANT') || hasRole('ADMIN')) {
         $terme = trim((string) $this->value('q', ''));
-        $categories = $terme === '' ? $this->categorieService->listerCategories() : $this->categorieService->rechercherCategorie($terme);
-        return View::render('categories/gestion', ['title' => 'Categories du Menu', 'categories' => $categories], 'layouts/dashboard');
-    }
+        $toutes = $terme === '' ? $this->categorieService->listerCategories() : $this->categorieService->rechercherCategorie($terme);
+        $pagination = paginer($toutes, (int) $this->value('page', 1));
 
-    return View::render('categories/liste-publique', ['title' => 'Categories', 'categories' => $this->categorieService->listerCategories()], 'layouts/public');
+        return View::render('categories/gestion', [
+            'title' => 'Categories du Menu',
+            'categories' => $pagination['items'],
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'vue' => $this->value('vue', 'cartes'),
+        ], 'layouts/dashboard');
     }
 
     public function store(): never
@@ -44,8 +48,11 @@ class CategorieController extends Controller
 
 public function edit(int $id): string
 {
-    $categorie = $this->categorieService->listerCategories();
-    $categorie = current(array_filter($categorie, fn ($c) => $c->id === $id)) ?: null;
+    $categorie = current(array_filter($this->categorieService->listerCategories(), fn ($c) => $c->id === $id));
+    if ($categorie === false) {
+        http_response_code(404);
+        return View::render('errors/404', ['title' => 'Categorie introuvable'], 'layouts/dashboard');
+    }
     return View::render('categories/form', ['title' => 'Modifier', 'categorie' => $categorie], 'layouts/dashboard');
 }
 

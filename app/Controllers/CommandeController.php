@@ -12,8 +12,9 @@ class CommandeController extends Controller
 {
     public function __construct(
         private CommandeService $commandeService,
-            private \App\Interfaces\FactureRepositoryInterface $factures,
-
+        private \App\Interfaces\FactureRepositoryInterface $factures,
+        private \App\Interfaces\PaiementRepositoryInterface $paiements,
+        private \App\Interfaces\AvisRepositoryInterface $avis,
     ) {}
 
     // Client : passe une commande a partir du panier (JSON envoye par le JS)
@@ -33,15 +34,27 @@ class CommandeController extends Controller
     // Client : historique de ses commandes
     public function mesCommandes(): string
     {
-        $commandes = $this->commandeService->listerMesCommandes((int) $_SESSION['user']['id']);
-        return View::render('commandes/mes-commandes', ['title' => 'Mes commandes', 'commandes' => $commandes], null);
+        $clientId = (int) $_SESSION['user']['id'];
+        $commandes = $this->commandeService->listerMesCommandes($clientId);
+        $paiementsParCommande = [];
+        $avisParCommande = [];
+        foreach ($commandes as $commande) {
+            $paiementsParCommande[$commande->id] = $this->paiements->findByCommande($commande->id);
+            $avisParCommande[$commande->id] = $this->avis->findByCommande($commande->id);
+        }
+        return View::render('commandes/mes-commandes', [
+            'title' => 'Mes commandes',
+            'commandes' => $commandes,
+            'paiementsParCommande' => $paiementsParCommande,
+            'avisParCommande' => $avisParCommande,
+        ], 'layouts/public');
     }
 
     public function show(int $id): string
     {
         try {
             $commande = $this->commandeService->consulterCommande($id);
-            return View::render('commandes/show', ['title' => $commande->numCommande, 'commande' => $commande], null);
+            return View::render('commandes/show', ['title' => $commande->numCommande, 'commande' => $commande], 'layouts/public');
         } catch (AppException $e) {
             http_response_code(404);
             return View::render('errors/404', ['title' => 'Commande introuvable'], null);
@@ -51,12 +64,18 @@ class CommandeController extends Controller
     // GERANT/ADMIN : toutes les commandes
     public function index(): string
     {
-       $statutFiltre = $this->value('statut');
-    $commandes = $statutFiltre ? $this->commandeService->listerParStatut((string) $statutFiltre) : $this->commandeService->listerCommandes();
+        $statutFiltre = $this->value('statut');
+        $toutes = $statutFiltre ? $this->commandeService->listerParStatut((string) $statutFiltre) : $this->commandeService->listerCommandes();
+        $pagination = paginer($toutes, (int) $this->value('page', 1));
 
-    return View::render('commandes/gestion', [
-        'title' => 'Gestion des Commandes Clients', 'commandes' => $commandes, 'statutFiltre' => $statutFiltre,
-    ], 'layouts/dashboard');
+        return View::render('commandes/gestion', [
+            'title' => 'Gestion des Commandes Clients',
+            'commandes' => $pagination['items'],
+            'statutFiltre' => $statutFiltre,
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'vue' => $this->value('vue', 'cartes'),
+        ], 'layouts/dashboard');
     }
 
     public function changerStatut(int $id): never
@@ -90,6 +109,6 @@ class CommandeController extends Controller
         'title'    => $facture?->numero ?? 'Facture',
         'commande' => $commande,
         'facture'  => $facture,
-    ], null);
+    ], 'layouts/public');
 }
 }

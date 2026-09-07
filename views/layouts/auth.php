@@ -34,15 +34,13 @@ $title = $title ?? '';
 <body class="font-sans h-screen bg-primary text-gray-800 flex">
 
     <aside class="relative hidden lg:flex flex-col w-[30%] shrink-0 h-screen overflow-hidden">
-        <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725699/saveur221/images/grillade-dibiterie.jpg')"></div>
-        <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
-
-        <a href="/" class="relative z-20 inline-flex items-center gap-2 text-white font-extrabold text-xl px-10 py-8">
-            <span class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <i class="fa-solid fa-utensils text-white text-sm"></i>
-            </span>
-            Saveur <span class="text-primary">221</span>
-        </a>
+       
+      <a href="/" class="relative z-20 inline-flex items-center gap-2 text-white font-extrabold text-xl px-10 py-8">
+        <span class="w-10 h-10 bg-white/15 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-utensils text-white text-sm"></i>
+        </span>
+        Saveur <span class="text-white">221</span>
+    </a>
 
         <div class="relative z-10 flex-1 flex items-center px-6">
             <div class="relative w-[340px] h-[400px]">
@@ -64,7 +62,7 @@ $title = $title ?? '';
             </div>
         </div>
 
-        <p class="relative z-10 text-white text-sm text-center font-semibold px-6 py-8">La teranga a votre service.</p>
+        <p class="relative z-10 text-white text-sm text-center font-semibold px-6 py-8">La teranga à votre service.</p>
     </aside>
 
     <main class="relative flex-1 h-screen flex flex-col items-center px-6 py-6 overflow-y-auto">

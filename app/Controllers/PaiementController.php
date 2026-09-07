@@ -15,9 +15,17 @@ class PaiementController extends Controller
     // GERANT/ADMIN : la caisse
     public function index(): string
     {
-         return View::render('paiements/gestion', [
-        'title' => 'Caisse & Reglements', 'paiements' => $this->paiementService->listerTousLesPaiements(),
-    ], 'layouts/dashboard');
+        $tous = $this->paiementService->listerTousLesPaiements();
+        $pagination = paginer($tous, (int) $this->value('page', 1));
+        return View::render('paiements/gestion', [
+            'title' => 'Caisse & Reglements',
+            'paiements' => $pagination['items'],
+            'total' => array_sum(array_map(fn ($p) => $p->montant, $tous)),
+            'totalTransactions' => count($tous),
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'vue' => $this->value('vue', 'tableau'),
+        ], 'layouts/dashboard');
     }
 
     public function store(int $commandeId): never

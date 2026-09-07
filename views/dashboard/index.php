@@ -26,7 +26,7 @@ $user = $_SESSION['user'];
 <div class="grid lg:grid-cols-3 gap-6">
     <div class="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm">
         <div class="flex items-center justify-between mb-4">
-            <h2 class="font-bold">Dernieres Commandes Clients</h2>
+            <h2 class="font-bold">Dernières Commandes Clients</h2>
             <a href="/commandes" class="text-primary text-sm font-semibold hover:underline">Gerer toutes les commandes</a>
         </div>
         <?php foreach ($dernieresCommandes as $commande): ?>

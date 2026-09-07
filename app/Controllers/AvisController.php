@@ -25,13 +25,19 @@ class AvisController extends Controller
         } catch (AppException $e) {
             flash('error', $e->getMessage());
         }
-        View::redirect('/commandes/' . $commandeId);
+        View::redirect('/mes-commandes');
     }
 
     // ADMIN : moderation
     public function index(): string
     {
-        return View::render('avis/index', ['title' => 'Moderation des avis', 'avis' => $this->avisService->listerTous()], 'layouts/dashboard');
+        $pagination = paginer($this->avisService->listerTous(), (int) $this->value('page', 1));
+        return View::render('avis/index', [
+            'title' => 'Moderation des avis',
+            'avis' => $pagination['items'],
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+        ], 'layouts/dashboard');
     }
 
     public function delete(int $id): never

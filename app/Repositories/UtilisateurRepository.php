@@ -55,10 +55,11 @@ public function updateMotDePasse(int $id, string $motDePasse): void
     Database::executeUpdate('UPDATE utilisateurs SET mot_de_passe = ? WHERE id = ?', [$motDePasse, $id]);
 }
 
-public function updateStatut(int $id, bool $actif): void
-{
-    Database::executeUpdate('UPDATE utilisateurs SET actif = ? WHERE id = ?', [$actif, $id]);
-}
+    public function updateStatut(int $id, bool $actif): void
+    {
+        $actif = (int) (bool) $actif;
+        Database::executeUpdate('UPDATE utilisateurs SET actif = ? WHERE id = ?', [$actif, $id]);
+    }
 
 public function delete(int $id): void
 {

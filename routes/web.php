@@ -17,12 +17,16 @@ use App\Controllers\StockController;
 use App\Controllers\ClientController;
 use App\Controllers\StaffController;
 use App\Controllers\ProfilController;
+use App\Controllers\RecuController;
+use App\Controllers\StatistiqueController;
 
 
 
 
 
 $router->get('/', [HomeController::class, 'index']);
+
+$router->get('/catalogue', [ProduitController::class, 'indexPublic']);
 
 $router->get('/connexion', [AuthController::class, 'showLogin']);
 $router->post('/connexion', [AuthController::class, 'login']);
@@ -35,6 +39,7 @@ $router->get('/dashboard', [DashboardController::class, 'index'], ['auth', 'role
 $router->get('/categories', [CategorieController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/categories', [CategorieController::class, 'store'], ['auth', 'role:GERANT,ADMIN']);
 $router->get('/categories/creer', [CategorieController::class, 'create'], ['auth', 'role:GERANT,ADMIN']);
+$router->get('/categories/{id}/modifier', [CategorieController::class, 'edit'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/categories/{id}/update', [CategorieController::class, 'update'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/categories/{id}/delete', [CategorieController::class, 'delete'], ['auth', 'role:GERANT,ADMIN']);
 
@@ -42,7 +47,8 @@ $router->get('/produits', [ProduitController::class, 'index']);
 $router->get('/produits/{id}', [ProduitController::class, 'show']);
 $router->post('/produits', [ProduitController::class, 'store'], ['auth', 'role:GERANT,ADMIN']);
 $router->get('/produits/creer', [ProduitController::class, 'create'], ['auth', 'role:GERANT,ADMIN']);
-$router->get('/produits/{id}/update', [ProduitController::class, 'update'], ['auth', 'role:GERANT,ADMIN']);
+$router->get('/produits/{id}/modifier', [ProduitController::class, 'modifier'], ['auth', 'role:GERANT,ADMIN']);
+$router->post('/produits/{id}/update', [ProduitController::class, 'update'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/produits/{id}/delete', [ProduitController::class, 'delete'], ['auth', 'role:GERANT,ADMIN']);
 
 $router->post('/commandes', [CommandeController::class, 'store'], ['auth', 'role:CLIENT']);
@@ -53,6 +59,7 @@ $router->post('/commandes/{id}/statut', [CommandeController::class, 'changerStat
 $router->post('/commandes/{id}/annuler', [CommandeController::class, 'annuler'], ['auth']);
 
 $router->get('/commandes/{id}/facture', [CommandeController::class, 'facture'], ['auth']);
+$router->get('/recus/{id}', [RecuController::class, 'show'], ['auth']);
 
 $router->get('/paiements', [PaiementController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/commandes/{commandeId}/paiements', [PaiementController::class, 'store'], ['auth', 'role:GERANT,ADMIN']);
@@ -76,3 +83,5 @@ $router->post('/staff/{id}/delete', [StaffController::class, 'delete'], ['auth',
 $router->get('/profil', [ProfilController::class, 'index'], ['auth']);
 $router->post('/profil', [ProfilController::class, 'update'], ['auth']);
 $router->post('/profil/mot-de-passe', [ProfilController::class, 'updatePassword'], ['auth']);
+
+$router->get('/statistiques', [StatistiqueController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);

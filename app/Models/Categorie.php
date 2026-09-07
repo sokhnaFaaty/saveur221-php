@@ -10,6 +10,7 @@ class Categorie
         public readonly int $id,
         public readonly string $libelle,
         public readonly ?string $description,
+        public readonly ?string $image,
     ) {}
 
     public static function fromRow(object $row): self
@@ -18,6 +19,7 @@ class Categorie
             id: (int) $row->id,
             libelle: $row->libelle,
             description: $row->description,
+            image: $row->image ?? null,
         );
     }
 }

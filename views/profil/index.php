@@ -30,7 +30,7 @@ $adresse   = $profil && method_exists($profil, 'adresse') ? $profil->adresse : '
         <div class="space-y-3 text-sm">
             <div class="grid sm:grid-cols-2 gap-3">
                 <div>
-                    <label for="prenom" class="block font-semibold mb-1">Prenom <span class="text-primary">*</span></label>
+                    <label for="prenom" class="block font-semibold mb-1">Prénom <span class="text-primary">*</span></label>
                     <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars((string) ($profil?->prenom ?? '')) ?>"
                            class="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                 </div>
@@ -54,24 +54,24 @@ $adresse   = $profil && method_exists($profil, 'adresse') ? $profil->adresse : '
             </div>
 
             <div>
-                <label for="telephone" class="block font-semibold mb-1">Telephone <span class="text-primary">*</span></label>
+                <label for="telephone" class="block font-semibold mb-1">Téléphone <span class="text-primary">*</span></label>
                 <input type="tel" id="telephone" name="telephone" value="<?= htmlspecialchars((string) $telephone) ?>"
                        class="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
             </div>
 
-            <div class="bg-primary-light rounded-lg px-3 py-2">
-                <p class="text-xs text-gray-500">ROLE ATTRIBUE</p>
-                <p class="font-bold text-primary"><?= htmlspecialchars($role) ?></p>
+            <div class="bg-primary-light rounded-lg px-3 py-2" style="background-color:#FDEEE9">
+                <p class="text-xs text-primary font-bold uppercase tracking-wider" style="color:#B83518">Rôle attribué</p>
+                <p class="font-extrabold text-lg text-primary" style="color:#B83518"><?= htmlspecialchars($role !== '' ? $role : 'CLIENT') ?></p>
             </div>
 
-            <button type="submit" class="w-full py-2.5 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
+            <button type="submit" class="w-full py-2.5 rounded-lg text-white font-semibold transition shadow-sm" style="background-color:#B83518">
                 Enregistrer les modifications
             </button>
         </div>
     </form>
 
     <form method="post" action="/profil/mot-de-passe" class="bg-white rounded-xl p-6 shadow-sm h-full">
-        <h2 class="font-bold mb-5"><i class="fa-solid fa-lock text-primary"></i> Securite & Mot de Passe</h2>
+        <h2 class="font-bold mb-5"><i class="fa-solid fa-lock text-primary"></i> Sécurité & Mot de Passe</h2>
         <div class="space-y-3 text-sm">
             <div>
                 <label for="ancien_mot_de_passe" class="block font-semibold mb-1">Ancien mot de passe <span class="text-primary">*</span></label>
@@ -81,7 +81,7 @@ $adresse   = $profil && method_exists($profil, 'adresse') ? $profil->adresse : '
             <div>
                 <label for="nouveau_mot_de_passe" class="block font-semibold mb-1">Nouveau mot de passe <span class="text-primary">*</span></label>
                 <input type="password" id="nouveau_mot_de_passe" name="nouveau_mot_de_passe" minlength="6" autocomplete="new-password"
-                       placeholder="Au moins 6 caracteres"
+                       placeholder="Au moins 6 caractères"
                        class="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
             </div>
             <div>
@@ -90,7 +90,7 @@ $adresse   = $profil && method_exists($profil, 'adresse') ? $profil->adresse : '
                        class="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
             </div>
             <button type="submit" class="w-full py-2.5 rounded-lg bg-gray-900 text-white font-semibold hover:bg-gray-800 transition">
-                Mettre a jour le mot de passe
+                Mettre à jour le mot de passe
             </button>
         </div>
     </form>

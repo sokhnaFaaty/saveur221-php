@@ -12,11 +12,11 @@
         <p class="text-sm text-gray-600 italic mb-4">"<?= htmlspecialchars((string) $a->commentaire) ?>"</p>
         <div class="flex items-center justify-between pt-3 border-t border-gray-50">
             <span class="text-xs text-gray-400">ID: <?= $a->id ?></span>
-            <form method="post" action="/avis/<?= $a->id ?>/delete" onsubmit="return confirm('Supprimer cet avis ?')">
-                <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
-            </form>
+            <button type="button" onclick='demanderConfirmation({titre:"Supprimer cet avis",message:"Cette opération est irréversible.",cible:<?= json_encode($a->clientPrenom . ' ' . $a->clientNom) ?>,actionUrl:"/avis/<?= $a->id ?>/delete"})' class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
         </div>
     </div>
 <?php endforeach; ?>
 <?php if ($avis === []): ?><p class="col-span-2 text-center text-gray-400 py-16">Aucun avis pour le moment.</p><?php endif; ?>
 </div>
+
+<?php include VIEW_PATH . '/partials/pagination.php'; ?>

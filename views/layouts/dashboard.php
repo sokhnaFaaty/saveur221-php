@@ -26,7 +26,33 @@ $role = $user['role'] ?? null;
         *::-webkit-scrollbar { width: 0; height: 0; display: none; }
     </style>
 </head>
-<body class="font-sans bg-bgdash text-gray-800 flex min-h-screen">
+
+<div id="modal-confirmation" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6">
+        <div class="flex items-start gap-3 mb-4">
+            <span class="w-10 h-10 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                <i class="fa-regular fa-trash-can"></i>
+            </span>
+            <div>
+                <h3 data-titre class="font-bold"></h3>
+                <p class="text-xs text-gray-400">Attention : cette action nécessite votre confirmation</p>
+            </div>
+        </div>
+        <p data-message class="text-sm text-gray-600 mb-3"></p>
+        <div class="bg-gray-50 rounded-lg px-3 py-2 mb-5 text-sm">
+            <p class="text-xs text-gray-400 font-bold">ÉLÉMENT CIBLÉ</p>
+            <p data-cible class="font-semibold"></p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button type="button" onclick="fermerConfirmation()" class="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold hover:bg-gray-50 transition">Annuler</button>
+            <form method="post" class="flex-1">
+                <button type="submit" class="w-full py-2.5 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition">Supprimer</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/assets/js/confirm-modal.js"></script>
+<body class="font-sans bg-[#F0F6FF] text-gray-800 flex h-screen overflow-hidden">
 
 <aside class="hidden md:flex w-64 bg-gray-950 text-gray-300 flex-col shrink-0">
     <div class="p-6 border-b border-white/10">
@@ -38,67 +64,64 @@ $role = $user['role'] ?? null;
         </div>
     </div>
 
-    <nav class="flex-1 py-4 px-3 space-y-1 text-sm font-semibold">
+    <nav class="flex-1 min-h-0 py-4 px-3 space-y-1 text-sm font-semibold overflow-y-auto">
         <?php
+        $cheminActuel = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $estActif = fn (string $href) => $cheminActuel === $href || str_starts_with($cheminActuel, $href . '/');
         $lien = fn (string $href, string $icone, string $label) => sprintf(
             '<a href="%s" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition %s">
                 <i class="fa-solid %s w-4"></i> %s
             </a>',
-            $href, str_contains($_SERVER['REQUEST_URI'], $href) && $href !== '/'
-                ? 'bg-primary text-white'
-                : 'hover:bg-white/5 hover:text-white',
+            $href, $estActif($href) ? 'bg-[#B83518] text-white shadow-sm' : 'hover:bg-white/5 hover:text-white',
             $icone, $label
         );
         echo $lien('/dashboard', 'fa-table-cells', 'Tableau de Bord');
         echo $lien('/commandes', 'fa-receipt', 'Commandes en direct');
         echo $lien('/produits', 'fa-utensils', 'Plats & Menus');
-        echo $lien('/categories', 'fa-layer-group', 'Categories');
+        echo $lien('/categories', 'fa-layer-group', 'Catégories');
         echo $lien('/stocks', 'fa-boxes-stacked', 'Gestion des Stocks');
-        echo $lien('/paiements', 'fa-credit-card', 'Caisse & Reglements');
+        echo $lien('/paiements', 'fa-credit-card', 'Caisse & Règlements');
         echo $lien('/statistiques', 'fa-chart-line', 'Rapports & Statistiques');
         if ($role === 'ADMIN'):
             echo $lien('/clients', 'fa-users', 'Clients');
             echo $lien('/avis', 'fa-star', 'Avis');
-            echo $lien('/staff', 'fa-user-group', 'Equipe Staff');
+            echo $lien('/staff', 'fa-user-group', 'Équipe Staff');
         endif;
-        echo $lien('/profil', 'fa-user', 'Mon Profil & Securite');
+        echo $lien('/profil', 'fa-user', 'Mon Profil & Sécurité');
         ?>
     </nav>
 
-    <div class="p-3 border-t border-white/10 space-y-1 text-sm font-semibold">
+    <div class="p-4 pb-6 border-t border-white/10 space-y-1.5 text-sm font-semibold">
         <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-amber-400 hover:bg-white/5 transition">
             <i class="fa-solid fa-globe w-4"></i> Voir le site public
         </a>
         <a href="/deconnexion" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-400 hover:bg-white/5 transition">
-            <i class="fa-solid fa-arrow-right-from-bracket w-4"></i> Deconnexion
+            <i class="fa-solid fa-arrow-right-from-bracket w-4"></i> Déconnexion
         </a>
     </div>
 </aside>
 
-<div class="flex-1 flex flex-col min-w-0">
+<div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
     <!-- Header mobile : coin superieur -->
     <header class="bg-gray-950 text-white px-8 py-4 flex items-center justify-between">
-        <div>
-            <h1 class="text-lg font-bold">Saveur <span class="text-primary">221</span></h1>
-            <p class="text-xs text-gray-400 hidden md:block">SAVEURS AUTHENTIQUES DU SENEGAL</p>
-        </div>
-        <div class="flex items-center gap-3">
+        <h1 class="text-lg font-bold">Saveur <span class="text-primary">221</span></h1>
+        <div class="flex items-center gap-3.5">
             <?php $avatar = $user['image'] ?? ''; ?>
-            <div class="w-10 h-10 rounded-full overflow-hidden bg-primary flex items-center justify-center shrink-0">
+            <div class="w-10 h-10 rounded-full overflow-hidden bg-[#B83518] flex items-center justify-center shrink-0">
                 <?php if ($avatar !== ''): ?>
                     <img src="<?= htmlspecialchars($avatar) ?>" alt="Avatar" class="w-full h-full object-cover">
                 <?php else: ?>
                     <i class="fa-solid fa-user text-white text-sm"></i>
                 <?php endif; ?>
             </div>
-            <div class="text-right">
-                <p class="text-sm font-semibold leading-tight"><?= htmlspecialchars(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')) ?></p>
-                <p class="text-xs text-gray-400 leading-tight"><?= htmlspecialchars($user['email'] ?? '') ?></p>
+            <div class="flex flex-col justify-center leading-tight">
+                <p class="text-sm font-semibold"><?= htmlspecialchars(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')) ?></p>
+                <p class="text-[11px] text-gray-400"><?= htmlspecialchars($role === 'GERANT' ? 'Gérant' : ($role === 'ADMIN' ? 'Administrateur' : ($role ?? ''))) ?></p>
             </div>
         </div>
     </header>
 
-    <main class="flex-1 p-4 md:p-8 pb-24 md:pb-8">
+    <main class="flex-1 min-h-0 p-4 md:p-8 pb-24 md:pb-8 overflow-y-auto">
         <?php if ($flash = $_SESSION['flash'] ?? null): unset($_SESSION['flash']); ?>
             <div class="mb-6 px-4 py-3 rounded-lg text-sm font-semibold <?= $flash['type'] === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' ?>">
                 <?= htmlspecialchars($flash['message']) ?>
@@ -114,7 +137,7 @@ $role = $user['role'] ?? null;
 <!-- Bottom Bar mobile (remplace le menu hamburger / la sidebar) -->
 <nav class="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 pb-[env(safe-area-inset-bottom)]">
     <div class="flex items-center justify-between py-2">
-        <a href="/produits" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-gray-600 hover:text-primary transition">
+        <a href="/produits" class="flex flex-col items-center gap-1 text-[11px] font-semibold <?= $estActif('/produits') ? 'text-primary' : 'text-gray-600 hover:text-primary' ?> transition">
             <span class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center">
                 <i class="fa-solid fa-utensils"></i>
             </span>
@@ -130,21 +153,21 @@ $role = $user['role'] ?? null;
             </button>
 
             <div id="centre-controle" class="hidden absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 space-y-1">
-                <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 px-2 pb-1">Centre de controle</p>
-                <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm font-semibold text-gray-700"><i class="fa-solid fa-table-cells w-4 text-primary"></i> Tableau de bord</a>
-                <a href="/stocks" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm font-semibold text-gray-700"><i class="fa-solid fa-boxes-stacked w-4 text-primary"></i> Gestion des stocks</a>
-                <a href="/commandes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm font-semibold text-gray-700"><i class="fa-solid fa-receipt w-4 text-primary"></i> Commandes en direct</a>
+                <p class="text-[11px] font-bold uppercase tracking-wider text-gray-400 px-2 pb-1">Centre de contrôle</p>
+                <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold <?= $estActif('/dashboard') ? 'bg-primary-light text-primary' : 'text-gray-700 hover:bg-gray-50' ?>"><i class="fa-solid fa-table-cells w-4 text-primary"></i> Tableau de bord</a>
+                <a href="/stocks" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold <?= $estActif('/stocks') ? 'bg-primary-light text-primary' : 'text-gray-700 hover:bg-gray-50' ?>"><i class="fa-solid fa-boxes-stacked w-4 text-primary"></i> Gestion des stocks</a>
+                <a href="/commandes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold <?= $estActif('/commandes') ? 'bg-primary-light text-primary' : 'text-gray-700 hover:bg-gray-50' ?>"><i class="fa-solid fa-receipt w-4 text-primary"></i> Commandes en direct</a>
                 <?php if ($role === 'ADMIN'): ?>
-                <a href="/staff" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-sm font-semibold text-gray-700"><i class="fa-solid fa-user-group w-4 text-primary"></i> Equipe Staff</a>
+                <a href="/staff" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold <?= $estActif('/staff') ? 'bg-primary-light text-primary' : 'text-gray-700 hover:bg-gray-50' ?>"><i class="fa-solid fa-user-group w-4 text-primary"></i> Équipe Staff</a>
                 <?php endif; ?>
             </div>
         </div>
 
-        <a href="/profil" class="flex flex-col items-center gap-1 text-[11px] font-semibold text-primary transition">
+        <a href="/profil" class="flex flex-col items-center gap-1 text-[11px] font-semibold <?= $estActif('/profil') ? 'text-primary' : 'text-gray-600 hover:text-primary' ?> transition">
             <span class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center">
                 <i class="fa-solid fa-user-shield"></i>
             </span>
-            Mon Profil & Securite
+            Mon Profil & Sécurité
         </a>
     </div>
 </nav>

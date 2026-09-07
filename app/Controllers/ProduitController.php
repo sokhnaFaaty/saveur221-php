@@ -18,51 +18,55 @@ class ProduitController extends Controller
 
     ) {}
 
-    // Public : visiteur, client, ou staff - tout le monde peut consulter le catalogue
+    // Prive : GERANT/ADMIN uniquement (route /produits protegee par le role)
     public function index(): string
     {
-    //     $terme = trim((string) $this->value('q', ''));
-    //     $categorieId = $this->value('categorie');
-    // $categorieId = ($categorieId !== null && $categorieId !== '') ? (int) $categorieId : null;
-    // $dispoUniquement = $this->value('dispo') === 'disponibles';
-
-    // if ($terme !== '') {
-    //     $produits = $this->produitService->rechercherProduit($terme);
-    // } elseif ($categorieId !== null) {
-    //     $produits = $this->produitService->listerParCategorie($categorieId);
-    // } else {
-    //     $produits = $this->produitService->listerProduits();
-    // }
-
-    // if ($dispoUniquement) {
-    //     $produits = array_values(array_filter($produits, fn ($p) => $p->disponible()));
-    // }
-
-    // return View::render('produits/index', [
-    //     'title'       => 'Notre carte & menus',
-    //     'produits'    => $produits,
-    //     'categories'  => $this->categorieService->listerCategories(),
-    //     'categorieId' => $categorieId,
-    //     'terme'       => $terme,
-    //     'dispo'       => $this->value('dispo', 'tous'),
-    // ], 'layouts/public');
- if (hasRole('GERANT') || hasRole('ADMIN')) {
         $terme = trim((string) $this->value('q', ''));
-        $produits = $terme === '' ? $this->produitService->listerProduits() : $this->produitService->rechercherProduit($terme);
-        return View::render('produits/gestion', ['title' => 'Gestion des Menus & Plats', 'produits' => $produits], 'layouts/dashboard');
+        $categorie = $this->value('categorie');
+        $categorieId = ($categorie !== null && $categorie !== '') ? (int) $categorie : null;
+
+        if ($terme !== '') {
+            $produits = $this->produitService->rechercherProduit($terme);
+        } elseif ($categorieId !== null) {
+            $produits = $this->produitService->listerParCategorie($categorieId);
+        } else {
+            $produits = $this->produitService->listerProduits();
+        }
+
+        if ($categorieId !== null && $terme !== '') {
+            $produits = array_values(array_filter($produits, fn ($p) => $p->categorieId === $categorieId));
+        }
+
+        $pagination = paginer($produits, (int) $this->value('page', 1));
+        return View::render('produits/gestion', [
+            'title' => 'Gestion des Menus & Plats',
+            'produits' => $pagination['items'],
+            'categoriesProduits' => $this->categorieService->listerCategories(),
+            'categorieId' => $categorieId,
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'vue' => $this->value('vue', 'tableau'),
+        ], 'layouts/dashboard');
     }
 
-    $terme = trim((string) $this->value('q', ''));
-    $categorieId = $this->value('categorie');
-    $categorieId = ($categorieId !== null && $categorieId !== '') ? (int) $categorieId : null;
-    $produits = $terme !== '' ? $this->produitService->rechercherProduit($terme)
-        : ($categorieId !== null ? $this->produitService->listerParCategorie($categorieId) : $this->produitService->listerProduits());
+    // Public : toujours la vue catalogue, quel que soit le role connecte
+    public function indexPublic(): string
+    {
+        return $this->renderCataloguePublic();
+    }
 
-    return View::render('produits/index', [
-        'title' => 'Notre carte & menus', 'produits' => $produits,
-        'categories' => $this->categorieService->listerCategories(), 'categorieId' => $categorieId, 'terme' => $terme,
-    ], 'layouts/public');
-    
+    private function renderCataloguePublic(): string
+    {
+        $terme = trim((string) $this->value('q', ''));
+        $categorieId = $this->value('categorie');
+        $categorieId = ($categorieId !== null && $categorieId !== '') ? (int) $categorieId : null;
+        $produits = $terme !== '' ? $this->produitService->rechercherProduit($terme)
+            : ($categorieId !== null ? $this->produitService->listerParCategorie($categorieId) : $this->produitService->listerProduits());
+
+        return View::render('produits/index', [
+            'title' => 'Notre carte & menus', 'produits' => $produits,
+            'categories' => $this->categorieService->listerCategories(), 'categorieId' => $categorieId, 'terme' => $terme,
+        ], 'layouts/public');
     }
 
 
@@ -90,16 +94,24 @@ class ProduitController extends Controller
     public function store(): never
     {
         try {
-            $imageUrl = $this->uploads->upload($_FILES['image'] ?? []);
+            $imageUrl = null;
+            $fichier = $_FILES['image_file'] ?? [];
+            $lien = trim((string) $this->value('image_url', ''));
+            if (($fichier['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
+                $imageUrl = $this->uploads->upload($fichier);
+            } elseif ($lien !== '') {
+                $imageUrl = $lien;
+            }
+
             $this->produitService->ajouterProduit([
                 'libelle'           => $this->value('libelle'),
                 'description'       => $this->value('description'),
-                'prix'              => $this->value('prix'),
-                'quantite_stock'    => $this->value('quantite_stock'),
-                'categorie_id'      => $this->value('categorie_id'),
-                'seuil_alerte'      => $this->value('seuil_alerte', 5),
-                'temps_preparation' => $this->value('temps_preparation', 0),
-                'calories'          => $this->value('calories', 0),
+                'prix'              => $this->valeurNumerique('prix', 0),
+                'quantite_stock'    => $this->valeurNumerique('quantite_stock', 0),
+                'categorie_id'      => $this->valeurNumerique('categorie_id', 0),
+                'seuil_alerte'      => $this->valeurNumerique('seuil_alerte', 5),
+                'temps_preparation' => $this->valeurNumerique('temps_preparation', 0),
+                'calories'          => $this->valeurNumerique('calories', 0),
                 'image'             => $imageUrl,
             ]);
             flash('success', 'Produit ajoute avec succes.');
@@ -114,21 +126,45 @@ class ProduitController extends Controller
     return View::render('produits/form', ['title' => 'Nouveau plat', 'produit' => null, 'categories' => $this->categorieService->listerCategories()], 'layouts/dashboard');
 }
 
+    public function modifier(int $id): string
+    {
+        try {
+            $produit = $this->produitService->consulterProduit($id);
+            return View::render('produits/form', [
+                'title' => 'Modifier un plat',
+                'produit' => $produit,
+                'categories' => $this->categorieService->listerCategories(),
+            ], 'layouts/dashboard');
+        } catch (AppException $e) {
+            http_response_code(404);
+            return View::render('errors/404', ['title' => 'Produit introuvable'], 'layouts/dashboard');
+        }
+    }
+
         public function update(int $id): never
     {
         try {
-            $imageUrl = $this->uploads->upload($_FILES['image'] ?? []);
+            $imageUrl = null;
+            $fichier = $_FILES['image_file'] ?? [];
+            $lien = trim((string) $this->value('image_url', ''));
+            if (($fichier['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
+                $imageUrl = $this->uploads->upload($fichier);
+            } elseif ($lien !== '') {
+                $imageUrl = $lien;
+            }
+
             $data = [
                 'libelle'           => $this->value('libelle'),
                 'description'       => $this->value('description'),
-                'prix'              => $this->value('prix'),
-                'categorie_id'      => $this->value('categorie_id'),
-                'seuil_alerte'      => $this->value('seuil_alerte', 5),
-                'temps_preparation' => $this->value('temps_preparation', 0),
-                'calories'          => $this->value('calories', 0),
+                'prix'              => $this->valeurNumerique('prix', 0),
+                'quantite_stock'    => $this->valeurNumerique('quantite_stock', 0),
+                'categorie_id'      => $this->valeurNumerique('categorie_id', 0),
+                'seuil_alerte'      => $this->valeurNumerique('seuil_alerte', 5),
+                'temps_preparation' => $this->valeurNumerique('temps_preparation', 0),
+                'calories'          => $this->valeurNumerique('calories', 0),
             ];
             if ($imageUrl !== null) {
-                $data['image'] = $imageUrl; // remplace seulement si une nouvelle image a ete envoyee
+                $data['image'] = $imageUrl; // remplace seulement si une image a ete fournie
             }
             $this->produitService->modifierProduit($id, $data);
             flash('success', 'Produit modifie avec succes.');

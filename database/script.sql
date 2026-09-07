@@ -148,6 +148,18 @@ CREATE TABLE notifications (
     lue BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+-- ============================================================
+-- 11. REMEMBER TOKENS ("Se souvenir de moi" sur la page de login)
+-- ============================================================
+CREATE TABLE remember_tokens (
+    id SERIAL PRIMARY KEY,
+    user_type VARCHAR(20) NOT NULL CHECK (user_type IN ('CLIENT', 'UTILISATEUR')),
+    user_id INTEGER NOT NULL,
+    token_hash VARCHAR(64) NOT NULL UNIQUE,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
 -- ============================================================
 -- DONNEES DE TEST (2 utilisateurs pour tester la connexion Java)
 -- Mots de passe en clair : admin123 / gerant123 (deja hashes en SHA-256)
@@ -177,5 +189,5 @@ ALTER TABLE paiements ADD COLUMN moyen VARCHAR(20) NOT NULL DEFAULT 'ESPECES'
     CHECK (moyen IN ('WAVE', 'ORANGE_MONEY', 'ESPECES'));
     
 INSERT INTO clients (nom, prenom, telephone, adresse, email, mot_de_passe)
-VALUES ('Ndiaye', 'Aminata', '771111111', 'Almadies, Dakar', 'aminata@test.sn',
+VALUES ('Ndiaye', 'Aminata', '771111111', 'Almadies, Dakar', 'aminatandiaye@gmail.com',
 '$2b$10$Tm22tPNarZLIDbUX7PukROubKzhe7Gv4.9PpkQwFS6CyAMvAK8y8K');

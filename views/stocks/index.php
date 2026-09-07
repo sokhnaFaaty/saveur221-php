@@ -26,3 +26,5 @@
     </div>
     <?php endforeach; ?>
 </div>
+
+<?php include VIEW_PATH . '/partials/pagination.php'; ?>
