@@ -41,7 +41,7 @@ class StaffController extends Controller
 
     public function toggle(int $id): never
     {
-        $actif = $this->value('actif') === '1';
+        $actif = $this->value('actif') === '1' || $this->value('actif', '0') === true;
         $this->utilisateurService->activerDesactiver($id, $actif);
         flash('success', $actif ? 'Compte active.' : 'Compte desactive.');
         View::redirect('/staff');
