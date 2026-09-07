@@ -25,4 +25,32 @@ class UtilisateurRepository implements UtilisateurRepositoryInterface
         $rows = Database::executeSelect($sql, [$email]);
         return $rows === [] ? null : Utilisateur::fromRow($rows[0]);
     }
+    public function findAll(): array
+{
+    return array_map(Utilisateur::fromRow(...), Database::executeSelect('SELECT * FROM utilisateurs WHERE deleted_at IS NULL ORDER BY nom'));
+}
+
+public function create(array $data): Utilisateur
+{
+    $sql = 'INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, telephone, role, actif)
+            VALUES (?, ?, ?, ?, ?, ?, true) RETURNING id';
+    $rows = Database::executeSelect($sql, [$data['nom'], $data['prenom'], $data['email'], $data['mot_de_passe'], $data['telephone'], $data['role']]);
+    return $this->findById((int) $rows[0]->id);
+}
+
+public function update(int $id, array $data): void
+{
+    Database::executeUpdate('UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, role = ? WHERE id = ?',
+        [$data['nom'], $data['prenom'], $data['email'], $data['telephone'], $data['role'], $id]);
+}
+
+public function updateStatut(int $id, bool $actif): void
+{
+    Database::executeUpdate('UPDATE utilisateurs SET actif = ? WHERE id = ?', [$actif, $id]);
+}
+
+public function delete(int $id): void
+{
+    Database::executeUpdate('UPDATE utilisateurs SET deleted_at = NOW() WHERE id = ?', [$id]);
+}
 }
