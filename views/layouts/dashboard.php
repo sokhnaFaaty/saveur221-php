@@ -16,10 +16,15 @@ $role = $user['role'] ?? null;
         tailwind.config = {
             theme: { extend: {
                 colors: { primary: { DEFAULT: '#B83518', dark: '#8f2913', light: '#FDEEE9' }, bgdash: '#F0F6FF' },
-                fontFamily: { sans: ['Open Sans', 'sans-serif'] },
-            } },
+            fontFamily: { sans: ['Open Sans', 'sans-serif'] },
+            } } },
         };
     </script>
+    <style>
+        /* Masque toutes les scrollbars (page + blocs internes) tout en gardant le scroll */
+        * { scrollbar-width: none; -ms-overflow-style: none; }
+        *::-webkit-scrollbar { width: 0; height: 0; display: none; }
+    </style>
 </head>
 <body class="font-sans bg-bgdash text-gray-800 flex min-h-screen">
 
@@ -39,10 +44,10 @@ $role = $user['role'] ?? null;
             '<a href="%s" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition %s">
                 <i class="fa-solid %s w-4"></i> %s
             </a>',
-            $href, $icone, str_contains($_SERVER['REQUEST_URI'], $href) && $href !== '/'
+            $href, str_contains($_SERVER['REQUEST_URI'], $href) && $href !== '/'
                 ? 'bg-primary text-white'
                 : 'hover:bg-white/5 hover:text-white',
-            $label
+            $icone, $label
         );
         echo $lien('/dashboard', 'fa-table-cells', 'Tableau de Bord');
         echo $lien('/commandes', 'fa-receipt', 'Commandes en direct');
@@ -77,19 +82,18 @@ $role = $user['role'] ?? null;
             <h1 class="text-lg font-bold">Saveur <span class="text-primary">221</span></h1>
             <p class="text-xs text-gray-400 hidden md:block">SAVEURS AUTHENTIQUES DU SENEGAL</p>
         </div>
-        <div class="flex items-center gap-5">
-            <button id="btn-notifications" class="relative text-gray-300 hover:text-white transition">
-                <i class="fa-solid fa-bell text-lg"></i>
-                <span id="badge-notifications" class="hidden absolute -top-1.5 -right-1.5 bg-primary text-[10px] w-4 h-4 rounded-full flex items-center justify-center"></span>
-            </button>
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center font-bold text-sm">
-                    <?= htmlspecialchars(mb_substr($user['prenom'] ?? '?', 0, 1)) ?>
-                </div>
-                <div class="hidden sm:block">
-                    <p class="text-sm font-semibold leading-none"><?= htmlspecialchars(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')) ?></p>
-                    <p class="text-xs text-gray-400"><?= htmlspecialchars($user['email'] ?? '') ?></p>
-                </div>
+        <div class="flex items-center gap-3">
+            <?php $avatar = $user['image'] ?? ''; ?>
+            <div class="w-10 h-10 rounded-full overflow-hidden bg-primary flex items-center justify-center shrink-0">
+                <?php if ($avatar !== ''): ?>
+                    <img src="<?= htmlspecialchars($avatar) ?>" alt="Avatar" class="w-full h-full object-cover">
+                <?php else: ?>
+                    <i class="fa-solid fa-user text-white text-sm"></i>
+                <?php endif; ?>
+            </div>
+            <div class="text-right">
+                <p class="text-sm font-semibold leading-tight"><?= htmlspecialchars(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')) ?></p>
+                <p class="text-xs text-gray-400 leading-tight"><?= htmlspecialchars($user['email'] ?? '') ?></p>
             </div>
         </div>
     </header>

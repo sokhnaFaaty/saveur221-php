@@ -33,6 +33,11 @@ $user = $_SESSION['user'] ?? null;
             },
         };
     </script>
+    <style>
+        /* Masque toutes les scrollbars (page + blocs internes) tout en gardant le scroll */
+        * { scrollbar-width: none; -ms-overflow-style: none; }
+        *::-webkit-scrollbar { width: 0; height: 0; display: none; }
+    </style>
 </head>
 <div id="overlay-panier" onclick="fermerPanier()" class="hidden fixed inset-0 bg-black/40 z-40"></div>
 

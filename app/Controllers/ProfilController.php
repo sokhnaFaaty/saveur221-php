@@ -36,6 +36,7 @@ class ProfilController extends Controller
                 'prenom'    => (string) $this->value('prenom', ''),
                 'email'     => (string) $this->value('email', ''),
                 'telephone' => (string) $this->value('telephone', ''),
+                'adresse'   => (string) $this->value('adresse', ''),
             ], $imageUrl);
 
             flash('success', 'Profil mis a jour avec succes.');
