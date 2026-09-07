@@ -31,7 +31,7 @@ class AvisController extends Controller
     // ADMIN : moderation
     public function index(): string
     {
-        return View::render('avis/index', ['title' => 'Moderation des avis', 'avis' => $this->avisService->listerTous()], null);
+        return View::render('avis/index', ['title' => 'Moderation des avis', 'avis' => $this->avisService->listerTous()], 'layouts/dashboard');
     }
 
     public function delete(int $id): never

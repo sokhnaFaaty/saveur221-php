@@ -43,10 +43,10 @@
 
     <?php if (hasRole('GERANT') || hasRole('ADMIN')): ?>
     <form method="post" action="/produits" enctype="multipart/form-data" class="bg-gray-50 border border-gray-100 rounded-xl p-5 mb-8 flex flex-wrap gap-3 items-end">
-        <input type="text" name="libelle" placeholder="Nom du plat" required class="px-3 py-2 rounded-lg border border-gray-200 text-sm">
-        <input type="text" name="prix" placeholder="Prix" required class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-28">
-        <input type="text" name="quantite_stock" placeholder="Stock" required class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-24">
-        <input type="text" name="categorie_id" placeholder="ID categorie" required class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-32">
+        <input type="text" name="libelle" placeholder="Nom du plat" class="px-3 py-2 rounded-lg border border-gray-200 text-sm">
+        <input type="text" name="prix" placeholder="Prix" class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-28">
+        <input type="text" name="quantite_stock" placeholder="Stock" class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-24">
+        <input type="text" name="categorie_id" placeholder="ID categorie" class="px-3 py-2 rounded-lg border border-gray-200 text-sm w-32">
         <input type="file" name="image" accept="image/png,image/jpeg,image/webp" class="text-sm">
         <button type="submit" class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition">Ajouter</button>
     </form>
@@ -56,7 +56,7 @@
         <?php foreach ($produits as $plat): ?>
         <div class="group rounded-xl border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition duration-300">
             <div class="relative h-36 overflow-hidden">
-                <img src="<?= htmlspecialchars($plat->image ?? '/assets/img/produits/thiebou.jpg') ?>" alt="<?= htmlspecialchars($plat->libelle) ?>"
+                <img src="<?= htmlspecialchars($plat->image ?: '/assets/img/maquettes/ThieboudienneRouge.jpg') ?>" alt="<?= htmlspecialchars($plat->libelle) ?>"
                      class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                 <span class="absolute top-2 left-2 bg-white text-[11px] font-bold px-2 py-1 rounded">
                     <?= htmlspecialchars((string) $plat->categorieLibelle) ?>
@@ -79,7 +79,11 @@
                             <i class="fa-regular fa-eye text-sm"></i>
                         </a>
                         <?php if ($plat->disponible()): ?>
-                        <a href="/produits/<?= $plat->id ?>" class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">Commander</a>
+                        <button
+                            onclick='ajouterAuPanier({ id: <?= $plat->id ?>, nom: <?= json_encode($plat->libelle) ?>, prix: <?= $plat->prix ?>, image: <?= json_encode($plat->image ?: "/assets/img/maquettes/ThieboudienneRouge.jpg") ?> })'
+                            class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">
+                            Commander
+                        </button>
                         <?php if (hasRole('GERANT') || hasRole('ADMIN')): ?>
                         <form method="post" action="/produits/<?= $plat->id ?>/delete" onsubmit="return confirm('Supprimer ?')">
                             <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition">

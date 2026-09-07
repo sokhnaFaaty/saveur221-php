@@ -8,9 +8,12 @@ use App\Models\Client;
 
 interface ClientRepositoryInterface
 {
+    /** @return \App\Models\Client[] */
+public function findAll(): array;
     public function findById(int $id): ?Client;
     public function findByEmail(string $email): ?Client;
     public function findByTelephone(string $telephone): ?Client;
     public function create(array $data): Client;
     public function update(int $id, array $data): void;
+    public function updateMotDePasse(int $id, string $motDePasse): void;
 }

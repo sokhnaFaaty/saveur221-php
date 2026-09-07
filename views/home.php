@@ -122,15 +122,20 @@ $images = [
                     <?= $plat->disponible() ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' ?>">
                     <?= $plat->disponible() ? 'En stock' : 'Epuise' ?>
                 </span>
+                <span class="absolute bottom-2 left-2 bg-black/60 text-white text-[11px] px-2 py-0.5 rounded flex items-center gap-1">
+    <i class="fa-regular fa-clock"></i> <?= $plat->tempsPreparation ?? '?' ?> mn
+</span>
             </div>
             <div class="p-4">
                 <h3 class="font-bold text-sm mb-1"><?= htmlspecialchars($plat->libelle) ?></h3>
                 <p class="text-xs text-gray-500 mb-3 line-clamp-2"><?= htmlspecialchars((string) $plat->description) ?></p>
                 <div class="flex items-center justify-between">
                     <span class="font-extrabold text-primary"><?= number_format($plat->prix, 0) ?> FCFA</span>
-                    <a href="/produits/<?= $plat->id ?>" class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">
+                    <button
+                        onclick='ajouterAuPanier({ id: <?= $plat->id ?>, nom: <?= json_encode($plat->libelle) ?>, prix: <?= $plat->prix ?>, image: <?= json_encode($plat->image ?: "/assets/img/maquettes/ThieboudienneRouge.jpg") ?> })'
+                        class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">
                         Commander
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>

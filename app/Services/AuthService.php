@@ -22,6 +22,10 @@ class AuthService
 
     public function authentifier(string $identifiant, string $motDePasse, bool $seSouvenir = false): array
     {
+        if (!Validator::estRempli($identifiant) || !Validator::estRempli($motDePasse)) {
+            throw new AuthException('Email et mot de passe obligatoires.');
+        }
+
         $identifiant = (string) preg_replace('/\s+/', '', $identifiant);
         $client = $this->clients->findByEmail($identifiant);
         if ($client === null && !str_contains($identifiant, '@')) {
@@ -35,7 +39,7 @@ class AuthService
 
             return $this->connecter('CLIENT', $client->id, [
                 'id' => $client->id, 'nom' => $client->nom, 'prenom' => $client->prenom,
-                'email' => $client->email, 'role' => 'CLIENT',
+                'email' => $client->email, 'role' => 'CLIENT', 'image' => $client->image,
             ], $seSouvenir);
         }
 
@@ -51,7 +55,7 @@ class AuthService
 
             return $this->connecter('UTILISATEUR', $utilisateur->id, [
                 'id' => $utilisateur->id, 'nom' => $utilisateur->nom, 'prenom' => $utilisateur->prenom,
-                'email' => $utilisateur->email, 'role' => $utilisateur->role,
+                'email' => $utilisateur->email, 'role' => $utilisateur->role, 'image' => $utilisateur->image,
             ], $seSouvenir);
         }
 
@@ -83,7 +87,7 @@ class AuthService
                 return false;
             }
             $_SESSION['user'] = ['id' => $client->id, 'nom' => $client->nom, 'prenom' => $client->prenom,
-                'email' => $client->email, 'role' => 'CLIENT'];
+                'email' => $client->email, 'role' => 'CLIENT', 'image' => $client->image];
             return true;
         }
 
@@ -92,7 +96,7 @@ class AuthService
             return false;
         }
         $_SESSION['user'] = ['id' => $utilisateur->id, 'nom' => $utilisateur->nom, 'prenom' => $utilisateur->prenom,
-            'email' => $utilisateur->email, 'role' => $utilisateur->role];
+            'email' => $utilisateur->email, 'role' => $utilisateur->role, 'image' => $utilisateur->image];
         return true;
     }
 

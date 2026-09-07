@@ -17,7 +17,7 @@
                 <label for="nom_complet" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
                     Nom complet <span class="text-primary">*</span>
                 </label>
-                <input type="text" id="nom_complet" name="nom_complet" required placeholder="Ex: Aminata Ndiaye"
+                <input type="text" id="nom_complet" name="nom_complet" placeholder="Ex: Aminata Ndiaye"
                        class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm placeholder-gray-400
                               focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
             </div>
@@ -26,7 +26,7 @@
                 <label for="telephone" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
                     Telephone <span class="font-normal normal-case">(221)</span> <span class="text-primary">*</span>
                 </label>
-                <input type="tel" id="telephone" name="telephone" required autocomplete="tel" placeholder="Ex: 77 645 22 10"
+                <input type="tel" id="telephone" name="telephone" autocomplete="tel" placeholder="Ex: 77 645 22 10"
                        class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm placeholder-gray-400
                               focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
             </div>
@@ -35,7 +35,7 @@
                 <label for="email" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
                     Adresse email <span class="text-primary">*</span>
                 </label>
-                <input type="email" id="email" name="email" required autocomplete="email" placeholder="Ex: aminata.ndiaye@gmail.com"
+                <input type="email" id="email" name="email" autocomplete="email" placeholder="Ex: aminata.ndiaye@gmail.com"
                        class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm placeholder-gray-400
                               focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
             </div>
@@ -44,7 +44,7 @@
                 <label for="quartier_de_livraison" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
                     Quartier de livraison <span class="text-primary">*</span>
                 </label>
-                <select id="quartier_de_livraison" name="quartier_de_livraison" required
+                <select id="quartier_de_livraison" name="quartier_de_livraison"
                         class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm bg-white
                                focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                     <option value="Almadies" selected>Almadies</option>
@@ -80,8 +80,8 @@
                 <label for="mot_de_passe" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
                     Mot de passe <span class="text-primary">*</span>
                 </label>
-                <input type="password" id="mot_de_passe" name="mot_de_passe" required minlength="8"
-                       autocomplete="new-password" placeholder="Au moins 8 caracteres"
+                <input type="password" id="mot_de_passe" name="mot_de_passe" minlength="6"
+                       autocomplete="new-password" placeholder="Au moins 6 caracteres"
                        class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm placeholder-gray-400
                               focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
             </div>
@@ -90,7 +90,7 @@
                 <label for="confirmation" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
                     Confirmer le mot de passe <span class="text-primary">*</span>
                 </label>
-                <input type="password" id="confirmation" name="confirmation" required minlength="8"
+                <input type="password" id="confirmation" name="confirmation" minlength="8"
                        autocomplete="new-password" placeholder="Repeter le mot de passe"
                        class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm placeholder-gray-400
                               focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">

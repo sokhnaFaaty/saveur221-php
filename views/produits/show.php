@@ -9,7 +9,7 @@
 
     <div class="grid md:grid-cols-2 gap-10 bg-white border border-gray-100 rounded-2xl shadow-sm p-6">
         <div class="rounded-xl overflow-hidden h-80">
-            <img src="<?= htmlspecialchars($produit->image ?? '/assets/img/produits/thiebou.jpg') ?>" alt="<?= htmlspecialchars($produit->libelle) ?>"
+            <img src="<?= htmlspecialchars($produit->image ?: '/assets/img/maquettes/ThieboudienneRouge.jpg') ?>" alt="<?= htmlspecialchars($produit->libelle) ?>"
                  class="w-full h-full object-cover">
         </div>
 
@@ -30,7 +30,9 @@
             <div class="flex items-center justify-between border-t border-gray-100 pt-6">
                 <span class="text-3xl font-extrabold text-primary"><?= number_format($produit->prix, 0) ?> FCFA</span>
                 <?php if ($produit->disponible()): ?>
-                <button class="px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
+                <button
+                    onclick='ajouterAuPanier({ id: <?= $produit->id ?>, nom: <?= json_encode($produit->libelle) ?>, prix: <?= $produit->prix ?>, image: <?= json_encode($produit->image ?: "/assets/img/maquettes/ThieboudienneRouge.jpg") ?> })'
+                    class="px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
                     Ajouter au panier
                 </button>
                 <?php else: ?>
@@ -47,7 +49,7 @@
             <?php foreach ($suggestions as $s): ?>
             <a href="/produits/<?= $s->id ?>" class="group rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition">
                 <div class="h-28 overflow-hidden">
-                    <img src="<?= htmlspecialchars($s->image ?? '/assets/img/produits/thiebou.jpg') ?>" alt=""
+                    <img src="<?= htmlspecialchars($s->image ?: '/assets/img/maquettes/ThieboudienneRouge.jpg') ?>" alt=""
                          class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                 </div>
                 <div class="p-3">

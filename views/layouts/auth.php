@@ -25,6 +25,11 @@ $title = $title ?? '';
             },
         };
     </script>
+    <style>
+        /* Masque toutes les scrollbars (page + blocs internes) tout en gardant le scroll */
+        * { scrollbar-width: none; -ms-overflow-style: none; }
+        *::-webkit-scrollbar { width: 0; height: 0; display: none; }
+    </style>
 </head>
 <body class="font-sans h-screen bg-primary text-gray-800 flex">
 

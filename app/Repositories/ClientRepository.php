@@ -11,7 +11,11 @@ use Core\Database;
 class ClientRepository implements ClientRepositoryInterface
 {
     private const NON_SUPPRIME = ' AND deleted_at IS NULL';
-
+public function findAll(): array
+{
+    $sql = 'SELECT * FROM clients WHERE deleted_at IS NULL ORDER BY nom';
+    return array_map(Client::fromRow(...), Database::executeSelect($sql));
+}
     public function findById(int $id): ?Client
     {
         $sql = 'SELECT * FROM clients WHERE id = ?' . self::NON_SUPPRIME;
@@ -63,5 +67,10 @@ class ClientRepository implements ClientRepositoryInterface
             $data['image'] ?? null,
             $id,
         ]);
+    }
+
+    public function updateMotDePasse(int $id, string $motDePasse): void
+    {
+        Database::executeUpdate('UPDATE clients SET mot_de_passe = ? WHERE id = ?', [$motDePasse, $id]);
     }
 }

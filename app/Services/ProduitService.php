@@ -68,8 +68,12 @@ class ProduitService
         $this->produits->delete($id);
     }
 
-    public function approvisionner(int $id, int $quantite): void
+    public function approvisionner(int $id, mixed $quantiteBrute): void
     {
+        if (!Validator::estRempli((string) $quantiteBrute) || !Validator::estNumerique($quantiteBrute)) {
+            throw new ValidationException('La quantite est obligatoire et doit etre un nombre.');
+        }
+        $quantite = (int) $quantiteBrute;
         if ($quantite <= 0) {
             throw new ValidationException('La quantite doit etre positive.');
         }
