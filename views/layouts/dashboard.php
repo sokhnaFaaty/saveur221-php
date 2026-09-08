@@ -109,6 +109,22 @@ $role = $user['role'] ?? null;
     <header class="bg-gray-950 text-white px-8 py-4 flex items-center justify-between">
         <h1 class="text-lg font-bold">Saveur <span class="text-primary">221</span></h1>
         <div class="flex items-center gap-3.5">
+            <!-- Cloche de notifications -->
+            <div class="relative">
+                <button type="button" id="btn-notifications" onclick="basculerNotifications()" class="relative w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 transition flex items-center justify-center" aria-label="Notifications">
+                    <i class="fa-regular fa-bell text-white text-base"></i>
+                    <span id="badge-notifications" class="hidden absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center"></span>
+                </button>
+
+                <div id="panneau-notifications" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                        <p class="text-sm font-bold text-gray-900">Notifications</p>
+                        <span id="nb-notifications-lues" class="text-[11px] text-gray-400"></span>
+                    </div>
+                    <div id="liste-notifications" class="max-h-80 overflow-y-auto"></div>
+                </div>
+            </div>
+
             <?php $avatar = $user['image'] ?? ''; ?>
             <div class="w-10 h-10 rounded-full overflow-hidden bg-[#B83518] flex items-center justify-center shrink-0">
                 <?php if ($avatar !== ''): ?>
