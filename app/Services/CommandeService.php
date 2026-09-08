@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Interfaces\CommandeRepositoryInterface;
+use App\Interfaces\PaiementRepositoryInterface;
 use App\Interfaces\ProduitRepositoryInterface;
 use App\Models\Commande;
 use Exceptions\CommandeInexistanteException;
@@ -17,6 +18,7 @@ class CommandeService
         private CommandeRepositoryInterface $commandes,
         private ProduitRepositoryInterface $produits,
         private NotificationService $notifications,
+        private PaiementRepositoryInterface $paiements,
     ) {}
 
     public function passerCommande(int $clientId, array $panier): Commande
@@ -55,6 +57,11 @@ class CommandeService
         return $this->commandes->findByStatut($statut);
     }
 
+    public function rechercherParNumero(string $motCle): array
+    {
+        return $this->commandes->findByNumero($motCle);
+    }
+
     public function changerStatut(int $id, string $nouveauStatut): void
     {
         $commande = $this->consulterCommande($id);
@@ -68,6 +75,13 @@ class CommandeService
         if ($nouveauStatut === Commande::ANNULEE) {
             foreach ($commande->lignes as $ligne) {
                 $this->produits->restaurerStock($ligne->produitId, $ligne->quantite);
+            }
+        }
+
+        if ($nouveauStatut === Commande::RETIREE) {
+            $reste = $commande->total - $this->paiements->sommePaiements($id);
+            if ($reste > 0) {
+                throw new ValidationException(sprintf('Impossible de marquer la commande retiree : paiement incomplet (%.0f FCFA restants).', $reste));
             }
         }
 

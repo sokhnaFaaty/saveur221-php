@@ -48,6 +48,12 @@ class CommandeRepository implements CommandeRepositoryInterface
         return $this->hydraterAvecLignes(Database::executeSelect($sql, [$statut]));
     }
 
+    public function findByNumero(string $motCle): array
+    {
+        $sql = 'SELECT * FROM commandes WHERE num_commande ILIKE ? ORDER BY date_commande DESC';
+        return $this->hydraterAvecLignes(Database::executeSelect($sql, ['%' . $motCle . '%']));
+    }
+
     public function create(int $clientId, array $lignesPanier): Commande
     {
         if ($lignesPanier === []) {

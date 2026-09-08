@@ -45,7 +45,7 @@ $libellesStatut = [
 $nbCommandes = count($commandesFiltrees);
 $nbAvis = count(array_filter($avisParCommande, static fn ($a) => $a !== null));
 
-$avatar = !empty($user['image']) ? '/assets/img/clients/' . htmlspecialchars($user['image']) : null;
+$avatar = !empty($user['image']) ? htmlspecialchars((string) $user['image']) : null;
 $nomComplet = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 ?>
 

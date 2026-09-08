@@ -15,6 +15,8 @@ class CommandeController extends Controller
         private \App\Interfaces\FactureRepositoryInterface $factures,
         private \App\Interfaces\PaiementRepositoryInterface $paiements,
         private \App\Interfaces\AvisRepositoryInterface $avis,
+        private \App\Services\PaiementService $paiementService,
+        private \App\Interfaces\RecuRepositoryInterface $recus,
     ) {}
 
     // Client : passe une commande a partir du panier (JSON envoye par le JS)
@@ -65,16 +67,50 @@ class CommandeController extends Controller
     public function index(): string
     {
         $statutFiltre = $this->value('statut');
-        $toutes = $statutFiltre ? $this->commandeService->listerParStatut((string) $statutFiltre) : $this->commandeService->listerCommandes();
+        $terme = trim((string) $this->value('q', ''));
+        $paiementFiltre = (string) $this->value('paiement', '');
+
+        if ($terme !== '') {
+            $toutes = $this->commandeService->rechercherParNumero($terme);
+            if ($statutFiltre) {
+                $toutes = array_values(array_filter($toutes, fn ($c) => $c->statut === $statutFiltre));
+            }
+        } else {
+            $toutes = $statutFiltre ? $this->commandeService->listerParStatut((string) $statutFiltre) : $this->commandeService->listerCommandes();
+        }
+
+        $paiementsParCommande = [];
+        $statutPaiementParCommande = [];
+        $resteParCommande = [];
+        $recusParPaiement = [];
+        foreach ($toutes as $commande) {
+            $paiementsParCommande[$commande->id] = $this->paiements->findByCommande($commande->id);
+            $resteParCommande[$commande->id] = $this->paiementService->montantRestant($commande->id);
+            $statutPaiementParCommande[$commande->id] = $this->paiementService->calculerStatutPaiement($commande->id);
+            foreach ($paiementsParCommande[$commande->id] as $paiement) {
+                $recusParPaiement[$paiement->id] = $this->recus->findByPaiement($paiement->id);
+            }
+        }
+
+        if ($paiementFiltre !== '') {
+            $toutes = array_values(array_filter($toutes, fn ($c) => ($statutPaiementParCommande[$c->id] ?? null) === $paiementFiltre));
+        }
+
         $pagination = paginer($toutes, (int) $this->value('page', 1));
 
         return View::render('commandes/gestion', [
             'title' => 'Gestion des Commandes Clients',
             'commandes' => $pagination['items'],
             'statutFiltre' => $statutFiltre,
+            'terme' => $terme,
+            'paiementFiltre' => $paiementFiltre,
             'page' => $pagination['page'],
             'totalPages' => $pagination['totalPages'],
             'vue' => $this->value('vue', 'cartes'),
+            'paiementsParCommande' => $paiementsParCommande,
+            'statutPaiementParCommande' => $statutPaiementParCommande,
+            'resteParCommande' => $resteParCommande,
+            'recusParPaiement' => $recusParPaiement,
         ], 'layouts/dashboard');
     }
 

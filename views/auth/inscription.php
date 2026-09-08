@@ -1,6 +1,6 @@
 <div class="w-full flex flex-col items-center px-6 py-4">
 
-<div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-5 md:p-7">
+<div class="w-full max-w-lg bg-white rounded-2xl shadow-2xl p-5 md:p-7">
 
     <div class="text-center mb-6">
         <span class="inline-flex w-12 h-12 bg-primary rounded-2xl items-center justify-center shadow-lg mb-3">
@@ -10,7 +10,7 @@
         <p class="text-sm text-gray-500 mt-2">Rejoignez Saveur 221 et profitez de nos services.</p>
     </div>
 
-    <form method="post" action="/inscription" class="space-y-3">
+    <form method="post" action="/inscription" enctype="multipart/form-data" class="space-y-3">
 
         <div>
             <label for="nom_complet" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
@@ -39,6 +39,7 @@
                           focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
         </div>
 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div>
             <label for="quartier_de_livraison" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
                 Quartier de livraison (Dakar) <span class="text-primary">*</span>
@@ -63,6 +64,18 @@
         </div>
 
         <div>
+            <label for="image" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
+                Photo de profil
+            </label>
+            <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/webp"
+                   class="w-full text-sm text-gray-500 file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0
+                          file:bg-primary file:text-white file:text-sm file:font-semibold
+                          hover:file:bg-primary-dark file:cursor-pointer cursor-pointer transition">
+        </div>
+    </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
             <label for="mot_de_passe" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1">
                 Mot de passe <span class="text-primary">*</span>
             </label>
@@ -77,10 +90,11 @@
                 Confirmer le mot de passe <span class="text-primary">*</span>
             </label>
             <input type="password" id="confirmation" name="confirmation" minlength="6"
-                   autocomplete="new-password" placeholder="Répéter le mot de passe"
+                   autocomplete="new-password" placeholder="Répéter"
                    class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm placeholder-gray-400
                           focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
         </div>
+    </div>
 
         <button type="submit"
                 class="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-white font-bold text-sm
