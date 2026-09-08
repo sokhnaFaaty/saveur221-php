@@ -80,7 +80,7 @@
                 <td class="px-4 py-3">
                     <div class="flex items-center gap-2">
                         <button type="button" onclick="ouvrirDrawerProduit(this.closest('tr'))" class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
-                        <button type="button" onclick='demanderConfirmation({titre:"Supprimer ce plat",message:"Cette opération est irréversible.",cible:<?= json_encode($plat->libelle) ?>,actionUrl:"/produits/<?= $plat->id ?>/delete"})' class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
+                        <button type="button" onclick="<?= htmlspecialchars('demanderConfirmation({titre:"Supprimer ce plat",message:"Cette opération est irréversible.",cible:' . json_encode($plat->libelle) . ',actionUrl:"/produits/' . $plat->id . '/delete"})', ENT_QUOTES, 'UTF-8') ?>" class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
                     </div>
                 </td>
             </tr>
@@ -119,7 +119,7 @@
             </div>
             <div class="mt-auto flex items-center gap-2 pt-3 border-t border-gray-50">
                 <button type="button" onclick="ouvrirDrawerProduit(this.closest('div[data-produit]'))" class="flex-1 text-center py-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-sm font-semibold transition"><i class="fa-regular fa-pen-to-square"></i></button>
-                <button type="button" onclick='demanderConfirmation({titre:"Supprimer ce plat",message:"Cette opération est irréversible.",cible:<?= json_encode($plat->libelle) ?>,actionUrl:"/produits/<?= $plat->id ?>/delete"})' class="flex-1 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-sm font-semibold transition text-red-600"><i class="fa-regular fa-trash-can"></i></button>
+                <button type="button" onclick="<?= htmlspecialchars('demanderConfirmation({titre:"Supprimer ce plat",message:"Cette opération est irréversible.",cible:' . json_encode($plat->libelle) . ',actionUrl:"/produits/' . $plat->id . '/delete"})', ENT_QUOTES, 'UTF-8') ?>" class="flex-1 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-sm font-semibold transition text-red-600"><i class="fa-regular fa-trash-can"></i></button>
             </div>
         </div>
     </div>

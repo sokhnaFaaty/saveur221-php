@@ -24,7 +24,7 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
     }
     return sprintf(
         '<form method="post" action="/commandes/%d/paiements" class="flex flex-wrap items-center gap-1.5 mt-2">
-            <input type="number" name="montant" min="1" max="%d" step="any" placeholder="Montant" required
+            <input type="number" name="montant" min="1" max="%d" step="any" placeholder="Montant"
                    class="w-24 px-2 py-1.5 rounded-lg border border-gray-200 text-xs text-center" title="Montant encaisse">
             <select name="moyen" class="px-2 py-1.5 rounded-lg border border-gray-200 text-xs bg-white">
                 <option value="WAVE">Wave</option>
