@@ -1,8 +1,8 @@
-<h1 class="text-white text-2xl md:text-3xl font-extrabold text-center mb-6">Espace de Connexion</h1>
+<h1 class="text-black text-2xl md:text-3xl font-extrabold text-center mb-6">Espace de Connexion</h1>
 
-<div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 md:p-9">
+<div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 md:p-8">
 
-    <div class="flex flex-col items-center mb-6">
+    <div class="flex flex-col items-center mb-4">
         <span class="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center shadow-lg">
             <i class="fa-solid fa-utensils text-white text-xl"></i>
         </span>
@@ -11,7 +11,7 @@
         </p>
     </div>
 
-    <form method="post" action="/connexion" class="space-y-4">
+    <form method="post" action="/connexion" class="space-y-3">
         <div>
             <label for="email" class="block text-[11px] font-bold uppercase tracking-wide text-gray-700 mb-1.5">
                 Email ou Téléphone <span class="font-normal normal-case">(+221)</span>
@@ -56,7 +56,7 @@
 </div>
 
 <p class="mt-6">
-    <a href="/" class="inline-flex items-center gap-2 text-white font-semibold hover:underline text-sm">
+    <a href="/" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition text-sm shadow">
         <i class="fa-solid fa-arrow-left"></i> Accueil
     </a>
 </p>

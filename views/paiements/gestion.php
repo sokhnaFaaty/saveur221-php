@@ -1,4 +1,15 @@
-<?php /** @var float $total @var int $totalTransactions */ ?>
+<?php /** @var float $total @var int $totalTransactions */
+$couleursStatut = [
+    \App\Services\PaiementService::IMPAYEE => 'bg-red-50 text-red-600',
+    \App\Services\PaiementService::PARTIELLEMENT_PAYEE => 'bg-orange-50 text-orange-600',
+    \App\Services\PaiementService::PAYEE => 'bg-emerald-50 text-emerald-600',
+];
+$libelleStatut = [
+    \App\Services\PaiementService::IMPAYEE => 'Impayee',
+    \App\Services\PaiementService::PARTIELLEMENT_PAYEE => 'Partiellement payee',
+    \App\Services\PaiementService::PAYEE => 'Payee',
+];
+?>
 <h1 class="text-2xl font-extrabold mb-1">Caisse & Enregistrements des Règlements</h1>
 <p class="text-sm text-gray-500 mb-6">Journal des transactions Wave, Orange Money et Espèces perçues au comptoir.</p>
 
@@ -28,7 +39,7 @@
 <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
     <table class="min-w-full text-sm">
         <thead class="bg-gray-50 text-left text-xs uppercase text-gray-500">
-            <tr><th class="px-4 py-3">Commande</th><th class="px-4 py-3">Date/Heure</th><th class="px-4 py-3">Moyen</th><th class="px-4 py-3">Montant</th></tr>
+            <tr><th class="px-4 py-3">Commande</th><th class="px-4 py-3">Date/Heure</th><th class="px-4 py-3">Moyen</th><th class="px-4 py-3">Montant</th><th class="px-4 py-3">Statut</th></tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
         <?php foreach ($paiements as $p): ?>
@@ -37,9 +48,10 @@
                 <td class="px-4 py-3 text-gray-500"><?= htmlspecialchars($p->datePaiement) ?></td>
                 <td class="px-4 py-3"><span class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100"><?= htmlspecialchars($p->moyen) ?></span></td>
                 <td class="px-4 py-3 font-bold text-green-600"><?= number_format($p->montant, 0) ?> FCFA</td>
+                <td class="px-4 py-3"><span class="text-xs font-semibold px-2 py-1 rounded-full <?= $couleursStatut[$statutParCommande[$p->commandeId] ?? \App\Services\PaiementService::IMPAYEE] ?? 'bg-gray-100 text-gray-500' ?>"><?= $libelleStatut[$statutParCommande[$p->commandeId] ?? \App\Services\PaiementService::IMPAYEE] ?? 'Impayee' ?></span></td>
             </tr>
         <?php endforeach; ?>
-        <?php if ($paiements === []): ?><tr><td colspan="4" class="text-center text-gray-400 py-10">Aucune transaction.</td></tr><?php endif; ?>
+        <?php if ($paiements === []): ?><tr><td colspan="5" class="text-center text-gray-400 py-10">Aucune transaction.</td></tr><?php endif; ?>
         </tbody>
     </table>
 </div>
@@ -49,7 +61,10 @@
     <div class="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition">
         <div class="flex items-center justify-between mb-3">
             <a href="/commandes/<?= $p->commandeId ?>" class="font-bold text-primary hover:underline">Commande #<?= $p->commandeId ?></a>
-            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100"><?= htmlspecialchars($p->moyen) ?></span>
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100"><?= htmlspecialchars($p->moyen) ?></span>
+                <span class="text-xs font-semibold px-2 py-1 rounded-full <?= $couleursStatut[$statutParCommande[$p->commandeId] ?? \App\Services\PaiementService::IMPAYEE] ?? 'bg-gray-100 text-gray-500' ?>"><?= $libelleStatut[$statutParCommande[$p->commandeId] ?? \App\Services\PaiementService::IMPAYEE] ?? 'Impayee' ?></span>
+            </div>
         </div>
         <p class="text-xs text-gray-400 mb-3"><?= htmlspecialchars($p->datePaiement) ?></p>
         <p class="font-extrabold text-lg text-green-600"><?= number_format($p->montant, 0) ?> FCFA</p>

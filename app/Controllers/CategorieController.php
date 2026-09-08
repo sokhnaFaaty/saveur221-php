@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Services\CategorieService;
+use App\Services\UploadService;
 use Core\View;
 use Exceptions\AppException;
 
 class CategorieController extends Controller
 {
-    public function __construct(private CategorieService $categorieService) {}
+    public function __construct(
+        private CategorieService $categorieService,
+        private UploadService $uploads,
+    ) {}
 
     public function index(): string
     {
@@ -30,9 +34,11 @@ class CategorieController extends Controller
     public function store(): never
     {
         try {
+            $image = $this->uploads->upload($_FILES['image'] ?? []);
             $this->categorieService->ajouterCategorie(
                 (string) $this->value('libelle', ''),
-                $this->value('description')
+                $this->value('description'),
+                $image
             );
             flash('success', 'Categorie creee avec succes.');
         } catch (AppException $e) {
@@ -59,10 +65,12 @@ public function edit(int $id): string
     public function update(int $id): never
     {
         try {
+            $image = $this->uploads->upload($_FILES['image'] ?? []);
             $this->categorieService->modifierCategorie(
                 $id,
                 (string) $this->value('libelle', ''),
-                $this->value('description')
+                $this->value('description'),
+                $image
             );
             flash('success', 'Categorie modifiee avec succes.');
         } catch (AppException $e) {

@@ -83,7 +83,7 @@
             <h2 id="titre-drawer-categorie" class="text-lg font-extrabold">Créer une catégorie</h2>
             <button type="button" onclick="fermerDrawerCategorie()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-500"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <form method="post" id="form-categorie" action="/categories" class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+        <form method="post" id="form-categorie" action="/categories" enctype="multipart/form-data" class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
             <input type="hidden" id="categorie_id" name="id" value="">
             <div>
                 <label class="block text-sm font-semibold mb-1">Libellé</label>
@@ -92,6 +92,12 @@
             <div>
                 <label class="block text-sm font-semibold mb-1">Description</label>
                 <textarea id="categorie_description" name="description" rows="3" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm"></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Image (optionnel)</label>
+                <input type="file" name="image" accept="image/jpeg,image/png,image/webp"
+                       class="w-full text-sm text-gray-500 file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0
+                              file:bg-[#B83518] file:text-white file:text-sm file:font-semibold cursor-pointer transition">
             </div>
             <button type="submit" class="w-full py-2.5 rounded-lg text-white font-semibold text-sm transition" style="background-color:#B83518">Enregistrer</button>
         </form>

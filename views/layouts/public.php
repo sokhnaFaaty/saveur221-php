@@ -11,6 +11,7 @@ $chemin = $chemin === '' ? '/' : $chemin;
 $accueilActive = $chemin === '/';
 $catalogueActive = str_starts_with($chemin, '/catalogue');
 $mesCommandesActive = str_starts_with($chemin, '/mes-commandes');
+$profilActive = str_starts_with($chemin, '/profil');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -126,6 +127,7 @@ $mesCommandesActive = str_starts_with($chemin, '/mes-commandes');
                     <a href="/catalogue" class="<?= $catalogueActive ? 'text-primary underline underline-offset-8' : 'hover:text-primary transition' ?>">Catalogues &amp; Menus</a>
                     <?php if ($user && $user['role'] === 'CLIENT'): ?>
                         <a href="/mes-commandes" class="<?= $mesCommandesActive ? 'text-primary underline underline-offset-8' : 'hover:text-primary transition' ?>">Mes commandes</a>
+                        <a href="/profil" class="<?= $profilActive ? 'text-primary underline underline-offset-8' : 'hover:text-primary transition' ?>">Mon profil</a>
                     <?php endif; ?>
                 </nav>
                 <div class="flex items-center gap-3">

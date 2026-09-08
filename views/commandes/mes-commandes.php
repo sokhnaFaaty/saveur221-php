@@ -8,9 +8,24 @@ $avisParCommande = $avisParCommande ?? [];
 
 $statuts = ['EN_ATTENTE', 'EN_PREPARATION', 'PRETE', 'RETIREE', 'ANNULEE'];
 $statutFiltre = (string) ($_GET['statut'] ?? '');
-$commandesFiltrees = $statutFiltre !== '' && in_array($statutFiltre, $statuts, true)
-    ? array_values(array_filter($commandes, fn ($c) => $c->statut === $statutFiltre))
-    : $commandes;
+$recherche = trim((string) ($_GET['recherche'] ?? ''));
+$commandesFiltrees = $commandes;
+
+if ($statutFiltre !== '' && in_array($statutFiltre, $statuts, true)) {
+    $commandesFiltrees = array_values(array_filter($commandesFiltrees, fn ($c) => $c->statut === $statutFiltre));
+}
+
+if ($recherche !== '') {
+    $filtre = strtolower($recherche);
+    $dateCherchee = preg_match('#^(\d{2})/(\d{2})/(\d{4})$#', $recherche, $m)
+        ? "{$m[3]}-{$m[2]}-{$m[1]}" : null;
+    $commandesFiltrees = array_values(array_filter(
+        $commandesFiltrees,
+        fn ($c) => str_contains(strtolower($c->numCommande), $filtre)
+            || (str_contains(strtolower(date('d/m/Y', strtotime($c->dateCommande))), $filtre))
+            || ($dateCherchee !== null && str_starts_with($c->dateCommande, $dateCherchee))
+    ));
+}
 
 $couleursStatut = [
     'EN_ATTENTE'     => 'bg-amber-100 text-amber-800',
@@ -30,7 +45,7 @@ $libellesStatut = [
 $nbCommandes = count($commandesFiltrees);
 $nbAvis = count(array_filter($avisParCommande, static fn ($a) => $a !== null));
 
-$avatar = !empty($user['image']) ? '/assets/img/clients/' . htmlspecialchars($user['image']) : null;
+$avatar = !empty($user['image']) ? htmlspecialchars((string) $user['image']) : null;
 $nomComplet = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 ?>
 
@@ -90,14 +105,28 @@ $nomComplet = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
     <!-- ===== 3.1 AFFICHAGE PAR CARTES (Mes commandes) ===== -->
     <section id="vue-cartes">
 
-        <!-- Filtres de statuts -->
-        <div class="flex flex-wrap gap-2 mb-6">
-            <a href="/mes-commandes"
-               class="px-4 py-2 rounded-lg text-sm font-semibold <?= $statutFiltre === '' ? 'bg-[#A8291A] text-white shadow-sm' : 'bg-white border border-gray-300 text-gray-600 hover:border-[#A8291A] hover:text-[#A8291A] transition' ?>">Tous</a>
-            <?php foreach ($statuts as $s): ?>
-            <a href="/mes-commandes?statut=<?= $s ?>"
-               class="px-4 py-2 rounded-lg text-sm font-semibold <?= $statutFiltre === $s ? 'bg-[#A8291A] text-white shadow-sm' : 'bg-white border border-gray-300 text-gray-600 hover:border-[#A8291A] hover:text-[#A8291A] transition' ?>"><?= htmlspecialchars(str_replace('_', ' ', $s)) ?></a>
-            <?php endforeach; ?>
+        <!-- Recherche + Filtres de statuts -->
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-6">
+            <form method="get" action="/mes-commandes" class="w-full lg:w-80">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" name="recherche" value="<?= htmlspecialchars($recherche) ?>"
+                           placeholder="Rechercher (n° commande, date jj/mm/aaaa)..."
+                           class="w-full pl-10 pr-24 py-2.5 rounded-lg bg-white border border-gray-300 text-sm placeholder-gray-400
+                                  focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                    <button type="submit" class="absolute inset-y-1.5 right-1.5 px-3.5 rounded-md bg-[#A8291A] text-white text-xs font-bold hover:bg-[#8A2013] transition">Rechercher</button>
+                </div>
+            </form>
+            <div class="flex flex-wrap gap-2">
+                <a href="/mes-commandes<?= $recherche !== '' ? '?recherche=' . urlencode($recherche) : '' ?>"
+                   class="px-4 py-2 rounded-lg text-sm font-semibold <?= $statutFiltre === '' ? 'bg-[#A8291A] text-white shadow-sm' : 'bg-white border border-gray-300 text-gray-600 hover:border-[#A8291A] hover:text-[#A8291A] transition' ?>">Tous</a>
+                <?php foreach ($statuts as $s): ?>
+                <a href="/mes-commandes?statut=<?= $s ?><?= $recherche !== '' ? '&recherche=' . urlencode($recherche) : '' ?>"
+                   class="px-4 py-2 rounded-lg text-sm font-semibold <?= $statutFiltre === $s ? 'bg-[#A8291A] text-white shadow-sm' : 'bg-white border border-gray-300 text-gray-600 hover:border-[#A8291A] hover:text-[#A8291A] transition' ?>"><?= htmlspecialchars(str_replace('_', ' ', $s)) ?></a>
+                <?php endforeach; ?>
+            </div>
         </div>
 
         <?php if ($commandesFiltrees === []): ?>
@@ -106,7 +135,7 @@ $nomComplet = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
                     <i class="fa-solid fa-receipt"></i>
                 </div>
                 <p class="font-bold text-gray-700">Aucune commande pour le moment</p>
-                <p class="text-sm text-gray-400 mt-1"><?= $statutFiltre !== '' ? 'Aucune commande avec ce statut.' : 'Commandez votre premier plat dès maintenant !' ?></p>
+                <p class="text-sm text-gray-400 mt-1"><?= ($statutFiltre !== '' || $recherche !== '') ? 'Aucune commande ne correspond à votre recherche.' : 'Commandez votre premier plat dès maintenant !' ?></p>
                 <a href="/catalogue" class="inline-block mt-6 px-6 py-3 rounded-lg bg-[#A8291A] text-white text-sm font-bold hover:bg-[#8A2013] transition">Voir le catalogue</a>
             </div>
         <?php endif; ?>

@@ -19,11 +19,12 @@ class ProfilController extends Controller
     public function index(): string
     {
         $profil = $this->profil->charger($_SESSION['user'] ?? []);
+        $layout = ($_SESSION['user']['role'] ?? '') === 'CLIENT' ? 'layouts/public' : 'layouts/dashboard';
 
         return View::render('profil/index', [
             'title'  => 'Mon Profil & Securite',
             'profil' => $profil,
-        ], 'layouts/dashboard');
+        ], $layout);
     }
 
     public function update(): never

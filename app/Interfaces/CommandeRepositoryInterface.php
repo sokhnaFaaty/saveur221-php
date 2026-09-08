@@ -19,6 +19,9 @@ interface CommandeRepositoryInterface
     /** @return Commande[] */
     public function findByStatut(string $statut): array;
 
+    /** @return Commande[] */
+    public function findByNumero(string $motCle): array;
+
     /** @param array{produit_id:int, quantite:int, instructions:?string}[] $lignesPanier */
     public function create(int $clientId, array $lignesPanier): Commande;
 

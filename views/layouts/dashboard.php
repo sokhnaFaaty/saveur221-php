@@ -56,11 +56,14 @@ $role = $user['role'] ?? null;
 
 <aside class="hidden md:flex w-64 bg-gray-950 text-gray-300 flex-col shrink-0">
     <div class="p-6 border-b border-white/10">
-        <div class="flex items-center gap-2 text-white font-extrabold text-lg">
-            <span class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-                <i class="fa-solid fa-utensils text-sm"></i>
+        <div class="flex items-center gap-3">
+            <span class="w-10 h-10 bg-[#BF360C] rounded-xl flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-utensils text-white text-base"></i>
             </span>
-            Saveur <span class="text-primary">221</span>
+            <div class="leading-tight">
+                <p class="text-white font-extrabold text-lg">Saveur <span class="text-primary">221</span></p>
+                <p class="text-[10px] font-semibold tracking-wider text-amber-400">SAVEURS AUTHENTIQUES DU SENEGAL</p>
+            </div>
         </div>
     </div>
 

@@ -11,15 +11,22 @@ use Exceptions\ValidationException;
 
 class CategorieService
 {
-    public function __construct(private CategorieRepositoryInterface $categories) {}
+    public function __construct(
+        private CategorieRepositoryInterface $categories,
+        private UploadService $uploads,
+    ) {}
 
-    public function ajouterCategorie(string $libelle, ?string $description): Categorie
+    public function ajouterCategorie(string $libelle, ?string $description, ?string $image = null): Categorie
     {
         if (!Validator::estRempli($libelle)) {
             throw new ValidationException('Le libelle de la categorie est obligatoire.');
         }
         $this->verifierUnicite($libelle, null);
-        return $this->categories->create(['libelle' => trim($libelle), 'description' => $description]);
+        return $this->categories->create([
+            'libelle' => trim($libelle),
+            'description' => $description,
+            'image' => $image,
+        ]);
     }
 
     public function listerCategories(): array
@@ -32,7 +39,7 @@ class CategorieService
         return $this->categories->search($motCle);
     }
 
-    public function modifierCategorie(int $id, string $libelle, ?string $description): void
+    public function modifierCategorie(int $id, string $libelle, ?string $description, ?string $image = null): void
     {
         if ($this->categories->findById($id) === null) {
             throw new CategorieInexistanteException("Aucune categorie trouvee avec l'id $id");
@@ -41,7 +48,11 @@ class CategorieService
             throw new ValidationException('Le libelle de la categorie est obligatoire.');
         }
         $this->verifierUnicite($libelle, $id);
-        $this->categories->update($id, ['libelle' => trim($libelle), 'description' => $description]);
+        $this->categories->update($id, [
+            'libelle' => trim($libelle),
+            'description' => $description,
+            'image' => $image,
+        ]);
     }
 
     private function verifierUnicite(string $libelle, ?int $idExclu): void
