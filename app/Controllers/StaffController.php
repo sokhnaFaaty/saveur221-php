@@ -53,4 +53,29 @@ class StaffController extends Controller
         flash('success', 'Compte supprime.');
         View::redirect('/staff');
     }
+
+    public function corbeille(): string
+    {
+        $pagination = paginer($this->utilisateurService->listerUtilisateursSupprimes(), (int) $this->value('page', 1));
+        return View::render('staff/corbeille', [
+            'title' => 'Corbeille du staff',
+            'staff' => $pagination['items'],
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+        ], 'layouts/dashboard');
+    }
+
+    public function restaurer(int $id): never
+    {
+        $this->utilisateurService->restaurerUtilisateur($id);
+        flash('success', 'Compte restaure.');
+        View::redirect('/staff/corbeille');
+    }
+
+    public function supprimerDefinitivement(int $id): never
+    {
+        $this->utilisateurService->supprimerUtilisateurDefinitivement($id);
+        flash('success', 'Compte supprime definitivement.');
+        View::redirect('/staff/corbeille');
+    }
 }

@@ -75,4 +75,19 @@ class CategorieService
         // La verification "contient des produits ?" est deja faite dans le Repository.
         $this->categories->delete($id);
     }
+
+    public function listerCategoriesSupprimees(): array
+    {
+        return $this->categories->findDeleted();
+    }
+
+    public function restaurerCategorie(int $id): void
+    {
+        $this->categories->restore($id);
+    }
+
+    public function supprimerCategorieDefinitivement(int $id): void
+    {
+        $this->categories->forceDelete($id);
+    }
 }

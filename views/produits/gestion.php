@@ -3,9 +3,14 @@
         <h1 class="text-2xl font-extrabold">Gestion des Menus & Plats</h1>
         <p class="text-sm text-gray-500">Créez, modifiez les tarifs, stocks, temps de préparation et visuels.</p>
     </div>
-    <button type="button" onclick="ouvrirDrawerProduit()" class="px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#B83518">
-        <i class="fa-solid fa-plus"></i> Ajouter un nouveau plat
-    </button>
+    <div class="flex items-center gap-2">
+        <a href="/produits/corbeille" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition flex items-center gap-2">
+            <i class="fa-regular fa-trash-can"></i> Corbeille
+        </a>
+        <button type="button" onclick="ouvrirDrawerProduit()" class="px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#B83518">
+            <i class="fa-solid fa-plus"></i> Ajouter un nouveau plat
+        </button>
+    </div>
 </div>
 
 <div class="flex items-center justify-between mb-6 flex-wrap gap-3">

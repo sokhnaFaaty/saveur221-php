@@ -16,4 +16,11 @@ interface AvisRepositoryInterface
     public function create(int $clientId, int $commandeId, int $note, ?string $commentaire): Avis;
 
     public function delete(int $id): void;
+
+    /** @return Avis[] */
+    public function findDeleted(): array;
+
+    public function restore(int $id): void;
+
+    public function forceDelete(int $id): void;
 }

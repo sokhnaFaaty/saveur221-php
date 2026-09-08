@@ -65,4 +65,19 @@ public function delete(int $id): void
 {
     Database::executeUpdate('UPDATE utilisateurs SET deleted_at = NOW() WHERE id = ?', [$id]);
 }
+
+public function findDeleted(): array
+{
+    return array_map(Utilisateur::fromRow(...), Database::executeSelect('SELECT * FROM utilisateurs WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC'));
+}
+
+public function restore(int $id): void
+{
+    Database::executeUpdate('UPDATE utilisateurs SET deleted_at = NULL WHERE id = ?', [$id]);
+}
+
+public function forceDelete(int $id): void
+{
+    Database::executeUpdate('DELETE FROM utilisateurs WHERE id = ?', [$id]);
+}
 }

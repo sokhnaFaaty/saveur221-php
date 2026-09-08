@@ -3,6 +3,9 @@
         <h1 class="text-2xl font-extrabold">Gestion des Utilisateurs Staff</h1>
         <p class="text-sm text-gray-500">Module de gestion des accès Gérants et Admins du restaurant.</p>
     </div>
+    <a href="/staff/corbeille" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition flex items-center gap-2">
+        <i class="fa-regular fa-trash-can"></i> Corbeille
+    </a>
 </div>
 
 <form method="post" action="/staff" class="bg-white rounded-xl p-5 shadow-sm mb-6 grid md:grid-cols-3 gap-3">
@@ -48,7 +51,7 @@
                             <input type="hidden" name="actif" value="<?= $u->actif ? '0' : '1' ?>">
                             <button class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-semibold hover:border-primary transition"><?= $u->actif ? 'Désactiver' : 'Activer' ?></button>
                         </form>
-                        <button type="button" onclick='demanderConfirmation({titre:"Supprimer ce compte staff",message:"Cette opération est irréversible.",cible:<?= json_encode($u->prenom . ' ' . $u->nom) ?>,actionUrl:"/staff/<?= $u->id ?>/delete"})' class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
+                        <button type="button" onclick="<?= htmlspecialchars('demanderConfirmation({titre:"Supprimer ce compte staff",message:"Cette opération est irréversible.",cible:' . json_encode($u->prenom . ' ' . $u->nom) . ',actionUrl:"/staff/' . $u->id . '/delete"})', ENT_QUOTES, 'UTF-8') ?>" class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
                         <?php else: ?><span class="text-xs text-gray-400">(vous)</span><?php endif; ?>
                     </div>
                 </td>
@@ -81,7 +84,7 @@
                     <input type="hidden" name="actif" value="<?= $u->actif ? '0' : '1' ?>">
                     <button class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-semibold hover:border-primary transition"><?= $u->actif ? 'Désactiver' : 'Activer' ?></button>
                 </form>
-                <button type="button" onclick='demanderConfirmation({titre:"Supprimer ce compte staff",message:"Cette opération est irréversible.",cible:<?= json_encode($u->prenom . ' ' . $u->nom) ?>,actionUrl:"/staff/<?= $u->id ?>/delete"})' class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
+                <button type="button" onclick="<?= htmlspecialchars('demanderConfirmation({titre:"Supprimer ce compte staff",message:"Cette opération est irréversible.",cible:' . json_encode($u->prenom . ' ' . $u->nom) . ',actionUrl:"/staff/' . $u->id . '/delete"})', ENT_QUOTES, 'UTF-8') ?>" class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
             </div>
             <?php endif; ?>
         </div>

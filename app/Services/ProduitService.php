@@ -66,6 +66,21 @@ class ProduitService
         $this->produits->delete($id);
     }
 
+    public function listerProduitsSupprimes(): array
+    {
+        return $this->produits->findDeleted();
+    }
+
+    public function restaurerProduit(int $id): void
+    {
+        $this->produits->restore($id);
+    }
+
+    public function supprimerProduitDefinitivement(int $id): void
+    {
+        $this->produits->forceDelete($id);
+    }
+
     public function approvisionner(int $id, mixed $quantiteBrute): void
     {
         if (!Validator::estRempli((string) $quantiteBrute) || !Validator::estNumerique($quantiteBrute)) {
