@@ -343,8 +343,7 @@ $nomComplet = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 
     <!-- ===== 3.3 MES AVIS & RETOURS ===== -->
     <section id="vue-avis" class="hidden">
-        <?php $mesAvis = array_filter($avisParCommande, static fn ($a) => $a !== null); ?>
-        <?php if ($mesAvis === []): ?>
+        <?php if (empty($mesAvis)): ?>
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-16 text-center">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center text-3xl text-gray-300">
                     <i class="fa-solid fa-star"></i>
@@ -353,33 +352,43 @@ $nomComplet = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
                 <p class="text-sm text-gray-400 mt-1">Après retrait de votre commande, vous pourrez partager votre expérience.</p>
             </div>
         <?php else: ?>
-            <div class="space-y-4">
-            <?php foreach ($commandes as $commande): ?>
-                <?php if (!$dejaEvalue = (isset($avisParCommande[$commande->id]) && $avisParCommande[$commande->id] !== null)): ?>
-                    <?php continue; ?>
-                <?php endif; ?>
-                <?php $avis = $avisParCommande[$commande->id]; ?>
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <div class="flex items-end justify-between mb-4 gap-3 flex-wrap">
+                <div>
+                    <h3 class="text-lg font-extrabold text-gray-900">Mes Retours d'expériences</h3>
+                    <p class="text-sm text-gray-500"><?= count($mesAvis) ?> avis laissé<?= count($mesAvis) > 1 ? 's' : '' ?> sur vos commandes</p>
+                </div>
+                <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-amber-50 text-amber-600"><?= count($mesAvis) ?> avis</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <?php foreach ($mesAvis as $item): ?>
+                <?php $avis = $item['avis']; ?>
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
                     <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
                         <div class="flex items-center gap-3">
                             <span class="w-10 h-10 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
                                 <i class="fa-solid fa-star"></i>
                             </span>
                             <div>
-                                <p class="font-bold text-gray-900 text-sm"><?= htmlspecialchars($commande->numCommande) ?></p>
+                                <p class="font-bold text-gray-900 text-sm"><?= htmlspecialchars((string) $item['numCommande']) ?></p>
                                 <p class="text-xs text-gray-400"><?= date('d/m/Y', strtotime($avis->dateAvis)) ?></p>
                             </div>
                         </div>
-                        <div class="text-amber-500 text-sm"><?= str_repeat('★', $avis->note) . str_repeat('☆', 5 - $avis->note) ?></div>
+                        <div class="flex items-center gap-2">
+                            <div class="text-amber-500 text-sm"><?= str_repeat('★', $avis->note) . str_repeat('☆', 5 - $avis->note) ?></div>
+                            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-600"><?= $avis->note ?>/5</span>
+                        </div>
                     </div>
                     <?php if ($avis->commentaire): ?>
-                        <p class="text-sm text-gray-600 bg-gray-50 rounded-lg px-4 py-3">« <?= htmlspecialchars($avis->commentaire) ?> »</p>
+                        <p class="text-sm text-gray-600 bg-gray-50 rounded-lg px-4 py-3 flex-1">« <?= htmlspecialchars($avis->commentaire) ?> »</p>
                     <?php else: ?>
-                        <p class="text-sm text-gray-400 italic">Aucun commentaire laissé.</p>
+                        <p class="text-sm text-gray-400 italic bg-gray-50 rounded-lg px-4 py-3 flex-1">Aucun commentaire laissé.</p>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
             </div>
+
+            <?php $page = $pageAvis ?? 1; $totalPages = $totalPagesAvis ?? 1; $pageVar = 'page_avis'; include VIEW_PATH . '/partials/pagination.php'; ?>
         <?php endif; ?>
     </section>
 
