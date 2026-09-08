@@ -15,9 +15,10 @@ class StatistiqueController extends Controller
     {
         return View::render('statistiques/index', [
             'title'             => 'Rapports & Statistiques',
-            'chiffreAffaires'   => $this->statistiqueService->chiffreAffairesDuJour(),
-            'commandesEnCours'  => $this->statistiqueService->nombreCommandesEnCours(),
-            'alertesStock'      => $this->statistiqueService->alertesStock(),
+            'chiffreAffaires'   => $this->statistiqueService->chiffreAffairesTotal(),
+            'nombreCommandes'   => $this->statistiqueService->nombreTotalCommandes(),
+            'panierMoyen'       => $this->statistiqueService->panierMoyen(),
+            'repartitionMoyens' => $this->statistiqueService->repartitionParMoyenDePaiement(),
         ], 'layouts/dashboard');
     }
 }

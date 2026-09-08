@@ -40,15 +40,24 @@ class CommandeController extends Controller
         $commandes = $this->commandeService->listerMesCommandes($clientId);
         $paiementsParCommande = [];
         $avisParCommande = [];
+        $mesAvis = [];
         foreach ($commandes as $commande) {
             $paiementsParCommande[$commande->id] = $this->paiements->findByCommande($commande->id);
-            $avisParCommande[$commande->id] = $this->avis->findByCommande($commande->id);
+            $avis = $this->avis->findByCommande($commande->id);
+            $avisParCommande[$commande->id] = $avis;
+            if ($avis !== null) {
+                $mesAvis[] = ['avis' => $avis, 'numCommande' => $commande->numCommande];
+            }
         }
+        $paginationAvis = paginer($mesAvis, (int) $this->value('page_avis', 1), 6);
         return View::render('commandes/mes-commandes', [
             'title' => 'Mes commandes',
             'commandes' => $commandes,
             'paiementsParCommande' => $paiementsParCommande,
             'avisParCommande' => $avisParCommande,
+            'mesAvis' => $paginationAvis['items'],
+            'pageAvis' => $paginationAvis['page'],
+            'totalPagesAvis' => $paginationAvis['totalPages'],
         ], 'layouts/public');
     }
 

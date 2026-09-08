@@ -45,4 +45,20 @@ class AvisRepository implements AvisRepositoryInterface
     {
         Database::executeUpdate('UPDATE avis SET deleted_at = NOW() WHERE id = ?', [$id]);
     }
+
+    public function findDeleted(): array
+    {
+        $sql = self::SELECT_BASE . 'WHERE a.deleted_at IS NOT NULL ORDER BY a.deleted_at DESC';
+        return array_map(Avis::fromRow(...), Database::executeSelect($sql));
+    }
+
+    public function restore(int $id): void
+    {
+        Database::executeUpdate('UPDATE avis SET deleted_at = NULL WHERE id = ?', [$id]);
+    }
+
+    public function forceDelete(int $id): void
+    {
+        Database::executeUpdate('DELETE FROM avis WHERE id = ?', [$id]);
+    }
 }

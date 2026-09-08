@@ -88,6 +88,22 @@ class ProduitRepository implements ProduitRepositoryInterface
         Database::executeUpdate('UPDATE produits SET deleted_at = NOW() WHERE id = ?', [$id]);
     }
 
+    public function findDeleted(): array
+    {
+        $sql = self::SELECT_BASE . 'WHERE p.deleted_at IS NOT NULL ORDER BY p.deleted_at DESC';
+        return array_map(Produit::fromRow(...), Database::executeSelect($sql));
+    }
+
+    public function restore(int $id): void
+    {
+        Database::executeUpdate('UPDATE produits SET deleted_at = NULL WHERE id = ?', [$id]);
+    }
+
+    public function forceDelete(int $id): void
+    {
+        Database::executeUpdate('DELETE FROM produits WHERE id = ?', [$id]);
+    }
+
     public function diminuerStock(int $id, int $quantite): void
     {
         $produit = $this->findById($id);

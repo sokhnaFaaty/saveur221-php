@@ -14,13 +14,14 @@ class Produit
         public readonly int $quantiteStock,
         public readonly int $categorieId,
         public readonly ?string $categorieLibelle,
-        public readonly ?string $image,
+public readonly ?string $image,
         public readonly int $seuilAlerte,
         public readonly ?int $tempsPreparation,
         public readonly ?int $calories,
+        public readonly ?string $deletedAt = null,
     ) {}
 
-    public static function fromRow(object $row): self
+    public static function fromRow(object $row, array $lignes = []): self
     {
         return new self(
             id: (int) $row->id,
@@ -34,7 +35,13 @@ class Produit
             seuilAlerte: (int) $row->seuil_alerte,
             tempsPreparation: $row->temps_preparation !== null ? (int) $row->temps_preparation : null,
             calories: $row->calories !== null ? (int) $row->calories : null,
+            deletedAt: $row->deleted_at ?? null,
         );
+    }
+
+    public function supprimeLe(): string
+    {
+        return $this->deletedAt ? date('d/m/Y H:i', strtotime((string) $this->deletedAt)) : '';
     }
 
     // Equivalent Etat.DISPONIBLE / NON_DISPONIBLE du Java : jamais stocke en base,

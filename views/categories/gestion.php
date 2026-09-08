@@ -3,9 +3,14 @@
         <h1 class="text-2xl font-extrabold">Catégories du Menu</h1>
         <p class="text-sm text-gray-500">Gérez les catégories de plats et spécialités.</p>
     </div>
-    <button type="button" onclick="ouvrirDrawerCategorie()" class="px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#B83518">
-        <i class="fa-solid fa-plus"></i> Créer une catégorie
-    </button>
+    <div class="flex items-center gap-2">
+        <a href="/categories/corbeille" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition flex items-center gap-2">
+            <i class="fa-regular fa-trash-can"></i> Corbeille
+        </a>
+        <button type="button" onclick="ouvrirDrawerCategorie()" class="px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#B83518">
+            <i class="fa-solid fa-plus"></i> Créer une catégorie
+        </button>
+    </div>
 </div>
 
 <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
@@ -44,7 +49,7 @@
                 <td class="px-4 py-3">
                     <div class="flex items-center gap-2">
                         <button type="button" onclick="ouvrirDrawerCategorie(this.closest('tr'))" class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition"><i class="fa-regular fa-pen-to-square text-xs"></i></button>
-                        <button type="button" onclick='demanderConfirmation({titre:"Supprimer cette catégorie",message:"Cette opération est irréversible.",cible:<?= json_encode($categorie->libelle) ?>,actionUrl:"/categories/<?= $categorie->id ?>/delete"})' class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
+                        <button type="button" onclick="<?= htmlspecialchars('demanderConfirmation({titre:"Supprimer cette catégorie",message:"Cette opération est irréversible.",cible:' . json_encode($categorie->libelle) . ',actionUrl:"/categories/' . $categorie->id . '/delete"})', ENT_QUOTES, 'UTF-8') ?>" class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-red-500 hover:border-red-400 transition"><i class="fa-regular fa-trash-can text-xs"></i></button>
                     </div>
                 </td>
             </tr>
@@ -66,7 +71,7 @@
         <p class="text-sm text-gray-500 mb-4"><?= htmlspecialchars(mb_strimwidth((string) $categorie->description, 0, 100, '...')) ?></p>
         <div class="mt-auto flex items-center gap-2 pt-3 border-t border-gray-50">
             <button type="button" onclick="ouvrirDrawerCategorie(this.closest('div[data-categorie]'))" class="flex-1 text-center py-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-sm font-semibold transition"><i class="fa-regular fa-pen-to-square"></i></button>
-            <button type="button" onclick='demanderConfirmation({titre:"Supprimer cette catégorie",message:"Cette opération est irréversible.",cible:<?= json_encode($categorie->libelle) ?>,actionUrl:"/categories/<?= $categorie->id ?>/delete"})' class="flex-1 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-sm font-semibold transition text-red-600"><i class="fa-regular fa-trash-can"></i></button>
+            <button type="button" onclick="<?= htmlspecialchars('demanderConfirmation({titre:"Supprimer cette catégorie",message:"Cette opération est irréversible.",cible:' . json_encode($categorie->libelle) . ',actionUrl:"/categories/' . $categorie->id . '/delete"})', ENT_QUOTES, 'UTF-8') ?>" class="flex-1 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-sm font-semibold transition text-red-600"><i class="fa-regular fa-trash-can"></i></button>
         </div>
     </div>
     <?php endforeach; ?>

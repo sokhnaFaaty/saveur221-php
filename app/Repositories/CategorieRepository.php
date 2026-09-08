@@ -61,4 +61,26 @@ class CategorieRepository implements CategorieRepositoryInterface
         }
         Database::executeUpdate('UPDATE categories SET deleted_at = NOW() WHERE id = ?', [$id]);
     }
+
+    public function findDeleted(): array
+    {
+        $sql = 'SELECT * FROM categories WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC';
+        return array_map(Categorie::fromRow(...), Database::executeSelect($sql));
+    }
+
+    public function restore(int $id): void
+    {
+        Database::executeUpdate('UPDATE categories SET deleted_at = NULL WHERE id = ?', [$id]);
+    }
+
+    public function forceDelete(int $id): void
+    {
+        $rows = Database::executeSelect('SELECT COUNT(*) AS total FROM produits WHERE categorie_id = ?', [$id]);
+        if ((int) $rows[0]->total > 0) {
+            throw new \Exceptions\CategorieNonSupprimableException(
+                'Impossible de supprimer définitivement : des produits (mêmes supprimés) sont encore rattachés à cette catégorie.'
+            );
+        }
+        Database::executeUpdate('DELETE FROM categories WHERE id = ?', [$id]);
+    }
 }

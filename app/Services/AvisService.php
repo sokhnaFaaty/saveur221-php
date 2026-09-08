@@ -52,4 +52,19 @@ class AvisService
     {
         $this->avis->delete($id);
     }
+
+    public function listerAvisSupprimes(): array
+    {
+        return $this->avis->findDeleted();
+    }
+
+    public function restaurerAvis(int $id): void
+    {
+        $this->avis->restore($id);
+    }
+
+    public function supprimerAvisDefinitivement(int $id): void
+    {
+        $this->avis->forceDelete($id);
+    }
 }

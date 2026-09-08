@@ -62,4 +62,19 @@ class UtilisateurService
     {
         $this->utilisateurs->delete($id);
     }
+
+    public function listerUtilisateursSupprimes(): array
+    {
+        return $this->utilisateurs->findDeleted();
+    }
+
+    public function restaurerUtilisateur(int $id): void
+    {
+        $this->utilisateurs->restore($id);
+    }
+
+    public function supprimerUtilisateurDefinitivement(int $id): void
+    {
+        $this->utilisateurs->forceDelete($id);
+    }
 }

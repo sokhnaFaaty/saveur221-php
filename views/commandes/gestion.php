@@ -24,7 +24,7 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
     }
     return sprintf(
         '<form method="post" action="/commandes/%d/paiements" class="flex flex-wrap items-center gap-1.5 mt-2">
-            <input type="number" name="montant" min="1" max="%d" step="any" placeholder="Montant" required
+            <input type="number" name="montant" min="1" max="%d" step="any" placeholder="Montant"
                    class="w-24 px-2 py-1.5 rounded-lg border border-gray-200 text-xs text-center" title="Montant encaisse">
             <select name="moyen" class="px-2 py-1.5 rounded-lg border border-gray-200 text-xs bg-white">
                 <option value="WAVE">Wave</option>
@@ -122,7 +122,7 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
                         <?php endif; ?>
                         <?php endif; ?>
                         <?php if (!in_array($commande->statut, ['RETIREE', 'ANNULEE'], true)): ?>
-                        <button type="button" onclick='demanderConfirmation({titre:"Annuler la commande",message:"L annulation restaure le stock et est irreversible.",cible:<?= json_encode($commande->numCommande) ?>,actionUrl:"/commandes/<?= $commande->id ?>/annuler"})' class="px-3 py-1.5 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition">Annuler</button>
+                        <button type="button" onclick="<?= htmlspecialchars('demanderConfirmation({titre:"Annuler la commande",message:"L annulation restaure le stock et est irreversible.",cible:' . json_encode($commande->numCommande) . ',actionUrl:"/commandes/' . $commande->id . '/annuler"})', ENT_QUOTES, 'UTF-8') ?>" class="px-3 py-1.5 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition">Annuler</button>
                         <?php endif; ?>
                         <a href="/commandes/<?= $commande->id ?>/facture" class="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-gray-600 text-xs font-semibold hover:border-[#B83518] hover:text-[#B83518] transition"><i class="fa-regular fa-file-lines"></i> Facture</a>
                     </div>
@@ -179,7 +179,7 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
                 <?php endif; ?>
                 <?php endif; ?>
                 <?php if (!in_array($commande->statut, ['RETIREE', 'ANNULEE'], true)): ?>
-                <button type="button" onclick='demanderConfirmation({titre:"Annuler la commande",message:"L annulation restaure le stock et est irreversible.",cible:<?= json_encode($commande->numCommande) ?>,actionUrl:"/commandes/<?= $commande->id ?>/annuler"})' class="px-4 py-2 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition">Annuler</button>
+                <button type="button" onclick="<?= htmlspecialchars('demanderConfirmation({titre:"Annuler la commande",message:"L annulation restaure le stock et est irreversible.",cible:' . json_encode($commande->numCommande) . ',actionUrl:"/commandes/' . $commande->id . '/annuler"})', ENT_QUOTES, 'UTF-8') ?>" class="px-4 py-2 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition">Annuler</button>
                 <?php endif; ?>
             </div>
             <div class="flex flex-wrap items-center gap-2">

@@ -15,6 +15,7 @@ class Avis
         public readonly ?string $clientNom,
         public readonly ?string $clientPrenom,
         public readonly int $commandeId,
+        public readonly ?string $deletedAt = null,
     ) {}
 
     public static function fromRow(object $row): self
@@ -28,6 +29,12 @@ class Avis
             clientNom: $row->client_nom ?? null,
             clientPrenom: $row->client_prenom ?? null,
             commandeId: (int) $row->commande_id,
+            deletedAt: $row->deleted_at ?? null,
         );
+    }
+
+    public function supprimeLe(): string
+    {
+        return $this->deletedAt ? date('d/m/Y H:i', strtotime((string) $this->deletedAt)) : '';
     }
 }

@@ -23,4 +23,11 @@ interface CategorieRepositoryInterface
     public function update(int $id, array $data): void;
 
     public function delete(int $id): void;
+
+    /** @return Categorie[] */
+    public function findDeleted(): array;
+
+    public function restore(int $id): void;
+
+    public function forceDelete(int $id): void;
 }
