@@ -5,7 +5,9 @@
     </div>
     <div class="flex items-center gap-3">
         <button type="button" onclick="ouvrirDrawerStaff()" class="px-4 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition flex items-center gap-2">
-            <i class="fa-solid fa-user-plus"></i> Ajouter staff
+            <i class="fa-solid fa-user-plus"></i>
+            <span class="hidden md:inline">Ajouter staff</span>
+            <span class="md:hidden">Ajouter</span>
         </button>
         <a href="/staff/corbeille" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition flex items-center gap-2">
             <i class="fa-regular fa-trash-can"></i> Corbeille
@@ -88,7 +90,7 @@
         </div>
         <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
             <button type="button" onclick="fermerDrawerStaff()" class="flex-1 py-2.5 rounded-lg bg-white text-gray-900 border border-gray-500 text-sm font-semibold hover:bg-gray-50 transition">Annuler</button>
-            <button type="submit" class="flex-1 py-2.5 rounded-lg bg-[#B83518] text-white text-sm font-semibold hover:opacity-90 transition">Enregistrer</button>
+            <button type="submit" class="flex-1 py-2.5 rounded-lg bg-[#A8291A] text-white text-sm font-semibold hover:opacity-90 transition">Enregistrer</button>
         </div>
     </form>
 </aside>

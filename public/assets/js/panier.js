@@ -60,6 +60,12 @@ function mettreAJourAffichage() {
         badge.classList.toggle('hidden', totalArticles === 0);
     }
 
+    const badgeBas = document.getElementById('badge-panier-bas');
+    if (badgeBas) {
+        badgeBas.textContent = totalArticles;
+        badgeBas.classList.toggle('hidden', totalArticles === 0);
+    }
+
     const liste = document.getElementById('liste-panier');
     if (!liste) return;
 

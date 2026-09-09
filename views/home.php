@@ -3,7 +3,7 @@
 /** @var \App\Models\Produit[] $plats */
 
 $images = [
-    'hero'          => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725692/saveur221/images/thieboudienne-rouge.jpg',
+    'hero'          => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788727588/saveur221/images/cotelettes-grillees.jpg',
     'grillade'      => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725699/saveur221/images/grillade-dibiterie.jpg',
     'thieboudienne' => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725692/saveur221/images/thieboudienne-rouge.jpg',
     'brochettes'    => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725696/saveur221/images/brochette-dibi.jpg',
@@ -11,9 +11,9 @@ $images = [
 ?>
 
 <section class="relative overflow-hidden ml-[calc(50%_-_50vw)] mr-[calc(50%_-_50vw)]">
-    <div class="relative h-[550px] bg-cover bg-center" style="background-image:url('<?= $images['hero'] ?>')">
+    <div class="relative min-h-[520px] md:min-h-[560px] bg-cover bg-center" style="background-image:url('<?= $images['hero'] ?>')">
         <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative h-full grid md:grid-cols-[1.4fr,1fr] gap-10 items-center p-10 md:p-16">
+        <div class="relative h-full grid md:grid-cols-[1.4fr,1fr] gap-10 items-center p-6 md:p-16">
             <div class="text-white">
                 <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
                     La Haute Gastronomie <span class="text-primary">Sénégalaise</span> chez Vous
@@ -72,13 +72,13 @@ $images = [
         ['fa-shield-halved', 'Wave & OM 0% Frais', 'Paiement 100% Sécurisé', 'bg-green-50', 'text-green-600', ''],
         ['fa-box', 'Chaud & Hermétique', 'Conditionnement isotherme', 'bg-gray-50', 'text-gray-700', ''],
     ] as [$icone, $titre, $sous, $fond, $couleurIcone, $couleurTitre]): ?>
-    <div class="flex gap-3 bg-white rounded-xl p-4 shadow-md">
+    <div class="flex gap-3 bg-white rounded-xl p-4 shadow-md min-w-0">
         <div class="w-11 h-11 rounded-lg <?= $fond ?> flex items-center justify-center <?= $couleurIcone ?> shrink-0">
             <i class="fa-solid <?= $icone ?>"></i>
         </div>
-        <div>
-            <strong class="block text-sm <?= $couleurTitre ?>"><?= $titre ?></strong>
-            <span class="text-xs text-gray-500"><?= $sous ?></span>
+        <div class="min-w-0 flex-1">
+            <strong class="block text-sm <?= $couleurTitre ?> break-words leading-snug"><?= $titre ?></strong>
+            <span class="text-xs text-gray-500 break-words leading-snug"><?= $sous ?></span>
         </div>
     </div>
     <?php endforeach; ?>
@@ -268,7 +268,7 @@ $images = [
             ['Retirez au comptoir', 'Votre commande vous attend bien chaude au comptoir de retrait.'],
         ] as $i => [$titre, $texte]): ?>
         <div class="bg-white rounded-xl p-5 shadow-sm">
-            <span class="w-12 h-12 rounded-full text-white flex items-center justify-center font-extrabold text-lg mb-4 shadow-md" style="background-color:#B83518"><?= $i + 1 ?></span>
+            <span class="w-12 h-12 rounded-full text-white flex items-center justify-center font-extrabold text-lg mb-4 shadow-md" style="background-color:#A8291A"><?= $i + 1 ?></span>
             <h3 class="font-bold text-sm mb-1"><?= $titre ?></h3>
             <p class="text-xs text-gray-500"><?= $texte ?></p>
         </div>
