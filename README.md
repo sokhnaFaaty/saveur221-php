@@ -36,7 +36,7 @@ Prérequis : PHP ≥ 8.0, Composer, PostgreSQL.
    DB_HOST=127.0.0.1
    DB_PORT=5432
    DB_NAME=saveur221
-   DB_USER=postgres
+   DB_USER=*********
    DB_PASSWORD=********
 
    CLOUDINARY_CLOUD_NAME=
