@@ -115,10 +115,10 @@ $profilActive = str_starts_with($chemin, '/profil');
     <div class="max-w-7xl mx-auto px-6 pt-20">
 
         <header class="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm">
-            <div class="max-w-7xl mx-auto px-6 flex items-center justify-between py-5">
-                <a href="/" class="flex items-center gap-2 text-xl font-extrabold">
-                    <span class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
-                        <i class="fa-solid fa-utensils"></i>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between py-3 sm:py-5 gap-2">
+                <a href="/" class="flex items-center gap-2 text-lg sm:text-xl font-extrabold shrink-0">
+                    <span class="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                        <i class="fa-solid fa-utensils text-sm"></i>
                     </span>
                     Saveur <span class="text-primary">221</span>
                 </a>
@@ -130,26 +130,26 @@ $profilActive = str_starts_with($chemin, '/profil');
                         <a href="/profil" class="<?= $profilActive ? 'text-primary underline underline-offset-8' : 'hover:text-primary transition' ?>">Mon profil</a>
                     <?php endif; ?>
                 </nav>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 sm:gap-3 min-w-0">
                     <?php if ($user && in_array($user['role'], ['GERANT', 'ADMIN'], true)): ?>
-                        <a href="/dashboard" class="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition flex items-center gap-2">
+                        <a href="/dashboard" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-gray-900 text-white text-xs sm:text-sm font-semibold hover:bg-gray-800 transition flex items-center gap-2 whitespace-nowrap">
                             <i class="fa-solid fa-table-cells"></i> Espace <?= $user['role'] === 'ADMIN' ? 'Admin' : 'Gérant' ?>
                         </a>
                     <?php endif; ?>
                     <?php if ($user && $user['role'] === 'CLIENT'): ?>
-                        <button onclick="ouvrirPanier()" class="relative px-4 py-2 rounded-lg bg-primary-light text-primary text-sm font-semibold flex items-center gap-2">
-                            <i class="fa-solid fa-bag-shopping"></i> Mon Panier
+                        <button onclick="ouvrirPanier()" class="relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-primary-light text-primary text-xs sm:text-sm font-semibold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap">
+                            <i class="fa-solid fa-bag-shopping"></i> <span class="hidden sm:inline">Mon Panier</span>
                             <span id="badge-panier" class="hidden absolute -top-2 -right-2 bg-primary text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center"></span>
                         </button>
                     <?php endif; ?>
                     <?php if ($user): ?>
                         <span class="text-sm font-semibold hidden sm:inline"><?= htmlspecialchars($user['prenom']) ?></span>
-                        <a href="/deconnexion" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold hover:border-primary hover:text-primary transition flex items-center gap-2">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
+                        <a href="/deconnexion" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-xs sm:text-sm font-semibold hover:border-primary hover:text-primary transition flex items-center gap-1.5 sm:gap-2 whitespace-nowrap">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span class="hidden sm:inline">Déconnexion</span>
                         </a>
                     <?php else: ?>
-                        <a href="/connexion" class="px-4 py-2 rounded-lg border border-gray-200 text-sm font-semibold hover:border-primary hover:text-primary transition">Connexion</a>
-                        <a href="/inscription" class="px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition">Créer un compte</a>
+                        <a href="/connexion" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-gray-200 text-xs sm:text-sm font-semibold hover:border-primary hover:text-primary transition whitespace-nowrap">Connexion</a>
+                        <a href="/inscription" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-primary text-white text-xs sm:text-sm font-semibold hover:bg-primary-dark transition whitespace-nowrap">Créer un compte</a>
                     <?php endif; ?>
                 </div>
             </div>

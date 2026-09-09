@@ -11,9 +11,9 @@ $images = [
 ?>
 
 <section class="relative overflow-hidden ml-[calc(50%_-_50vw)] mr-[calc(50%_-_50vw)]">
-    <div class="relative h-[550px] bg-cover bg-center" style="background-image:url('<?= $images['hero'] ?>')">
+    <div class="relative min-h-[520px] md:min-h-[560px] bg-cover bg-center" style="background-image:url('<?= $images['hero'] ?>')">
         <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative h-full grid md:grid-cols-[1.4fr,1fr] gap-10 items-center p-10 md:p-16">
+        <div class="relative grid md:grid-cols-[1.4fr,1fr] gap-8 md:gap-10 items-center px-6 md:px-16 py-16 md:py-10">
             <div class="text-white">
                 <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
                     La Haute Gastronomie <span class="text-primary">Sénégalaise</span> chez Vous
@@ -65,26 +65,26 @@ $images = [
     </div>
 </section>
 
-<section class="grid grid-cols-2 md:grid-cols-4 gap-6 my-12">
+<section class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 my-10 md:my-12">
     <?php foreach ([
         ['fa-fire', 'Braise Artisanale', 'Cuisson au feu de bois', 'bg-red-50', 'text-red-700', 'text-red-700'],
         ['fa-clock', '30 à 45 Minutes', 'Livraison rapide Dakar', 'bg-amber-50', 'text-amber-500', ''],
         ['fa-shield-halved', 'Wave & OM 0% Frais', 'Paiement 100% Sécurisé', 'bg-green-50', 'text-green-600', ''],
         ['fa-box', 'Chaud & Hermétique', 'Conditionnement isotherme', 'bg-gray-50', 'text-gray-700', ''],
     ] as [$icone, $titre, $sous, $fond, $couleurIcone, $couleurTitre]): ?>
-    <div class="flex gap-3 bg-white rounded-xl p-4 shadow-md">
-        <div class="w-11 h-11 rounded-lg <?= $fond ?> flex items-center justify-center <?= $couleurIcone ?> shrink-0">
+    <div class="flex gap-3 bg-white rounded-xl p-3 sm:p-4 shadow-md min-w-0">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg <?= $fond ?> flex items-center justify-center <?= $couleurIcone ?> shrink-0">
             <i class="fa-solid <?= $icone ?>"></i>
         </div>
-        <div>
-            <strong class="block text-sm <?= $couleurTitre ?>"><?= $titre ?></strong>
-            <span class="text-xs text-gray-500"><?= $sous ?></span>
+        <div class="min-w-0">
+            <strong class="block text-sm <?= $couleurTitre ?> leading-snug break-words"><?= $titre ?></strong>
+            <span class="text-xs text-gray-500 leading-snug break-words"><?= $sous ?></span>
         </div>
     </div>
     <?php endforeach; ?>
 </section>
 
-<section class="mb-14">
+<section id="categories" class="mb-14 scroll-mt-24">
     <p class="text-primary font-bold text-xs uppercase tracking-wide mb-1">Explorez notre carte</p>
     <h2 class="text-2xl font-extrabold mb-6">Catégories de Plats & Spécialités</h2>
 
@@ -128,6 +128,7 @@ $images = [
     $page = $pageCategories ?? 1;
     $totalPages = $totalPagesCategories ?? 1;
     $pageVar = 'page_categories';
+    $anchor = 'categories';
     include VIEW_PATH . '/partials/pagination.php';
     ?>
 </section>
