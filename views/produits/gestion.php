@@ -1,14 +1,14 @@
-<div class="flex items-center justify-between mb-6">
-    <div>
-        <h1 class="text-2xl font-extrabold">Gestion des Menus & Plats</h1>
-        <p class="text-sm text-gray-500">Créez, modifiez les tarifs, stocks, temps de préparation et visuels.</p>
-    </div>
-    <div class="flex items-center gap-2">
+<div class="mb-6">
+    <h1 class="text-2xl font-extrabold">Gestion des Plats & Menus</h1>
+    <p class="text-sm text-gray-500">Créez, modifiez les tarifs, stocks, temps de préparation et visuels.</p>
+    <div class="flex items-center gap-2 mt-4 justify-end">
         <a href="/produits/corbeille" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition flex items-center gap-2">
             <i class="fa-regular fa-trash-can"></i> Corbeille
         </a>
-        <button type="button" onclick="ouvrirDrawerProduit()" class="px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#B83518">
-            <i class="fa-solid fa-plus"></i> Ajouter un nouveau plat
+        <button type="button" onclick="ouvrirDrawerProduit()" class="px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#A8291A">
+            <i class="fa-solid fa-plus"></i>
+            <span class="hidden md:inline">Ajouter un nouveau plat</span>
+            <span class="md:hidden">Ajouter</span>
         </button>
     </div>
 </div>
@@ -27,7 +27,7 @@
             </select>
             <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
         </div>
-        <button type="submit" class="px-4 py-3 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#B83518">
+        <button type="submit" class="px-4 py-3 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#A8291A">
             <i class="fa-solid fa-magnifying-glass"></i> Filtrer
         </button>
     </form>
@@ -206,7 +206,7 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="w-full py-2.5 rounded-lg text-white font-semibold text-sm transition" style="background-color:#B83518">Enregistrer</button>
+            <button type="submit" class="w-full py-2.5 rounded-lg text-white font-semibold text-sm transition" style="background-color:#A8291A">Enregistrer</button>
         </form>
     </aside>
 </div>

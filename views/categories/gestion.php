@@ -7,8 +7,10 @@
         <a href="/categories/corbeille" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition flex items-center gap-2">
             <i class="fa-regular fa-trash-can"></i> Corbeille
         </a>
-        <button type="button" onclick="ouvrirDrawerCategorie()" class="px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#B83518">
-            <i class="fa-solid fa-plus"></i> Créer une catégorie
+        <button type="button" onclick="ouvrirDrawerCategorie()" class="px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition flex items-center gap-2" style="background-color:#A8291A">
+            <i class="fa-solid fa-plus"></i>
+            <span class="hidden md:inline">Créer une catégorie</span>
+            <span class="md:hidden">Ajouter</span>
         </button>
     </div>
 </div>
@@ -102,9 +104,9 @@
                 <label class="block text-sm font-semibold mb-1">Image (optionnel)</label>
                 <input type="file" name="image" accept="image/jpeg,image/png,image/webp"
                        class="w-full text-sm text-gray-500 file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0
-                              file:bg-[#B83518] file:text-white file:text-sm file:font-semibold cursor-pointer transition">
+                              file:bg-[#A8291A] file:text-white file:text-sm file:font-semibold cursor-pointer transition">
             </div>
-            <button type="submit" class="w-full py-2.5 rounded-lg text-white font-semibold text-sm transition" style="background-color:#B83518">Enregistrer</button>
+            <button type="submit" class="w-full py-2.5 rounded-lg text-white font-semibold text-sm transition" style="background-color:#A8291A">Enregistrer</button>
         </form>
     </aside>
 </div>

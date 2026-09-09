@@ -39,7 +39,7 @@ class ProduitController extends Controller
 
         $pagination = paginer($produits, (int) $this->value('page', 1));
         return View::render('produits/gestion', [
-            'title' => 'Gestion des Menus & Plats',
+            'title' => 'Gestion des Plats & Menus',
             'produits' => $pagination['items'],
             'categoriesProduits' => $this->categorieService->listerCategories(),
             'categorieId' => $categorieId,

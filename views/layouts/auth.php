@@ -18,7 +18,7 @@ $title = $title ?? '';
             theme: {
                 extend: {
                     colors: {
-                        primary: { DEFAULT: '#B83518', dark: '#8f2913', light: '#FDEEE9' },
+                        primary: { DEFAULT: '#A8291A', dark: '#8A2013', light: '#FBECEA' },
                     },
                     fontFamily: { sans: ['Open Sans', 'sans-serif'] },
                 },
@@ -39,7 +39,7 @@ $title = $title ?? '';
 </head>
 <body class="font-sans h-screen bg-primary text-gray-800 flex">
 
-    <aside class="relative hidden lg:flex flex-col w-[34%] shrink-0 h-screen overflow-hidden bg-gradient-to-br from-[#C43d1e] via-[#B83518] to-[#7c1f0e]">
+    <aside class="relative hidden lg:flex flex-col w-[34%] shrink-0 h-screen overflow-hidden bg-gradient-to-br from-[#C43d1e] via-[#A8291A] to-[#7c1f0e]">
 
         <!-- fond décoratif : cercles flous -->
         <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-white/5 blur-2xl"></div>

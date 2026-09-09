@@ -32,9 +32,13 @@ class UtilisateurRepository implements UtilisateurRepositoryInterface
 
 public function create(array $data): Utilisateur
 {
-    $sql = 'INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, telephone, role, actif)
-            VALUES (?, ?, ?, ?, ?, ?, true) RETURNING id';
-    $rows = Database::executeSelect($sql, [$data['nom'], $data['prenom'], $data['email'], $data['mot_de_passe'], $data['telephone'], $data['role']]);
+    $sql = 'INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, telephone, adresse, role, actif, image)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id';
+    $rows = Database::executeSelect($sql, [
+        $data['nom'], $data['prenom'], $data['email'], $data['mot_de_passe'],
+        $data['telephone'], $data['adresse'] ?? null, $data['role'],
+        (int) (bool) ($data['actif'] ?? true), $data['image'] ?? null,
+    ]);
     return $this->findById((int) $rows[0]->id);
 }
 
