@@ -3,7 +3,7 @@
 /** @var \App\Models\Produit[] $plats */
 
 $images = [
-    'hero'          => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788727588/saveur221/images/cotelettes-grillees.jpg',
+    'hero'          => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725692/saveur221/images/thieboudienne-rouge.jpg',
     'grillade'      => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725699/saveur221/images/grillade-dibiterie.jpg',
     'thieboudienne' => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725692/saveur221/images/thieboudienne-rouge.jpg',
     'brochettes'    => 'https://res.cloudinary.com/djh0kp7rv/image/upload/v1788725696/saveur221/images/brochette-dibi.jpg',
