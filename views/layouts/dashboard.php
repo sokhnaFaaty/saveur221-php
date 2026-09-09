@@ -15,7 +15,7 @@ $role = $user['role'] ?? null;
     <script>
         tailwind.config = {
             theme: { extend: {
-                colors: { primary: { DEFAULT: '#B83518', dark: '#8f2913', light: '#FDEEE9' }, bgdash: '#F0F6FF' },
+                colors: { primary: { DEFAULT: '#A8291A', dark: '#8A2013', light: '#FBECEA' }, bgdash: '#F0F6FF' },
             fontFamily: { sans: ['Open Sans', 'sans-serif'] },
             } } },
         };
@@ -57,7 +57,7 @@ $role = $user['role'] ?? null;
 <aside class="hidden md:flex w-64 bg-gray-950 text-gray-300 flex-col shrink-0">
     <div class="p-6 border-b border-white/10">
         <div class="flex items-center gap-3">
-            <span class="w-10 h-10 bg-[#BF360C] rounded-xl flex items-center justify-center shrink-0">
+            <span class="w-10 h-10 bg-[#A8291A] rounded-xl flex items-center justify-center shrink-0">
                 <i class="fa-solid fa-utensils text-white text-base"></i>
             </span>
             <div class="leading-tight">
@@ -75,7 +75,7 @@ $role = $user['role'] ?? null;
             '<a href="%s" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition %s">
                 <i class="fa-solid %s w-4"></i> %s
             </a>',
-            $href, $estActif($href) ? 'bg-[#B83518] text-white shadow-sm' : 'hover:bg-white/5 hover:text-white',
+            $href, $estActif($href) ? 'bg-[#A8291A] text-white shadow-sm' : 'hover:bg-white/5 hover:text-white',
             $icone, $label
         );
         echo $lien('/dashboard', 'fa-table-cells', 'Tableau de Bord');
@@ -126,7 +126,7 @@ $role = $user['role'] ?? null;
             </div>
 
             <?php $avatar = $user['image'] ?? ''; ?>
-            <div class="w-10 h-10 rounded-full overflow-hidden bg-[#B83518] flex items-center justify-center shrink-0">
+            <div class="w-10 h-10 rounded-full overflow-hidden bg-[#A8291A] flex items-center justify-center shrink-0">
                 <?php if ($avatar !== ''): ?>
                     <img src="<?= htmlspecialchars($avatar) ?>" alt="Avatar" class="w-full h-full object-cover">
                 <?php else: ?>
@@ -160,7 +160,7 @@ $role = $user['role'] ?? null;
             <span class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center">
                 <i class="fa-solid fa-utensils"></i>
             </span>
-            Menus / Commandes
+            Plats / Menus
         </a>
 
         <div class="relative">
@@ -179,6 +179,8 @@ $role = $user['role'] ?? null;
                 <?php if ($role === 'ADMIN'): ?>
                 <a href="/staff" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold <?= $estActif('/staff') ? 'bg-primary-light text-primary' : 'text-gray-700 hover:bg-gray-50' ?>"><i class="fa-solid fa-user-group w-4 text-primary"></i> Équipe Staff</a>
                 <?php endif; ?>
+                <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50"><i class="fa-solid fa-globe w-4 text-primary"></i> Voir le site public</a>
+                <a href="/deconnexion" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50"><i class="fa-solid fa-arrow-right-from-bracket w-4 text-primary"></i> Déconnexion</a>
             </div>
         </div>
 

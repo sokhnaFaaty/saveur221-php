@@ -3,22 +3,120 @@
         <h1 class="text-2xl font-extrabold">Gestion des Utilisateurs Staff</h1>
         <p class="text-sm text-gray-500">Module de gestion des accès Gérants et Admins du restaurant.</p>
     </div>
-    <a href="/staff/corbeille" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition flex items-center gap-2">
-        <i class="fa-regular fa-trash-can"></i> Corbeille
-    </a>
+    <div class="flex items-center gap-3">
+        <button type="button" onclick="ouvrirDrawerStaff()" class="px-4 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition flex items-center gap-2">
+            <i class="fa-solid fa-user-plus"></i>
+            <span class="hidden md:inline">Ajouter staff</span>
+            <span class="md:hidden">Ajouter</span>
+        </button>
+        <a href="/staff/corbeille" class="px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition flex items-center gap-2">
+            <i class="fa-regular fa-trash-can"></i> Corbeille
+        </a>
+    </div>
 </div>
 
-<form method="post" action="/staff" class="bg-white rounded-xl p-5 shadow-sm mb-6 grid md:grid-cols-3 gap-3">
-    <input type="text" name="prenom" placeholder="Prénom" class="px-3 py-2 rounded-lg border border-gray-200 text-sm">
-    <input type="text" name="nom" placeholder="Nom" class="px-3 py-2 rounded-lg border border-gray-200 text-sm">
-    <input type="text" name="email" placeholder="Email professionnel" class="px-3 py-2 rounded-lg border border-gray-200 text-sm">
-    <input type="text" name="telephone" placeholder="Téléphone" class="px-3 py-2 rounded-lg border border-gray-200 text-sm">
-    <select name="role" class="px-3 py-2 rounded-lg border border-gray-200 text-sm bg-white">
-        <option value="GERANT">GERANT</option><option value="ADMIN">ADMIN</option>
-    </select>
-    <input type="password" name="mot_de_passe" placeholder="Mot de passe" class="px-3 py-2 rounded-lg border border-gray-200 text-sm">
-    <button type="submit" class="md:col-span-3 py-2.5 rounded-lg bg-primary text-white font-semibold text-sm hover:bg-primary-dark transition">Créer un compte Staff</button>
-</form>
+<div id="overlay-staff" onclick="fermerDrawerStaff()" class="hidden fixed inset-0 bg-black/40 z-40"></div>
+
+<aside id="drawer-staff" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+        <div>
+            <h2 class="font-extrabold text-lg">Ajouter un membre du staff</h2>
+            <p class="text-xs text-gray-400">Nouveau compte Gérant ou Admin</p>
+        </div>
+        <button onclick="fermerDrawerStaff()" class="text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <form method="post" action="/staff" enctype="multipart/form-data" class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+        <div>
+            <label class="block text-sm font-semibold mb-1">Prénom</label>
+            <input type="text" name="prenom" placeholder="Ex : Awa" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+        </div>
+        <div>
+            <label class="block text-sm font-semibold mb-1">Nom</label>
+            <input type="text" name="nom" placeholder="Ex : Diop" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+        </div>
+        <div>
+            <label class="block text-sm font-semibold mb-1">Email professionnel</label>
+            <input type="email" name="email" placeholder="Ex : awa.diop@saveur221.sn" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+        </div>
+        <div>
+            <label class="block text-sm font-semibold mb-1">Téléphone</label>
+            <input type="text" name="telephone" placeholder="Ex : 771234567" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+        </div>
+        <div>
+            <label class="block text-sm font-semibold mb-1">Adresse</label>
+            <input type="text" name="adresse" placeholder="Ex : Almadies, Dakar" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+            <div>
+                <label class="block text-sm font-semibold mb-1">Rôle assigné</label>
+                <select name="role" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm bg-white">
+                    <option value="GERANT">Gérant</option>
+                    <option value="ADMIN">Admin</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Statut compte</label>
+                <select name="actif" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm bg-white">
+                    <option value="1">Actif</option>
+                    <option value="0">Inactif</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label class="block text-sm font-semibold mb-1">Mot de passe provisoire</label>
+            <input type="password" name="mot_de_passe" placeholder="Minimum 6 caractères" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+        </div>
+        <div>
+            <label class="block text-sm font-semibold mb-2">Photo de profil <span class="text-xs font-normal text-gray-400">(téléverser ou lien)</span></label>
+            <div class="space-y-3">
+                <div class="flex items-center gap-2">
+                    <input type="radio" name="image_option" value="file" id="opt_staff_file" checked class="accent-red-600">
+                    <label for="opt_staff_file" class="text-sm font-semibold">Option A : Téléverser un fichier</label>
+                </div>
+                <div class="pl-6" id="bloc-staff-file">
+                    <input type="file" name="image_file" accept="image/png,image/jpeg,image/webp" class="text-sm">
+                </div>
+
+                <div class="flex items-center gap-2 pt-1">
+                    <input type="radio" name="image_option" value="url" id="opt_staff_url" class="accent-red-600">
+                    <label for="opt_staff_url" class="text-sm font-semibold">Option B : Lien internet</label>
+                </div>
+                <div class="pl-6 hidden" id="bloc-staff-url">
+                    <input type="text" name="image_url" placeholder="https://example.com/photo.jpg"
+                           class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+            <button type="button" onclick="fermerDrawerStaff()" class="flex-1 py-2.5 rounded-lg bg-white text-gray-900 border border-gray-500 text-sm font-semibold hover:bg-gray-50 transition">Annuler</button>
+            <button type="submit" class="flex-1 py-2.5 rounded-lg bg-[#A8291A] text-white text-sm font-semibold hover:opacity-90 transition">Enregistrer</button>
+        </div>
+    </form>
+</aside>
+
+<script>
+    function ouvrirDrawerStaff() {
+        document.getElementById('overlay-staff').classList.remove('hidden');
+        document.getElementById('drawer-staff').classList.remove('translate-x-full');
+    }
+    function fermerDrawerStaff() {
+        document.getElementById('overlay-staff').classList.add('hidden');
+        document.getElementById('drawer-staff').classList.add('translate-x-full');
+    }
+    document.querySelectorAll('input[name="image_option"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+            const fichier = document.getElementById('opt_staff_file').checked;
+            document.getElementById('bloc-staff-file').classList.toggle('hidden', !fichier);
+            document.getElementById('bloc-staff-url').classList.toggle('hidden', fichier);
+            if (fichier) {
+                document.querySelector('input[name="image_url"]').value = '';
+            } else {
+                document.querySelector('input[name="image_file"]').value = '';
+            }
+        });
+    });
+</script>
 
 <div class="flex items-center gap-2 bg-gray-100 rounded-lg p-1 mb-6 w-fit">
     <a href="?<?= http_build_query(array_merge($_GET, ['vue' => 'tableau'])) ?>"

@@ -13,7 +13,7 @@ $images = [
 <section class="relative overflow-hidden ml-[calc(50%_-_50vw)] mr-[calc(50%_-_50vw)]">
     <div class="relative min-h-[520px] md:min-h-[560px] bg-cover bg-center" style="background-image:url('<?= $images['hero'] ?>')">
         <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative grid md:grid-cols-[1.4fr,1fr] gap-8 md:gap-10 items-center px-6 md:px-16 py-16 md:py-10">
+<div class="relative h-full grid md:grid-cols-[1.4fr,1fr] gap-8 md:gap-10 items-center p-6 md:p-16">
             <div class="text-white">
                 <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
                     La Haute Gastronomie <span class="text-primary">Sénégalaise</span> chez Vous
@@ -72,11 +72,11 @@ $images = [
         ['fa-shield-halved', 'Wave & OM 0% Frais', 'Paiement 100% Sécurisé', 'bg-green-50', 'text-green-600', ''],
         ['fa-box', 'Chaud & Hermétique', 'Conditionnement isotherme', 'bg-gray-50', 'text-gray-700', ''],
     ] as [$icone, $titre, $sous, $fond, $couleurIcone, $couleurTitre]): ?>
-    <div class="flex gap-3 bg-white rounded-xl p-3 sm:p-4 shadow-md min-w-0">
+<div class="flex gap-3 bg-white rounded-xl p-3 sm:p-4 shadow-md min-w-0">
         <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg <?= $fond ?> flex items-center justify-center <?= $couleurIcone ?> shrink-0">
             <i class="fa-solid <?= $icone ?>"></i>
         </div>
-        <div class="min-w-0">
+        <div class="min-w-0 flex-1">
             <strong class="block text-sm <?= $couleurTitre ?> leading-snug break-words"><?= $titre ?></strong>
             <span class="text-xs text-gray-500 leading-snug break-words"><?= $sous ?></span>
         </div>
@@ -269,7 +269,7 @@ $images = [
             ['Retirez au comptoir', 'Votre commande vous attend bien chaude au comptoir de retrait.'],
         ] as $i => [$titre, $texte]): ?>
         <div class="bg-white rounded-xl p-5 shadow-sm">
-            <span class="w-12 h-12 rounded-full text-white flex items-center justify-center font-extrabold text-lg mb-4 shadow-md" style="background-color:#B83518"><?= $i + 1 ?></span>
+            <span class="w-12 h-12 rounded-full text-white flex items-center justify-center font-extrabold text-lg mb-4 shadow-md" style="background-color:#A8291A"><?= $i + 1 ?></span>
             <h3 class="font-bold text-sm mb-1"><?= $titre ?></h3>
             <p class="text-xs text-gray-500"><?= $texte ?></p>
         </div>

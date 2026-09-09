@@ -31,7 +31,7 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
                 <option value="ORANGE_MONEY">Orange Money</option>
                 <option value="ESPECES">Especes</option>
             </select>
-            <button class="px-3 py-1.5 rounded-lg text-white text-xs font-semibold hover:opacity-90 transition" style="background-color:#BF360C">Encaisser</button>
+            <button class="px-3 py-1.5 rounded-lg text-white text-xs font-semibold hover:opacity-90 transition" style="background-color:#A8291A">Encaisser</button>
         </form>',
         $commande->id, (int) $reste
     );
@@ -41,9 +41,9 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
 <p class="text-sm text-gray-500 mb-6">Suivi des statuts (En attente &rarr; En préparation &rarr; Prête &rarr; Retirée) et encaissement au comptoir.</p>
 
 <form method="get" action="/commandes" class="flex flex-wrap gap-2 mb-4">
-    <a href="/commandes" class="px-4 py-2 rounded-lg text-sm font-semibold <?= !$statutFiltre && !$paiementFiltre ? 'bg-[#B83518] text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-[#B83518] hover:text-[#B83518] transition' ?>">Tous</a>
+    <a href="/commandes" class="px-4 py-2 rounded-lg text-sm font-semibold <?= !$statutFiltre && !$paiementFiltre ? 'bg-[#A8291A] text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-[#A8291A] hover:text-[#A8291A] transition' ?>">Tous</a>
     <?php foreach (['EN_ATTENTE', 'EN_PREPARATION', 'PRETE', 'RETIREE', 'ANNULEE'] as $s): ?>
-    <a href="/commandes?statut=<?= $s ?><?= $paiementFiltre ? '&paiement=' . urlencode($paiementFiltre) : '' ?><?= $terme ? '&q=' . urlencode($terme) : '' ?>" class="px-4 py-2 rounded-lg text-sm font-semibold <?= $statutFiltre === $s ? 'bg-[#B83518] text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-[#B83518] hover:text-[#B83518] transition' ?>"><?= $s ?></a>
+    <a href="/commandes?statut=<?= $s ?><?= $paiementFiltre ? '&paiement=' . urlencode($paiementFiltre) : '' ?><?= $terme ? '&q=' . urlencode($terme) : '' ?>" class="px-4 py-2 rounded-lg text-sm font-semibold <?= $statutFiltre === $s ? 'bg-[#A8291A] text-white shadow-sm' : 'bg-white border border-gray-200 text-gray-600 hover:border-[#A8291A] hover:text-[#A8291A] transition' ?>"><?= $s ?></a>
     <?php endforeach; ?>
 </form>
 
@@ -102,7 +102,7 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
                         <div class="flex items-center gap-1.5 text-xs text-gray-500">
                             <span><?= number_format($paiement->montant, 0) ?> (<?= htmlspecialchars($paiement->moyen) ?>)</span>
                             <?php if (isset($recusParPaiement[$paiement->id])): ?>
-                            <a href="/recus/<?= $paiement->id ?>" class="text-[#B83518] hover:underline" title="Voir le recu"><i class="fa-regular fa-receipt"></i></a>
+                            <a href="/recus/<?= $paiement->id ?>" class="text-[#A8291A] hover:underline" title="Voir le recu"><i class="fa-regular fa-receipt"></i></a>
                             <?php endif; ?>
                         </div>
                         <?php endforeach; ?>
@@ -117,14 +117,14 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
                         <?php else: ?>
                         <form method="post" action="/commandes/<?= $commande->id ?>/statut">
                             <input type="hidden" name="statut" value="<?= $prochain ?>">
-                            <button class="px-3 py-1.5 rounded-lg bg-[#B83518] text-white text-xs font-semibold hover:bg-primary-dark transition"><?= $libelleAction[$commande->statut] ?></button>
+                            <button class="px-3 py-1.5 rounded-lg bg-[#A8291A] text-white text-xs font-semibold hover:bg-primary-dark transition"><?= $libelleAction[$commande->statut] ?></button>
                         </form>
                         <?php endif; ?>
                         <?php endif; ?>
                         <?php if (!in_array($commande->statut, ['RETIREE', 'ANNULEE'], true)): ?>
                         <button type="button" onclick="<?= htmlspecialchars('demanderConfirmation({titre:"Annuler la commande",message:"L annulation restaure le stock et est irreversible.",cible:' . json_encode($commande->numCommande) . ',actionUrl:"/commandes/' . $commande->id . '/annuler"})', ENT_QUOTES, 'UTF-8') ?>" class="px-3 py-1.5 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition">Annuler</button>
                         <?php endif; ?>
-                        <a href="/commandes/<?= $commande->id ?>/facture" class="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-gray-600 text-xs font-semibold hover:border-[#B83518] hover:text-[#B83518] transition"><i class="fa-regular fa-file-lines"></i> Facture</a>
+                        <a href="/commandes/<?= $commande->id ?>/facture" class="px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-gray-600 text-xs font-semibold hover:border-[#A8291A] hover:text-[#A8291A] transition"><i class="fa-regular fa-file-lines"></i> Facture</a>
                     </div>
                 </td>
             </tr>
@@ -172,7 +172,7 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
                 <?php else: ?>
                 <form method="post" action="/commandes/<?= $commande->id ?>/statut">
                     <input type="hidden" name="statut" value="<?= $prochain ?>">
-                    <button class="px-4 py-2 rounded-lg bg-[#B83518] text-white text-xs font-semibold hover:bg-primary-dark transition">
+                    <button class="px-4 py-2 rounded-lg bg-[#A8291A] text-white text-xs font-semibold hover:bg-primary-dark transition">
                         <?= $libelleAction[$commande->statut] ?>
                     </button>
                 </form>
@@ -185,10 +185,10 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
             <div class="flex flex-wrap items-center gap-2">
                 <?php foreach ($paiementsParCommande[$commande->id] ?? [] as $paiement): ?>
                 <?php if (isset($recusParPaiement[$paiement->id])): ?>
-                <a href="/recus/<?= $paiement->id ?>" class="px-3 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 text-xs font-semibold hover:border-[#B83518] hover:text-[#B83518] transition"><i class="fa-regular fa-receipt"></i> Recu (<?= number_format($paiement->montant, 0) ?>)</a>
+                <a href="/recus/<?= $paiement->id ?>" class="px-3 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 text-xs font-semibold hover:border-[#A8291A] hover:text-[#A8291A] transition"><i class="fa-regular fa-receipt"></i> Recu (<?= number_format($paiement->montant, 0) ?>)</a>
                 <?php endif; ?>
                 <?php endforeach; ?>
-                <a href="/commandes/<?= $commande->id ?>/facture" class="px-3 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 text-xs font-semibold hover:border-[#B83518] hover:text-[#B83518] transition"><i class="fa-regular fa-file-lines"></i> Facture</a>
+                <a href="/commandes/<?= $commande->id ?>/facture" class="px-3 py-2 rounded-lg bg-white border border-gray-300 text-gray-600 text-xs font-semibold hover:border-[#A8291A] hover:text-[#A8291A] transition"><i class="fa-regular fa-file-lines"></i> Facture</a>
             </div>
         </div>
 

@@ -59,12 +59,12 @@ $adresse   = $profil && method_exists($profil, 'adresse') ? $profil->adresse : '
                        class="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
             </div>
 
-            <div class="bg-primary-light rounded-lg px-3 py-2" style="background-color:#FDEEE9">
-                <p class="text-xs text-primary font-bold uppercase tracking-wider" style="color:#B83518">Rôle attribué</p>
-                <p class="font-extrabold text-lg text-primary" style="color:#B83518"><?= htmlspecialchars($role !== '' ? $role : 'CLIENT') ?></p>
+            <div class="bg-primary-light rounded-lg px-3 py-2" style="background-color:#FBECEA">
+                <p class="text-xs text-primary font-bold uppercase tracking-wider" style="color:#A8291A">Rôle attribué</p>
+                <p class="font-extrabold text-lg text-primary" style="color:#A8291A"><?= htmlspecialchars($role !== '' ? $role : 'CLIENT') ?></p>
             </div>
 
-            <button type="submit" class="w-full py-2.5 rounded-lg text-white font-semibold transition shadow-sm" style="background-color:#B83518">
+            <button type="submit" class="w-full py-2.5 rounded-lg text-white font-semibold transition shadow-sm" style="background-color:#A8291A">
                 Enregistrer les modifications
             </button>
         </div>

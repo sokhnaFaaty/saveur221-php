@@ -31,10 +31,6 @@ class HomeController extends Controller
         }
 
         // Ordre des "Coups de coeur" + Plat Signature du header (Thieboudienne en premier)
-        $parLibelle = [];
-        foreach ($tous as $p) {
-            $parLibelle[mb_strtolower($p->libelle)] = $p;
-        }
         $ordre = [
             'Thieboudienne Penda Mbaye',
             'Yassa au Poulet Braisé Maison',
@@ -42,9 +38,30 @@ class HomeController extends Controller
             'Café Touba au Lait de Kaolack',
             'Jus de Bissap Rouge Frais',
         ];
-        $plats = array_values(array_filter(
-            array_map(fn (string $libelle) => $parLibelle[mb_strtolower($libelle)] ?? null, $ordre)
-        ));
+
+        $plats = [];
+        // Plat Signature : toujours la Thiéboudienne (plat national), quelle que soit
+        // la variante du libelle (ex: "Thieboudieune", "Thiéboudiène", ...).
+        foreach ($tous as $p) {
+            if (str_contains(mb_strtolower((string) $p->libelle), 'thieboudien')) {
+                $plats[] = $p;
+                break;
+            }
+        }
+        // Les autres coups de coeur dans l'ordre recommande, sans doublon.
+        foreach ($ordre as $libelle) {
+            $candidat = null;
+            foreach ($tous as $p) {
+                if (mb_strtolower((string) $p->libelle) === mb_strtolower($libelle)) {
+                    $candidat = $p;
+                    break;
+                }
+            }
+            if ($candidat === null || in_array($candidat->id, array_column($plats, 'id'), true)) {
+                continue;
+            }
+            $plats[] = $candidat;
+        }
 
         // Categories paginees : 5 par page (1 ligne de la grille md:grid-cols-5),
         // meme avec 100 categories la page d'accueil reste legere.

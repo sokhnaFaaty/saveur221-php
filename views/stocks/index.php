@@ -64,7 +64,7 @@
                 <td class="px-4 py-3">
                     <form method="post" action="/stocks/<?= $plat->id ?>/approvisionner">
                         <input type="hidden" name="quantite" value="10">
-                        <button type="submit" class="px-3 py-1.5 rounded-lg text-white text-xs font-semibold transition" style="background-color:#BF360C">
+                        <button type="submit" class="px-3 py-1.5 rounded-lg text-white text-xs font-semibold transition" style="background-color:#A8291A">
                             <i class="fa-solid fa-plus"></i> +10 Portions
                         </button>
                     </form>
@@ -112,7 +112,7 @@
                 <span class="w-8 h-8 flex items-center justify-center font-extrabold text-gray-900">1</span>
                 <span class="w-8 h-8 flex items-center justify-center rounded-md text-gray-500 font-bold">+</span>
             </div>
-            <button type="submit" class="flex-1 py-2.5 rounded-lg text-white text-xs font-bold transition hover:opacity-90" style="background-color:#BF360C">
+            <button type="submit" class="flex-1 py-2.5 rounded-lg text-white text-xs font-bold transition hover:opacity-90" style="background-color:#A8291A">
                 +10 Portions
             </button>
         </form>

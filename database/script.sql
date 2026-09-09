@@ -17,6 +17,7 @@ CREATE TABLE utilisateurs (
     email VARCHAR(150) NOT NULL UNIQUE,
     mot_de_passe VARCHAR(255) NOT NULL,
     telephone VARCHAR(20) NOT NULL UNIQUE,
+    adresse VARCHAR(255),
     role VARCHAR(20) NOT NULL CHECK (role IN ('ADMIN', 'GERANT')),
     actif BOOLEAN NOT NULL DEFAULT true,
     image VARCHAR(255),
