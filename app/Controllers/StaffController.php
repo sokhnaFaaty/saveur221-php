@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Services\UtilisateurService;
+use App\Services\UploadService;
 use Core\View;
 use Exceptions\AppException;
 
 class StaffController extends Controller
 {
-    public function __construct(private UtilisateurService $utilisateurService) {}
+    public function __construct(
+        private UtilisateurService $utilisateurService,
+        private UploadService $uploads,
+    ) {}
 
     public function index(): string
     {
@@ -27,10 +31,21 @@ class StaffController extends Controller
     public function store(): never
     {
         try {
+            $imageUrl = null;
+            $fichier = $_FILES['image_file'] ?? [];
+            $lien = trim((string) $this->value('image_url', ''));
+            if (($fichier['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
+                $imageUrl = $this->uploads->upload($fichier);
+            } elseif ($lien !== '') {
+                $imageUrl = $lien;
+            }
+
             $this->utilisateurService->ajouterUtilisateur([
                 'nom' => $this->value('nom'), 'prenom' => $this->value('prenom'),
                 'email' => $this->value('email'), 'telephone' => $this->value('telephone'),
+                'adresse' => $this->value('adresse'),
                 'role' => $this->value('role'), 'mot_de_passe' => $this->value('mot_de_passe'),
+                'actif' => $this->value('actif', '1'), 'image' => $imageUrl,
             ]);
             flash('success', 'Compte staff cree.');
         } catch (AppException $e) {
