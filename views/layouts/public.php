@@ -49,9 +49,9 @@ $profilActive = str_starts_with($chemin, '/profil');
         *::-webkit-scrollbar { width: 0; height: 0; display: none; }
     </style>
 </head>
-<div id="overlay-panier" onclick="fermerPanier()" class="hidden fixed inset-0 bg-black/40 z-40"></div>
+<div id="overlay-panier" onclick="fermerPanier()" class="hidden fixed inset-0 bg-black/40 z-[55]"></div>
 
-<aside id="panneau-panier" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 translate-x-full transition-transform duration-300 flex flex-col">
+<aside id="panneau-panier" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[60] translate-x-full transition-transform duration-300 flex flex-col">
     <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
         <div>
             <h2 class="font-extrabold text-lg">Mon Panier</h2>
