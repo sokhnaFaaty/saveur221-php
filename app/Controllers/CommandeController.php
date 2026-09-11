@@ -40,15 +40,39 @@ class CommandeController extends Controller
         $commandes = $this->commandeService->listerMesCommandes($clientId);
         $paiementsParCommande = [];
         $avisParCommande = [];
+        $mesAvis = [];
         foreach ($commandes as $commande) {
             $paiementsParCommande[$commande->id] = $this->paiements->findByCommande($commande->id);
-            $avisParCommande[$commande->id] = $this->avis->findByCommande($commande->id);
+            $avis = $this->avis->findByCommande($commande->id);
+            $avisParCommande[$commande->id] = $avis;
+            if ($avis !== null) {
+                $mesAvis[] = ['avis' => $avis, 'numCommande' => $commande->numCommande, 'commande' => $commande];
+            }
         }
+
+        $paginationCommandes = paginer($commandes, (int) $this->value('page_commandes', 1), 6);
+        $paginationAvis = paginer($mesAvis, (int) $this->value('page_avis', 1), 6);
+
+        $commandesAvecPaiements = array_values(array_filter($commandes, fn($c) => ($paiementsParCommande[$c->id] ?? []) !== []));
+        $paginationFactures = paginer($commandesAvecPaiements, (int) $this->value('page_factures', 1), 8);
+
         return View::render('commandes/mes-commandes', [
             'title' => 'Mes commandes',
-            'commandes' => $commandes,
+            'commandes' => $paginationCommandes['items'],
+            'pageCommandes' => $paginationCommandes['page'],
+            'totalPagesCommandes' => $paginationCommandes['totalPages'],
+            'totalCommandes' => $paginationCommandes['total'],
             'paiementsParCommande' => $paiementsParCommande,
             'avisParCommande' => $avisParCommande,
+            'mesAvis' => $paginationAvis['items'],
+            'pageAvis' => $paginationAvis['page'],
+            'totalPagesAvis' => $paginationAvis['totalPages'],
+            'totalAvis' => $paginationAvis['total'],
+            'commandesFactures' => $paginationFactures['items'],
+            'pageFactures' => $paginationFactures['page'],
+            'totalPagesFactures' => $paginationFactures['totalPages'],
+            'onglet' => $this->value('onglet', 'commandes'),
+            'vue' => $this->value('vue', 'cartes'),
         ], 'layouts/public');
     }
 
