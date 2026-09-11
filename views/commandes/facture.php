@@ -64,9 +64,14 @@ $statuts = [
                 <a href="/mes-commandes" class="px-5 py-3 rounded-lg bg-white border border-gray-200 text-gray-600 text-sm font-semibold hover:border-primary hover:text-primary transition flex items-center gap-2">
                     <i class="fa-solid fa-arrow-left"></i> Retour à mes commandes
                 </a>
-                <div class="text-right">
+                <div class="flex items-center gap-3">
+                    <a href="/commandes/<?= $commande->id ?>/facture/pdf" class="px-5 py-3 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition flex items-center gap-2">
+                        <i class="fa-solid fa-file-pdf"></i> Télécharger la facture (PDF)
+                    </a>
+                    <div class="text-right">
                     <p class="text-xs uppercase tracking-wide text-gray-400 font-semibold mb-1">Total réglé</p>
                     <p class="text-3xl font-extrabold text-primary"><?= number_format($facture->montantTotal ?? $commande->total, 0, ' ', ' ') ?> FCFA</p>
+                </div>
                 </div>
             </div>
         </div>
