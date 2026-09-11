@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Services\CommandeService;
+use App\Services\PdfService;
 use Core\View;
 use Exceptions\AppException;
 
