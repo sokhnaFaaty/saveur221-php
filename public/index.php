@@ -30,9 +30,6 @@ use App\Interfaces\AvisRepositoryInterface;
 use App\Repositories\AvisRepository;
 
 
-
-
-
 require __DIR__ . '/../vendor/autoload.php';
 
 Dotenv::createImmutable(dirname(__DIR__))->safeLoad();
