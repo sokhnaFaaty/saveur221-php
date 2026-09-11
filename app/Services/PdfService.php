@@ -36,6 +36,10 @@ class PdfService
 
     private function renderView(string $template, array $data): string
     {
+        if (!defined('VIEW_PATH')) {
+            define('VIEW_PATH', dirname(__DIR__, 2) . '/views');
+        }
+
         extract($data, EXTR_SKIP);
 
         ob_start();

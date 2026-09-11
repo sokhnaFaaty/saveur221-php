@@ -82,9 +82,14 @@ $libelleMoyen = $moyens[$paiement->moyen] ?? $paiement->moyen;
                 <a href="/mes-commandes" class="px-5 py-3 rounded-lg bg-white border border-gray-200 text-gray-600 text-sm font-semibold hover:border-primary hover:text-primary transition flex items-center gap-2">
                     <i class="fa-solid fa-arrow-left"></i> Retour à mes commandes
                 </a>
-                <a href="/commandes/<?= $commande->id ?>/facture" class="px-5 py-3 rounded-lg bg-white border border-gray-200 text-gray-600 text-sm font-semibold hover:border-primary hover:text-primary transition flex items-center gap-2">
-                    <i class="fa-regular fa-file-lines"></i> Voir la facture
-                </a>
+                <div class="flex items-center gap-3">
+                    <a href="/recus/<?= $paiement->id ?>/pdf" class="px-5 py-3 rounded-lg bg-green-700 text-white text-sm font-semibold hover:bg-green-800 transition flex items-center gap-2">
+                        <i class="fa-solid fa-file-pdf"></i> Télécharger le reçu (PDF)
+                    </a>
+                    <a href="/commandes/<?= $commande->id ?>/facture" class="px-5 py-3 rounded-lg bg-white border border-gray-200 text-gray-600 text-sm font-semibold hover:border-primary hover:text-primary transition flex items-center gap-2">
+                        <i class="fa-regular fa-file-lines"></i> Voir la facture
+                    </a>
+                </div>
             </div>
         </div>
 

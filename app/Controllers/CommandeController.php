@@ -18,6 +18,7 @@ class CommandeController extends Controller
         private \App\Interfaces\AvisRepositoryInterface $avis,
         private \App\Services\PaiementService $paiementService,
         private \App\Interfaces\RecuRepositoryInterface $recus,
+        private PdfService $pdf,
     ) {}
 
     // Client : passe une commande a partir du panier (JSON envoye par le JS)
@@ -172,4 +173,22 @@ class CommandeController extends Controller
         'facture'  => $facture,
     ], 'layouts/public');
 }
+
+    public function facturePdf(int $id): never
+    {
+        try {
+            $commande = $this->commandeService->consulterCommande($id);
+        } catch (AppException $e) {
+            http_response_code(404);
+            echo View::render('errors/404', ['title' => 'Facture introuvable'], 'layouts/public');
+            exit;
+        }
+
+        $facture = $this->factures->findByCommande($id);
+
+        $this->pdf->generate('commandes/facture-pdf', [
+            'commande' => $commande,
+            'facture'  => $facture,
+        ], "facture-{$facture?->numero}.pdf");
+    }
 }
