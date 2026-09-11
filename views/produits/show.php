@@ -30,7 +30,7 @@
                 <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-primary"></i> Origine: Senegal</span>
             </div>
 
-            <?php if ($produit->disponible()): ?>
+            <?php if ($produit->disponible() && (!isConnected() || hasRole('CLIENT'))): ?>
             <div class="mb-4">
                 <label class="block text-sm font-semibold mb-1.5">Instructions speciales pour la cuisine <span class="text-gray-400 font-normal">(optionnel)</span></label>
                 <input type="text" id="instructions" placeholder="Ex: Sans piment fort, sauce a part..."
@@ -55,7 +55,7 @@
             <button id="btn-ajouter" class="w-full py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
                 Ajouter <span id="label-portions">1</span> portion(s) au Panier
             </button>
-            <?php else: ?>
+            <?php elseif (!$produit->disponible()): ?>
             <p class="text-3xl font-extrabold text-primary mb-4"><?= number_format($produit->prix, 0) ?> FCFA</p>
             <span class="block text-center py-3 rounded-lg bg-gray-100 text-gray-400 font-semibold">Actuellement epuise</span>
             <?php endif; ?>

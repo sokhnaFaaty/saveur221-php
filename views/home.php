@@ -23,9 +23,11 @@ $images = [
                     Thiéboudiène Penda Mbaye au Thiof frais, Yassa au Poulet braisé, Dibi d'agneau au feu de bois.
                 </p>
                 <div class="flex flex-wrap gap-3 mb-6">
+                    <?php if (!isConnected() || hasRole('CLIENT')): ?>
                     <a href="/catalogue" class="px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition">
                         Commander maintenant
                     </a>
+                    <?php endif; ?>
                     <a href="#incontournables" class="px-6 py-3 rounded-lg border border-white/30 text-white font-semibold hover:bg-white/10 transition">
                         Découvrez le Thiéboudiène du Chef
                     </a>
@@ -55,7 +57,9 @@ $images = [
                             <a href="/produits/<?= $vedette->id ?>" class="w-9 h-9 flex items-center justify-center rounded-lg border border-white/30 text-white hover:bg-white/15 transition" title="Voir le détail">
                                 <i class="fa-regular fa-eye text-sm"></i>
                             </a>
+                            <?php if (!isConnected() || hasRole('CLIENT')): ?>
                             <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary-dark transition" onclick="<?= htmlspecialchars('ajouterAuPanier({ id: ' . $vedette->id . ', nom: ' . json_encode($vedette->libelle) . ', prix: ' . $vedette->prix . ', image: ' . json_encode($vedette->image ?: $images['thieboudienne']) . ' })', ENT_QUOTES, 'UTF-8') ?>">Ajouter</button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -163,11 +167,13 @@ $images = [
                         <a href="/produits/<?= $plat->id ?>" class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition" title="Voir le détail">
                             <i class="fa-regular fa-eye text-sm"></i>
                         </a>
+                        <?php if (!isConnected() || hasRole('CLIENT')): ?>
                         <button
                             onclick="<?= htmlspecialchars('ajouterAuPanier({ id: ' . $plat->id . ', nom: ' . json_encode($plat->libelle) . ', prix: ' . $plat->prix . ', image: ' . json_encode($plat->image ?: '/assets/img/maquettes/ThieboudienneRouge.jpg') . ' })', ENT_QUOTES, 'UTF-8') ?>"
                             class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">
                             Commander
                         </button>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
