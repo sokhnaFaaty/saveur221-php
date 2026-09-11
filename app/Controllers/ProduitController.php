@@ -39,7 +39,7 @@ class ProduitController extends Controller
 
         $pagination = paginer($produits, (int) $this->value('page', 1));
         return View::render('produits/gestion', [
-            'title' => 'Gestion des Menus & Plats',
+            'title' => 'Gestion des Plats & Menus',
             'produits' => $pagination['items'],
             'categoriesProduits' => $this->categorieService->listerCategories(),
             'categorieId' => $categorieId,
@@ -183,5 +183,38 @@ class ProduitController extends Controller
             flash('error', $e->getMessage());
         }
         View::redirect('/produits');
+    }
+
+    public function corbeille(): string
+    {
+        $pagination = paginer($this->produitService->listerProduitsSupprimes(), (int) $this->value('page', 1));
+        return View::render('produits/corbeille', [
+            'title' => 'Corbeille des plats',
+            'produits' => $pagination['items'],
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+        ], 'layouts/dashboard');
+    }
+
+    public function restaurer(int $id): never
+    {
+        try {
+            $this->produitService->restaurerProduit($id);
+            flash('success', 'Produit restaure.');
+        } catch (AppException $e) {
+            flash('error', $e->getMessage());
+        }
+        View::redirect('/produits/corbeille');
+    }
+
+    public function supprimerDefinitivement(int $id): never
+    {
+        try {
+            $this->produitService->supprimerProduitDefinitivement($id);
+            flash('success', 'Produit supprime definitivement.');
+        } catch (AppException $e) {
+            flash('error', $e->getMessage());
+        }
+        View::redirect('/produits/corbeille');
     }
 }

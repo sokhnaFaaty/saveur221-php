@@ -31,6 +31,13 @@ interface ProduitRepositoryInterface
 
     public function delete(int $id): void;
 
+    /** @return Produit[] */
+    public function findDeleted(): array;
+
+    public function restore(int $id): void;
+
+    public function forceDelete(int $id): void;
+
     public function diminuerStock(int $id, int $quantite): void;
 
     public function restaurerStock(int $id, int $quantite): void;

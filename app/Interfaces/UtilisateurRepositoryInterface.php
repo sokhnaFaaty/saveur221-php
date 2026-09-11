@@ -17,4 +17,11 @@ interface UtilisateurRepositoryInterface
     public function updateMotDePasse(int $id, string $motDePasse): void;
     public function updateStatut(int $id, bool $actif): void;
     public function delete(int $id): void;
+
+    /** @return Utilisateur[] */
+    public function findDeleted(): array;
+
+    public function restore(int $id): void;
+
+    public function forceDelete(int $id): void;
 }

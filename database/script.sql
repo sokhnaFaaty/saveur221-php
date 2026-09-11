@@ -17,6 +17,7 @@ CREATE TABLE utilisateurs (
     email VARCHAR(150) NOT NULL UNIQUE,
     mot_de_passe VARCHAR(255) NOT NULL,
     telephone VARCHAR(20) NOT NULL UNIQUE,
+    adresse VARCHAR(255),
     role VARCHAR(20) NOT NULL CHECK (role IN ('ADMIN', 'GERANT')),
     actif BOOLEAN NOT NULL DEFAULT true,
     image VARCHAR(255),
@@ -162,7 +163,7 @@ CREATE TABLE remember_tokens (
 );
 -- ============================================================
 -- DONNEES DE TEST (2 utilisateurs pour tester la connexion Java)
--- Mots de passe en clair : admin123 / gerant123 (deja hashes en SHA-256)
+-- Mots de passe en clair : admin123 / gerant123
 -- ============================================================
 INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, telephone, role, actif, image)
 VALUES

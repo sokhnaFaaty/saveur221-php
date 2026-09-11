@@ -31,6 +31,8 @@ class Database
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, 
                     PDO::ATTR_EMULATE_PREPARES => false,
                 ]);
+                self::$pdo->exec("SET client_encoding TO 'UTF8'");
+                self::$pdo->exec("SET NAMES 'UTF8'");
             } catch (PDOException $e) {
                 throw new PDOException('Echec de connexion a la base : ' . $e->getMessage());
             }

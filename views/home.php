@@ -11,9 +11,9 @@ $images = [
 ?>
 
 <section class="relative overflow-hidden ml-[calc(50%_-_50vw)] mr-[calc(50%_-_50vw)]">
-    <div class="relative h-[550px] bg-cover bg-center" style="background-image:url('<?= $images['hero'] ?>')">
+    <div class="relative min-h-[520px] md:min-h-[560px] bg-cover bg-center" style="background-image:url('<?= $images['hero'] ?>')">
         <div class="absolute inset-0 bg-black/55"></div>
-        <div class="relative h-full grid md:grid-cols-[1.4fr,1fr] gap-10 items-center p-10 md:p-16">
+<div class="relative h-full grid md:grid-cols-[1.4fr,1fr] gap-8 md:gap-10 items-center p-6 md:p-16">
             <div class="text-white">
                 <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
                     La Haute Gastronomie <span class="text-primary">Sénégalaise</span> chez Vous
@@ -55,7 +55,7 @@ $images = [
                             <a href="/produits/<?= $vedette->id ?>" class="w-9 h-9 flex items-center justify-center rounded-lg border border-white/30 text-white hover:bg-white/15 transition" title="Voir le détail">
                                 <i class="fa-regular fa-eye text-sm"></i>
                             </a>
-                            <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary-dark transition" onclick='ajouterAuPanier({ id: <?= $vedette->id ?>, nom: <?= json_encode($vedette->libelle) ?>, prix: <?= $vedette->prix ?>, image: <?= json_encode($vedette->image ?: $images['thieboudienne']) ?> })'>Ajouter</button>
+                            <button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary-dark transition" onclick="<?= htmlspecialchars('ajouterAuPanier({ id: ' . $vedette->id . ', nom: ' . json_encode($vedette->libelle) . ', prix: ' . $vedette->prix . ', image: ' . json_encode($vedette->image ?: $images['thieboudienne']) . ' })', ENT_QUOTES, 'UTF-8') ?>">Ajouter</button>
                         </div>
                     </div>
                 </div>
@@ -65,26 +65,26 @@ $images = [
     </div>
 </section>
 
-<section class="grid grid-cols-2 md:grid-cols-4 gap-6 my-12">
+<section class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 my-10 md:my-12">
     <?php foreach ([
         ['fa-fire', 'Braise Artisanale', 'Cuisson au feu de bois', 'bg-red-50', 'text-red-700', 'text-red-700'],
         ['fa-clock', '30 à 45 Minutes', 'Livraison rapide Dakar', 'bg-amber-50', 'text-amber-500', ''],
         ['fa-shield-halved', 'Wave & OM 0% Frais', 'Paiement 100% Sécurisé', 'bg-green-50', 'text-green-600', ''],
         ['fa-box', 'Chaud & Hermétique', 'Conditionnement isotherme', 'bg-gray-50', 'text-gray-700', ''],
     ] as [$icone, $titre, $sous, $fond, $couleurIcone, $couleurTitre]): ?>
-    <div class="flex gap-3 bg-white rounded-xl p-4 shadow-md">
-        <div class="w-11 h-11 rounded-lg <?= $fond ?> flex items-center justify-center <?= $couleurIcone ?> shrink-0">
+<div class="flex gap-3 bg-white rounded-xl p-3 sm:p-4 shadow-md min-w-0">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg <?= $fond ?> flex items-center justify-center <?= $couleurIcone ?> shrink-0">
             <i class="fa-solid <?= $icone ?>"></i>
         </div>
-        <div>
-            <strong class="block text-sm <?= $couleurTitre ?>"><?= $titre ?></strong>
-            <span class="text-xs text-gray-500"><?= $sous ?></span>
+        <div class="min-w-0 flex-1">
+            <strong class="block text-sm <?= $couleurTitre ?> leading-snug break-words"><?= $titre ?></strong>
+            <span class="text-xs text-gray-500 leading-snug break-words"><?= $sous ?></span>
         </div>
     </div>
     <?php endforeach; ?>
 </section>
 
-<section class="mb-14">
+<section id="categories" class="mb-14 scroll-mt-24">
     <p class="text-primary font-bold text-xs uppercase tracking-wide mb-1">Explorez notre carte</p>
     <h2 class="text-2xl font-extrabold mb-6">Catégories de Plats & Spécialités</h2>
 
@@ -128,6 +128,7 @@ $images = [
     $page = $pageCategories ?? 1;
     $totalPages = $totalPagesCategories ?? 1;
     $pageVar = 'page_categories';
+    $anchor = 'categories';
     include VIEW_PATH . '/partials/pagination.php';
     ?>
 </section>
@@ -163,7 +164,7 @@ $images = [
                             <i class="fa-regular fa-eye text-sm"></i>
                         </a>
                         <button
-                            onclick='ajouterAuPanier({ id: <?= $plat->id ?>, nom: <?= json_encode($plat->libelle) ?>, prix: <?= $plat->prix ?>, image: <?= json_encode($plat->image ?: "/assets/img/maquettes/ThieboudienneRouge.jpg") ?> })'
+                            onclick="<?= htmlspecialchars('ajouterAuPanier({ id: ' . $plat->id . ', nom: ' . json_encode($plat->libelle) . ', prix: ' . $plat->prix . ', image: ' . json_encode($plat->image ?: '/assets/img/maquettes/ThieboudienneRouge.jpg') . ' })', ENT_QUOTES, 'UTF-8') ?>"
                             class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">
                             Commander
                         </button>
@@ -209,19 +210,54 @@ $images = [
 </section>
 
 <section class="mb-14">
-    <p class="text-primary font-bold text-xs uppercase tracking-wide mb-1">Témoignages clients</p>
-    <h2 class="text-2xl font-extrabold mb-6">Ce que Dakar dit de Saveur221</h2>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <?php foreach ($avis ?? [] as $a): ?>
-        <div class="border border-gray-100 rounded-xl p-5 hover:shadow-lg transition">
-            <div class="text-amber-500 text-sm mb-2"><?= str_repeat('★', $a->note) . str_repeat('☆', 5 - $a->note) ?></div>
-            <p class="text-sm text-gray-600 mb-3">"<?= htmlspecialchars((string) $a->commentaire) ?>"</p>
-            <p class="font-semibold text-sm"><?= htmlspecialchars($a->clientPrenom . ' ' . $a->clientNom) ?></p>
+    <div class="flex items-end justify-between mb-6 flex-wrap gap-3">
+        <div>
+            <p class="text-primary font-bold text-xs uppercase tracking-wide mb-1">Témoignages clients</p>
+            <h2 class="text-2xl font-extrabold">Ce que Dakar dit de Saveur221</h2>
         </div>
-        <?php endforeach; ?>
+        <div class="flex items-center gap-2">
+            <button type="button" id="btn-avis-prev"
+                    class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:border-primary hover:text-primary transition disabled:opacity-30 disabled:cursor-not-allowed"
+                    aria-label="Avis précédents">
+                <i class="fa-solid fa-arrow-left text-sm"></i>
+            </button>
+            <button type="button" id="btn-avis-next"
+                    class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:border-primary hover:text-primary transition disabled:opacity-30 disabled:cursor-not-allowed"
+                    aria-label="Avis suivants">
+                <i class="fa-solid fa-arrow-right text-sm"></i>
+            </button>
+        </div>
     </div>
+
+    <?php if (empty($avis ?? [])): ?>
+        <div class="border border-gray-100 rounded-xl p-10 text-center text-gray-400 text-sm">
+            Aucun avis client pour le moment.
+        </div>
+    <?php else: ?>
+    <div class="overflow-hidden -mx-2.5">
+        <div id="piste-avis" class="flex transition-transform duration-500 ease-out cursor-grab active:cursor-grabbing">
+            <?php foreach ($avis as $a): ?>
+            <div class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 shrink-0 px-2.5">
+                <div class="border border-gray-100 rounded-xl p-5 hover:shadow-lg transition h-full flex flex-col">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="text-amber-500 text-sm"><?= str_repeat('★', $a->note) . str_repeat('☆', 5 - $a->note) ?></div>
+                        <i class="fa-solid fa-quote-right text-primary/20 text-2xl"></i>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4 flex-1">"<?= htmlspecialchars((string) $a->commentaire) ?>"</p>
+                    <div class="pt-3 border-t border-gray-50">
+                        <p class="font-semibold text-sm"><?= htmlspecialchars($a->clientPrenom . ' ' . $a->clientNom) ?></p>
+                        <p class="text-xs text-gray-400">Client Saveur221</p>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <div id="points-avis" class="flex items-center justify-center gap-1.5 mt-5"></div>
+    <?php endif; ?>
 </section>
+
+<script src="/assets/js/avis-slider.js"></script>
 
 <section class="bg-primary-light/40 rounded-2xl p-10 mb-14">
     <h2 class="text-xl font-extrabold mb-1">Comment fonctionne Saveur221 ?</h2>
@@ -233,7 +269,7 @@ $images = [
             ['Retirez au comptoir', 'Votre commande vous attend bien chaude au comptoir de retrait.'],
         ] as $i => [$titre, $texte]): ?>
         <div class="bg-white rounded-xl p-5 shadow-sm">
-            <span class="w-12 h-12 rounded-full text-white flex items-center justify-center font-extrabold text-lg mb-4 shadow-md" style="background-color:#B83518"><?= $i + 1 ?></span>
+            <span class="w-12 h-12 rounded-full text-white flex items-center justify-center font-extrabold text-lg mb-4 shadow-md" style="background-color:#A8291A"><?= $i + 1 ?></span>
             <h3 class="font-bold text-sm mb-1"><?= $titre ?></h3>
             <p class="text-xs text-gray-500"><?= $texte ?></p>
         </div>

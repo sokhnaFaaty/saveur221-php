@@ -42,6 +42,9 @@ $router->get('/categories/creer', [CategorieController::class, 'create'], ['auth
 $router->get('/categories/{id}/modifier', [CategorieController::class, 'edit'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/categories/{id}/update', [CategorieController::class, 'update'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/categories/{id}/delete', [CategorieController::class, 'delete'], ['auth', 'role:GERANT,ADMIN']);
+$router->get('/categories/corbeille', [CategorieController::class, 'corbeille'], ['auth', 'role:GERANT,ADMIN']);
+$router->post('/categories/{id}/restaurer', [CategorieController::class, 'restaurer'], ['auth', 'role:GERANT,ADMIN']);
+$router->post('/categories/{id}/supprimer-definitivement', [CategorieController::class, 'supprimerDefinitivement'], ['auth', 'role:GERANT,ADMIN']);
 
 $router->get('/produits', [ProduitController::class, 'index']);
 $router->get('/produits/{id}', [ProduitController::class, 'show']);
@@ -50,6 +53,9 @@ $router->get('/produits/creer', [ProduitController::class, 'create'], ['auth', '
 $router->get('/produits/{id}/modifier', [ProduitController::class, 'modifier'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/produits/{id}/update', [ProduitController::class, 'update'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/produits/{id}/delete', [ProduitController::class, 'delete'], ['auth', 'role:GERANT,ADMIN']);
+$router->get('/produits/corbeille', [ProduitController::class, 'corbeille'], ['auth', 'role:GERANT,ADMIN']);
+$router->post('/produits/{id}/restaurer', [ProduitController::class, 'restaurer'], ['auth', 'role:GERANT,ADMIN']);
+$router->post('/produits/{id}/supprimer-definitivement', [ProduitController::class, 'supprimerDefinitivement'], ['auth', 'role:GERANT,ADMIN']);
 
 $router->post('/commandes', [CommandeController::class, 'store'], ['auth', 'role:CLIENT']);
 $router->get('/mes-commandes', [CommandeController::class, 'mesCommandes'], ['auth', 'role:CLIENT']);
@@ -70,6 +76,9 @@ $router->post('/notifications/{id}/lue', [NotificationController::class, 'markRe
 $router->post('/commandes/{commandeId}/avis', [AvisController::class, 'store'], ['auth', 'role:CLIENT']);
 $router->get('/avis', [AvisController::class, 'index'], ['auth', 'role:ADMIN']);
 $router->post('/avis/{id}/delete', [AvisController::class, 'delete'], ['auth', 'role:ADMIN']);
+$router->get('/avis/corbeille', [AvisController::class, 'corbeille'], ['auth', 'role:ADMIN']);
+$router->post('/avis/{id}/restaurer', [AvisController::class, 'restaurer'], ['auth', 'role:ADMIN']);
+$router->post('/avis/{id}/supprimer-definitivement', [AvisController::class, 'supprimerDefinitivement'], ['auth', 'role:ADMIN']);
 
 $router->get('/stocks', [StockController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/stocks/{id}/approvisionner', [StockController::class, 'approvisionner'], ['auth', 'role:GERANT,ADMIN']);
@@ -80,6 +89,9 @@ $router->get('/staff', [StaffController::class, 'index'], ['auth', 'role:ADMIN']
 $router->post('/staff', [StaffController::class, 'store'], ['auth', 'role:ADMIN']);
 $router->post('/staff/{id}/toggle', [StaffController::class, 'toggle'], ['auth', 'role:ADMIN']);
 $router->post('/staff/{id}/delete', [StaffController::class, 'delete'], ['auth', 'role:ADMIN']);
+$router->get('/staff/corbeille', [StaffController::class, 'corbeille'], ['auth', 'role:ADMIN']);
+$router->post('/staff/{id}/restaurer', [StaffController::class, 'restaurer'], ['auth', 'role:ADMIN']);
+$router->post('/staff/{id}/supprimer-definitivement', [StaffController::class, 'supprimerDefinitivement'], ['auth', 'role:ADMIN']);
 $router->get('/profil', [ProfilController::class, 'index'], ['auth']);
 $router->post('/profil', [ProfilController::class, 'update'], ['auth']);
 $router->post('/profil/mot-de-passe', [ProfilController::class, 'updatePassword'], ['auth']);

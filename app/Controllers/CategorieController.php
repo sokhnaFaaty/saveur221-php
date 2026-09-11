@@ -89,4 +89,37 @@ public function edit(int $id): string
         }
         View::redirect('/categories');
     }
+
+    public function corbeille(): string
+    {
+        $pagination = paginer($this->categorieService->listerCategoriesSupprimees(), (int) $this->value('page', 1));
+        return View::render('categories/corbeille', [
+            'title' => 'Corbeille des categories',
+            'categories' => $pagination['items'],
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+        ], 'layouts/dashboard');
+    }
+
+    public function restaurer(int $id): never
+    {
+        try {
+            $this->categorieService->restaurerCategorie($id);
+            flash('success', 'Categorie restauree.');
+        } catch (AppException $e) {
+            flash('error', $e->getMessage());
+        }
+        View::redirect('/categories/corbeille');
+    }
+
+    public function supprimerDefinitivement(int $id): never
+    {
+        try {
+            $this->categorieService->supprimerCategorieDefinitivement($id);
+            flash('success', 'Categorie supprimee definitivement.');
+        } catch (AppException $e) {
+            flash('error', $e->getMessage());
+        }
+        View::redirect('/categories/corbeille');
+    }
 }

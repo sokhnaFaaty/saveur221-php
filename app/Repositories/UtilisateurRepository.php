@@ -32,9 +32,13 @@ class UtilisateurRepository implements UtilisateurRepositoryInterface
 
 public function create(array $data): Utilisateur
 {
-    $sql = 'INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, telephone, role, actif)
-            VALUES (?, ?, ?, ?, ?, ?, true) RETURNING id';
-    $rows = Database::executeSelect($sql, [$data['nom'], $data['prenom'], $data['email'], $data['mot_de_passe'], $data['telephone'], $data['role']]);
+    $sql = 'INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, telephone, adresse, role, actif, image)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id';
+    $rows = Database::executeSelect($sql, [
+        $data['nom'], $data['prenom'], $data['email'], $data['mot_de_passe'],
+        $data['telephone'], $data['adresse'] ?? null, $data['role'],
+        (int) (bool) ($data['actif'] ?? true), $data['image'] ?? null,
+    ]);
     return $this->findById((int) $rows[0]->id);
 }
 
@@ -64,5 +68,20 @@ public function updateMotDePasse(int $id, string $motDePasse): void
 public function delete(int $id): void
 {
     Database::executeUpdate('UPDATE utilisateurs SET deleted_at = NOW() WHERE id = ?', [$id]);
+}
+
+public function findDeleted(): array
+{
+    return array_map(Utilisateur::fromRow(...), Database::executeSelect('SELECT * FROM utilisateurs WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC'));
+}
+
+public function restore(int $id): void
+{
+    Database::executeUpdate('UPDATE utilisateurs SET deleted_at = NULL WHERE id = ?', [$id]);
+}
+
+public function forceDelete(int $id): void
+{
+    Database::executeUpdate('DELETE FROM utilisateurs WHERE id = ?', [$id]);
 }
 }

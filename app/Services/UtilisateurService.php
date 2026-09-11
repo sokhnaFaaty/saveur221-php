@@ -42,6 +42,9 @@ class UtilisateurService
             'nom' => trim($data['nom']), 'prenom' => trim($data['prenom']),
             'email' => $data['email'], 'telephone' => $data['telephone'], 'role' => $data['role'],
             'mot_de_passe' => password_hash($data['mot_de_passe'], PASSWORD_DEFAULT),
+            'adresse' => $data['adresse'] ?? null,
+            'image' => $data['image'] ?? null,
+            'actif' => (bool) ($data['actif'] ?? true),
         ]);
     }
 
@@ -61,5 +64,20 @@ class UtilisateurService
     public function supprimerUtilisateur(int $id): void
     {
         $this->utilisateurs->delete($id);
+    }
+
+    public function listerUtilisateursSupprimes(): array
+    {
+        return $this->utilisateurs->findDeleted();
+    }
+
+    public function restaurerUtilisateur(int $id): void
+    {
+        $this->utilisateurs->restore($id);
+    }
+
+    public function supprimerUtilisateurDefinitivement(int $id): void
+    {
+        $this->utilisateurs->forceDelete($id);
     }
 }

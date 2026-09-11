@@ -16,9 +16,9 @@
                 extend: {
                     colors: {
                         primary: {
-                            DEFAULT: '#B83518',
-                            dark: '#8f2913',
-                            light: '#FDEEE9'
+                            DEFAULT: '#A8291A',
+                            dark: '#8A2013',
+                            light: '#FBECEA'
                         },
                         bgdash: '#F0F6FF',
                     },

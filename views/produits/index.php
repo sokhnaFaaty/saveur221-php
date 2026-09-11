@@ -80,7 +80,7 @@
                         </a>
                         <?php if ($plat->disponible()): ?>
                         <button
-                            onclick='ajouterAuPanier({ id: <?= $plat->id ?>, nom: <?= json_encode($plat->libelle) ?>, prix: <?= $plat->prix ?>, image: <?= json_encode($plat->image ?: "/assets/img/maquettes/ThieboudienneRouge.jpg") ?> })'
+                            onclick="<?= htmlspecialchars('ajouterAuPanier({ id: ' . $plat->id . ', nom: ' . json_encode($plat->libelle) . ', prix: ' . $plat->prix . ', image: ' . json_encode($plat->image ?: '/assets/img/maquettes/ThieboudienneRouge.jpg') . ' })', ENT_QUOTES, 'UTF-8') ?>"
                             class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition">
                             Commander
                         </button>

@@ -34,7 +34,7 @@ class NotificationService
         $this->notifications->create(
             'NOUVEL_AVIS',
             "Nouvel avis laisse par $nomClient",
-            "/commandes/$commandeId",
+            '/avis',
             'ADMIN'
         );
     }
