@@ -106,21 +106,114 @@ La gestion des droits se fait par middleware (`auth` + `role:...`) sur les route
 
 ```
 Saveur221-php/
-├── public/            → point d'entrée + assets
+├── public/            → point d'entrée + assets (seul dossier exposé par le serveur)
+│   ├── index.php      → front controller (bootstrap, chargement des routes, dispatch)
+│   └── .htaccess      → réécriture des URLs vers index.php (Apache)
 ├── app/
-│   ├── Controllers/   → traitement des requêtes
-│   ├── Services/      → règles métier
-│   ├── Repositories/  → accès aux données (SQL)
-│   ├── Interfaces/    → contrats des repositories
-│   ├── Models/        → entités métier
-│   └── Middleware/    → filtres d'accès
-├── Core/              → noyau framework (Router, View, Database, Container)
-├── config/            → helpers, configuration
-├── database/          → script.sql
-├── routes/            → web.php (toutes les routes)
-├── views/             → templates (public + dashboard)
-└── Exceptions/        → exceptions métier
+│   ├── Controllers/   → orchestration d'une requête, liaison Vue <-> Services
+│   ├── Services/      → règles métier, calculs (panier, paiement, statistiques...)
+│   ├── Repositories/  → accès aux données (requêtes SQL, préparées via PDO)
+│   ├── Interfaces/    → contrats des repositories (dé-couplage + injection)
+│   ├── Models/        → entités métier (hydratées par les repositories)
+│   └── Middleware/    → filtres d'accès avants contrôleurs
+├── Core/              → noyau de l'architecture MVC maison
+│   ├── Router.php     → mappage routes → contrôleur/action + middleware
+│   ├── View.php       → rendu des templates + layouts
+│   ├── Database.php   → connexion PostgreSQL (PDO, singleton)
+│   └── Container.php  → injection automatique des dépendances (Reflection)
+├── config/            → helpers globaux + configuration
+├── database/          → script.sql (schéma PostgreSQL partagé avec le Module A)
+├── routes/            → web.php (déclaration de toutes les routes)
+├── views/             → templates (public + dashboard) + partials (pagination, flash)
+│   └── partials/      → fragments réutilisables (pagination, drawer, encaissement...)
+├── Exceptions/        → exceptions métier (Validation, NotFound, Auth, Stock...)
+├── vendor/            → dépendances Composer (vlucas/phpdotenv) — gitignoré
+├── .env               → variables d'environnement — gitignoré (voir .env.example)
+└── composer.json      → autoload PSR-4 (App\, Core\, Exceptions\) + dépendances
 ```
+
+### Rôle détaillé de chaque dossier
+
+| Dossier | Rôle |
+|---------|------|
+| **`public/`** | Point d'entrée HTTP. `index.php` démarre la session, charge Composer, charge `.env`, crée le `Container`, enregistre les bindings (Interfaces → Repositories), charge `routes/web.php` puis appelle `$router->dispatch()`. `.htaccess` redirige toute requête vers `index.php`. |
+| **`app/Controllers/`** | Traitent une requête : lisent les entrées (`input()`, `value()`), font appel aux **Services**, puis transmettent les données à une vue via `View::render()`. Retournent un tableau d'attributs (jamais de HTML brut sauf redirections). |
+| **`app/Services/`** | Règles métier et logique applicative : calcul des montants, validation du stock, transitions de statut, statistiques du dashboard, etc. Contrôleurs et repositories ne contiennent pas de règles métier. |
+| **`app/Repositories/`** | Accès aux données. Requêtes SQL (toujours préparées, PDO) propres à chaque entité (`ProduitRepository`, `CommandeRepository`, `PaiementRepository`...). Retournent des **Models** hydratés ou des tableaux. |
+| **`app/Interfaces/`** | Contrats (interfaces) de chaque repository. Permettent l'injection de dépendances et simplifient les tests (mocks). |
+| **`app/Models/`** | Entités métier (getters/setters, logique sur l'objet : `estEnRupture()`, `stockFaible()`, `montantRestant()`...). |
+| **`app/Middleware/`** | Filtres d'accès exécutés **avant** les contrôleurs : `auth()` (connecté ?), `guest()` (inverse), `role(...)` (rôles autorisés). Lancés par le Router via `runMiddleware()` sur la liste déclarée dans la route. |
+| **`Core/`** | Micro-framework maison : `Router` (routing + middleware + CSRF), `View` (templates/layouts + redirections), `Database` (connexion Postgres singleton), `Container` (résolution des dépendances par réflexion). |
+| **`config/`** | Scripts chargés au bootstrap : `helpers.php` (fonctions globales `isConnected()`, `hasRole()`, `flash()`, `paginer()`), `config.php` et `validator.php` (règles de validation), `cloudinary.php` (optionnel). |
+| **`database/`** | `script.sql` : création du schéma PostgreSQL (tables, séquences, données de test), partagé avec le Module A Java. |
+| **`routes/`** | `web.php` : déclaration de toutes les routes avec verbe HTTP, contrôleur/action, et middleware éventuel : `$router->get('/produits', [ProduitController::class, 'index'])`. |
+| **`views/`** | Templates PHP. `layouts/public.php` et `layouts/app.php` (dashboard) définissent la structure, `partials/` des fragments réutilisables (pagination, drawer produit, encaissement). Variables transmises par `extract()`. |
+| **`Exceptions/`** | Exceptions métier levées par les services/repositories et converties en flash + redirection (ou 404/403) par le Router dans `handleException()`. |
+
+### Le middleware
+
+Les contrôles d'accès sont déclaratifs, directement sur les routes (`routes/web.php`) :
+
+```php
+$router->get('/dashboard', [DashboardController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
+$router->post('/commandes', [CommandeController::class, 'store'], ['auth', 'role:CLIENT']);
+```
+
+- `auth` → vérifie `isConnected()` (session « user »), sinon redirige vers `/connexion`.
+- `guest` → si déjà connecté, redirige vers l'accueil.
+- `role:GERANT,ADMIN` → vérifie le rôle de l'utilisateur connecté (via `hasRole()`), sinon renvoie une **403**.
+
+Ils sont exécutés dans `Router::runMiddleware()` avant l'instanciation du contrôleur. L'analogie : un agent de sécurité à la porte du contrôleur.
+
+## Flux complet d'une requête
+
+Exemple avec `GET /produits` :
+
+```
+Navigateur
+   │  GET /produits
+   ▼
+public/index.php ──( .htaccess : tout pointe sur index.php )
+   │  1. vendor/autoload + .env + session_start()
+   │  2. New Container() + bindings (Interface → Repo, via closures)
+   │  3. require routes/web.php  → Route enregistrée
+   │  4. Router->dispatch('GET', '/produits')
+   ▼
+Core\Router::dispatch()
+   │  1. Boucle sur les routes → match méthode + chemin
+   │     (paramètres {id} → (\d+))
+   │  2. Si POST → vérification CSRF (_token vs $_SESSION['csrf'])
+   │  3. runMiddleware()  →  auth, role:... (403 si refus)
+   │  4. Container->make(ProduitController::class)
+   │     → résolution auto des dépendances (Reflection)
+   ▼
+ProduitController::index()
+   │  1. $this->produitService->listerTous()  (règles métier)
+   │  2. $pagination = paginer($produits, $page)
+   │  3. View::render('produits/gestion', $donnees)
+   ▼
+Core\View::render()
+   │  1. extract($donnees) + include views/produits/gestion.php
+   │  2. Buffer rendu injecté dans layouts/app.php (+ partials : pagination...)
+   ▼
+Navigateur  ← réponse HTML complète
+```
+
+Le flux passe toujours par **Service → Repository → Base de données** :
+
+```
+Contrôleur → Service (règles métier) → Repository (SQL préparé, PDO)
+                                              │
+                                              ▼
+                                   PostgreSQL (saveur221) → Models hydratés
+                                              │
+                                              ▼
+Contrôleur → View::render() → HTML renvoyé au navigateur
+```
+
+Erreurs : si un Service lève une `AppException`, le Router la convertit en
+flash + redirection (ou 404/403 selon le type d'exception). Toute autre
+`Throwable` est interceptée par `public/index.php` → écran **500**.
 
 ## Convention de commits
 
