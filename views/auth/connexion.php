@@ -1,4 +1,4 @@
-<h1 class="text-black text-2xl md:text-3xl font-extrabold text-center mb-6">Espace de Connexion</h1>
+<h1 class="text-black text-2xl md:text-3xl font-extrabold text-center mb-6">Connexion</h1>
 
 <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 md:p-8">
 
