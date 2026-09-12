@@ -86,6 +86,10 @@ class CommandeService
         }
 
         $this->commandes->updateStatut($id, $nouveauStatut);
+
+        if ($nouveauStatut === Commande::PRETE) {
+            $this->notifications->notifierCommandePrete($commande->numCommande, $commande->id, $commande->clientId);
+        }
     }
 
     public function annulerCommande(int $id): void

@@ -70,8 +70,8 @@ $router->get('/recus/{id}', [RecuController::class, 'show'], ['auth']);
 $router->get('/paiements', [PaiementController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
 $router->post('/commandes/{commandeId}/paiements', [PaiementController::class, 'store'], ['auth', 'role:GERANT,ADMIN']);
 
-$router->get('/notifications', [NotificationController::class, 'index'], ['auth', 'role:GERANT,ADMIN']);
-$router->post('/notifications/{id}/lue', [NotificationController::class, 'markRead'], ['auth', 'role:GERANT,ADMIN']);
+$router->get('/notifications', [NotificationController::class, 'index'], ['auth']);
+$router->post('/notifications/{id}/lue', [NotificationController::class, 'markRead'], ['auth']);
 
 $router->post('/commandes/{commandeId}/avis', [AvisController::class, 'store'], ['auth', 'role:CLIENT']);
 $router->get('/avis', [AvisController::class, 'index'], ['auth', 'role:ADMIN']);
