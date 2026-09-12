@@ -7,12 +7,18 @@
     <form method="post" action="<?= $categorie ? '/categories/' . $categorie->id . '/update' : '/categories' ?>" enctype="multipart/form-data" class="space-y-4">
         <div>
             <label class="block text-sm font-semibold mb-1">Nom de la categorie</label>
-            <input type="text" name="libelle" value="<?= htmlspecialchars($categorie->libelle ?? '') ?>"
-                   class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+            <input type="text" name="libelle" value="<?= htmlspecialchars(ancienneValeur('libelle', (string) ($categorie->libelle ?? ''))) ?>"
+                   class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary <?= erreurChamp('libelle') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('libelle')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
         <div>
             <label class="block text-sm font-semibold mb-1">Description courte</label>
-            <textarea name="description" rows="3" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary"><?= htmlspecialchars($categorie->description ?? '') ?></textarea>
+            <textarea name="description" rows="3" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary <?= erreurChamp('description') !== '' ? 'border-red-500' : '' ?>"><?= htmlspecialchars(ancienneValeur('description', (string) ($categorie->description ?? ''))) ?></textarea>
+            <?php if ($erreur = erreurChamp('description')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
         <div>
             <label class="block text-sm font-semibold mb-1">Image (optionnel)</label>
@@ -31,3 +37,4 @@
         <button type="submit" class="w-full py-2.5 rounded-lg bg-primary text-white font-semibold text-sm hover:bg-primary-dark transition">Enregistrer</button>
     </form>
 </div>
+<?php effacerErreursFormulaire(); ?>

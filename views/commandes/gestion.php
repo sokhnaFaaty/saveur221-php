@@ -22,19 +22,34 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
     if ($commande->statut === 'ANNULEE' || $reste <= 0) {
         return '';
     }
-    return sprintf(
+    $id = $commande->id;
+    $montant = htmlspecialchars(ancienneValeur("montant_$id"));
+    $moyen = ancienneValeur("moyen_$id");
+    $erreurMontant = erreurChamp("montant_$id");
+    $erreurMoyen = erreurChamp("moyen_$id");
+    $html = sprintf(
         '<form method="post" action="/commandes/%d/paiements" class="flex flex-wrap items-center gap-1.5 mt-2">
-            <input type="number" name="montant" min="1" max="%d" step="any" placeholder="Montant"
-                   class="w-24 px-2 py-1.5 rounded-lg border border-gray-200 text-xs text-center" title="Montant encaisse">
-            <select name="moyen" class="px-2 py-1.5 rounded-lg border border-gray-200 text-xs bg-white">
-                <option value="WAVE">Wave</option>
-                <option value="ORANGE_MONEY">Orange Money</option>
-                <option value="ESPECES">Especes</option>
+            <input type="number" name="montant" min="1" max="%d" step="any" placeholder="Montant" value="%s"
+                   class="w-24 px-2 py-1.5 rounded-lg border %s text-xs text-center" title="Montant encaisse">
+            <select name="moyen" class="px-2 py-1.5 rounded-lg border %s text-xs bg-white">
+                <option value="WAVE"%s>Wave</option>
+                <option value="ORANGE_MONEY"%s>Orange Money</option>
+                <option value="ESPECES"%s>Especes</option>
             </select>
             <button class="px-3 py-1.5 rounded-lg text-white text-xs font-semibold hover:opacity-90 transition" style="background-color:#A8291A">Encaisser</button>
         </form>',
-        $commande->id, (int) $reste
+        $id, (int) $reste, $montant,
+        $erreurMontant !== '' ? 'border-red-500' : 'border-gray-200',
+        $erreurMoyen !== '' ? 'border-red-500' : 'border-gray-200',
+        $moyen === 'WAVE' ? ' selected' : ($moyen === '' ? ' selected' : ''),
+        $moyen === 'ORANGE_MONEY' ? ' selected' : '',
+        $moyen === 'ESPECES' ? ' selected' : ''
     );
+    if ($erreurMontant !== '' || $erreurMoyen !== '') {
+        $message = $erreurMontant !== '' ? $erreurMontant : $erreurMoyen;
+        $html .= '<p class="text-red-500 text-xs mt-1 w-full">' . htmlspecialchars($message) . '</p>';
+    }
+    return $html;
 }
 ?>
 <h1 class="text-2xl font-extrabold mb-1">Gestion des Commandes Clients</h1>
@@ -200,3 +215,4 @@ function encaissementForm(\App\Models\Commande $commande, float $reste): string
 <?php endif; ?>
 
 <?php include VIEW_PATH . '/partials/pagination.php'; ?>
+<?php effacerErreursFormulaire(); ?>

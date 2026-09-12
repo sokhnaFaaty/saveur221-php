@@ -28,5 +28,16 @@ abstract class Controller
         $v = $this->value($key);
         return (is_numeric($v) && $v !== '') ? $v : $defaut;
     }
+
+    /** Redirige vers le formulaire avec les erreurs par champ (sous les inputs) ou un flash global. */
+    protected function redirigerErreurFormulaire(\Exceptions\AppException $e, array $anciennes, string $url): never
+    {
+        if ($e->champ !== null) {
+            flashErreurs([$e->champ => $e->getMessage()], $anciennes);
+        } else {
+            flash('error', $e->getMessage());
+        }
+        \Core\View::redirect($url);
+    }
     
 }

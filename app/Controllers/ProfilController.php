@@ -29,20 +29,21 @@ class ProfilController extends Controller
 
     public function update(): never
     {
+        $anciennes = [
+            'nom'       => (string) $this->value('nom', ''),
+            'prenom'    => (string) $this->value('prenom', ''),
+            'email'     => (string) $this->value('email', ''),
+            'telephone' => (string) $this->value('telephone', ''),
+            'adresse'   => (string) $this->value('adresse', ''),
+        ];
         try {
             $imageUrl = $this->uploads->upload($_FILES['photo'] ?? []);
 
-            $this->profil->mettreAJourInfos($_SESSION['user'] ?? [], [
-                'nom'       => (string) $this->value('nom', ''),
-                'prenom'    => (string) $this->value('prenom', ''),
-                'email'     => (string) $this->value('email', ''),
-                'telephone' => (string) $this->value('telephone', ''),
-                'adresse'   => (string) $this->value('adresse', ''),
-            ], $imageUrl);
+            $this->profil->mettreAJourInfos($_SESSION['user'] ?? [], $anciennes, $imageUrl);
 
             flash('success', 'Profil mis a jour avec succes.');
         } catch (AppException $e) {
-            flash('error', $e->getMessage());
+            $this->redirigerErreurFormulaire($e, $anciennes, '/profil');
         }
 
         View::redirect('/profil');
@@ -50,17 +51,22 @@ class ProfilController extends Controller
 
     public function updatePassword(): never
     {
+        $anciennes = [
+            'ancien_mot_de_passe'    => (string) $this->value('ancien_mot_de_passe', ''),
+            'nouveau_mot_de_passe'   => (string) $this->value('nouveau_mot_de_passe', ''),
+            'confirmation'           => (string) $this->value('confirmation', ''),
+        ];
         try {
             $this->profil->changerMotDePasse(
                 $_SESSION['user'] ?? [],
-                (string) $this->value('ancien_mot_de_passe', ''),
-                (string) $this->value('nouveau_mot_de_passe', ''),
-                (string) $this->value('confirmation', ''),
+                $anciennes['ancien_mot_de_passe'],
+                $anciennes['nouveau_mot_de_passe'],
+                $anciennes['confirmation'],
             );
 
             flash('success', 'Mot de passe mis a jour avec succes.');
         } catch (AppException $e) {
-            flash('error', $e->getMessage());
+            $this->redirigerErreurFormulaire($e, $anciennes, '/profil');
         }
 
         View::redirect('/profil');

@@ -19,23 +19,23 @@ class UtilisateurService
     {
         foreach (['nom', 'prenom', 'telephone', 'email', 'mot_de_passe', 'role'] as $champ) {
             if (!Validator::estRempli($data[$champ] ?? null)) {
-                throw new ValidationException("Le champ \"$champ\" est obligatoire.");
+                throw new ValidationException("Le champ \"$champ\" est obligatoire.", $champ);
             }
         }
         if (!Validator::estEmailValide($data['email'])) {
-            throw new ValidationException("L'adresse email n'est pas valide.");
+            throw new ValidationException("L'adresse email n'est pas valide.", 'email');
         }
         if (!Validator::estTelephoneValide($data['telephone'])) {
-            throw new ValidationException('Le numero de telephone n\'est pas valide.');
+            throw new ValidationException('Le numero de telephone n\'est pas valide.', 'telephone');
         }
         if (!Validator::estMotDePasseValide($data['mot_de_passe'])) {
-            throw new ValidationException('Le mot de passe doit contenir au moins 6 caracteres.');
+            throw new ValidationException('Le mot de passe doit contenir au moins 6 caracteres.', 'mot_de_passe');
         }
         if (!in_array($data['role'], ['ADMIN', 'GERANT'], true)) {
-            throw new ValidationException('Role invalide.');
+            throw new ValidationException('Role invalide.', 'role');
         }
         if ($this->utilisateurs->findByEmail($data['email']) !== null) {
-            throw new EmailDejaUtiliseException('Un compte existe deja avec cet email.');
+            throw new EmailDejaUtiliseException('Un compte existe deja avec cet email.', 'email');
         }
 
         return $this->utilisateurs->create([

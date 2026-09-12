@@ -30,6 +30,16 @@ class StaffController extends Controller
 
     public function store(): never
     {
+        $anciennes = [
+            'prenom'       => (string) $this->value('prenom', ''),
+            'nom'          => (string) $this->value('nom', ''),
+            'email'        => (string) $this->value('email', ''),
+            'telephone'    => (string) $this->value('telephone', ''),
+            'adresse'      => (string) $this->value('adresse', ''),
+            'role'         => (string) $this->value('role', 'GERANT'),
+            'actif'        => (string) $this->value('actif', '1'),
+            'mot_de_passe' => (string) $this->value('mot_de_passe', ''),
+        ];
         try {
             $imageUrl = null;
             $fichier = $_FILES['image_file'] ?? [];
@@ -41,15 +51,15 @@ class StaffController extends Controller
             }
 
             $this->utilisateurService->ajouterUtilisateur([
-                'nom' => $this->value('nom'), 'prenom' => $this->value('prenom'),
-                'email' => $this->value('email'), 'telephone' => $this->value('telephone'),
-                'adresse' => $this->value('adresse'),
-                'role' => $this->value('role'), 'mot_de_passe' => $this->value('mot_de_passe'),
-                'actif' => $this->value('actif', '1'), 'image' => $imageUrl,
+                'nom' => $anciennes['nom'], 'prenom' => $anciennes['prenom'],
+                'email' => $anciennes['email'], 'telephone' => $anciennes['telephone'],
+                'adresse' => $anciennes['adresse'],
+                'role' => $anciennes['role'], 'mot_de_passe' => $anciennes['mot_de_passe'],
+                'actif' => $anciennes['actif'], 'image' => $imageUrl,
             ]);
             flash('success', 'Compte staff cree.');
         } catch (AppException $e) {
-            flash('error', $e->getMessage());
+            $this->redirigerErreurFormulaire($e, $anciennes, '/staff');
         }
         View::redirect('/staff');
     }

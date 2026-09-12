@@ -25,15 +25,15 @@ class PaiementService
     public function enregistrerPaiement(int $commandeId, mixed $montantBrut, string $moyen): Paiement
     {
         if (!Validator::estRempli((string) $montantBrut) || !Validator::estNumerique($montantBrut)) {
-            throw new MontantPaiementInvalideException('Le montant est obligatoire et doit etre un nombre.');
+            throw new MontantPaiementInvalideException('Le montant est obligatoire et doit etre un nombre.', 'montant');
         }
         if (!in_array($moyen, [Paiement::WAVE, Paiement::ORANGE_MONEY, Paiement::ESPECES], true)) {
-            throw new ValidationException('Moyen de paiement invalide.');
+            throw new ValidationException('Moyen de paiement invalide.', 'moyen');
         }
 
         $montant = (float) $montantBrut;
         if ($montant <= 0) {
-            throw new MontantPaiementInvalideException('Le montant doit etre positif.');
+            throw new MontantPaiementInvalideException('Le montant doit etre positif.', 'montant');
         }
 
         $commande = $this->commandes->findById($commandeId)
@@ -41,7 +41,7 @@ class PaiementService
 
         $montantRestant = $commande->total - $this->paiements->sommePaiements($commandeId);
         if ($montant > $montantRestant) {
-            throw new MontantPaiementInvalideException(sprintf('Le montant depasse le reste a payer (%.0f restant)', $montantRestant));
+            throw new MontantPaiementInvalideException(sprintf('Le montant depasse le reste a payer (%.0f restant)', $montantRestant), 'montant');
         }
 
         return $this->paiements->create($commandeId, $montant, $moyen);

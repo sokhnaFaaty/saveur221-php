@@ -84,11 +84,11 @@ class ProduitService
     public function approvisionner(int $id, mixed $quantiteBrute): void
     {
         if (!Validator::estRempli((string) $quantiteBrute) || !Validator::estNumerique($quantiteBrute)) {
-            throw new ValidationException('La quantite est obligatoire et doit etre un nombre.');
+            throw new ValidationException('La quantite est obligatoire et doit etre un nombre.', 'quantite');
         }
         $quantite = (int) $quantiteBrute;
         if ($quantite <= 0) {
-            throw new ValidationException('La quantite doit etre positive.');
+            throw new ValidationException('La quantite doit etre positive.', 'quantite');
         }
         $this->produits->restaurerStock($id, $quantite);
     }
@@ -96,7 +96,7 @@ class ProduitService
     private function validerDonnees(array $data, ?int $idExclu = null): void
     {
         if (!Validator::estRempli($data['libelle'] ?? null)) {
-            throw new ValidationException('Le libelle du produit est obligatoire.');
+            throw new ValidationException('Le libelle du produit est obligatoire.', 'libelle');
         }
 
         $libelle = trim((string) $data['libelle']);
@@ -107,23 +107,23 @@ class ProduitService
             }
             $existantNormalise = mb_strtolower(str_replace(' ', '', (string) $existant->libelle));
             if ($existantNormalise === $libelleNormalise) {
-                throw new ValidationException("Un plat porte deja le libelle \"$libelle\".");
+                throw new ValidationException("Un plat porte deja le libelle \"$libelle\".", 'libelle');
             }
         }
 
          foreach (['prix', 'quantite_stock', 'categorie_id', 'seuil_alerte', 'temps_preparation', 'calories'] as $champ) {
         if (isset($data[$champ]) && !Validator::estNumerique($data[$champ])) {
-            throw new ValidationException("Le champ \"$champ\" doit etre un nombre.");
+            throw new ValidationException("Le champ \"$champ\" doit etre un nombre.", $champ);
         }
     }
         if (($data['prix'] ?? -1) < 0) {
-            throw new ValidationException('Le prix ne peut pas etre negatif.');
+            throw new ValidationException('Le prix ne peut pas etre negatif.', 'prix');
         }
         if (($data['quantite_stock'] ?? -1) < 0) {
-            throw new ValidationException('La quantite en stock ne peut pas etre negative.');
+            throw new ValidationException('La quantite en stock ne peut pas etre negative.', 'quantite_stock');
         }
         if ($this->categories->findById((int) ($data['categorie_id'] ?? 0)) === null) {
-            throw new CategorieInexistanteException('Categorie invalide.');
+            throw new CategorieInexistanteException('Categorie invalide.', 'categorie_id');
         }
     }
 

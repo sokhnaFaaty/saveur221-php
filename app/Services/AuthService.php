@@ -22,8 +22,11 @@ class AuthService
 
     public function authentifier(string $identifiant, string $motDePasse, bool $seSouvenir = false): array
     {
-        if (!Validator::estRempli($identifiant) || !Validator::estRempli($motDePasse)) {
-            throw new AuthException('Email et mot de passe obligatoires.');
+        if (!Validator::estRempli($identifiant)) {
+            throw new AuthException('Email ou telephone obligatoire.', 'email');
+        }
+        if (!Validator::estRempli($motDePasse)) {
+            throw new AuthException('Mot de passe obligatoire.', 'mot_de_passe');
         }
 
         $identifiant = (string) preg_replace('/\s+/', '', $identifiant);
