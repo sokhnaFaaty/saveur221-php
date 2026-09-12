@@ -39,6 +39,17 @@ class NotificationService
         );
     }
 
+    public function notifierCommandePrete(string $numCommande, int $commandeId, int $clientId): void
+    {
+        $this->notifications->create(
+            'COMMANDE_PRETE',
+            "Votre commande $numCommande est prete : vous pouvez venir la retirer.",
+            "/mes-commandes?statut=PRETE",
+            'CLIENT',
+            $clientId
+        );
+    }
+
     public function listerPourRole(string $role): array
     {
         return $this->notifications->findForRole($role);
@@ -52,5 +63,20 @@ class NotificationService
     public function marquerLue(int $id): void
     {
         $this->notifications->markAsRead($id);
+    }
+
+    public function listerPourClient(int $clientId): array
+    {
+        return $this->notifications->findForClient($clientId);
+    }
+
+    public function compterNonLuesClient(int $clientId): int
+    {
+        return $this->notifications->countUnreadForClient($clientId);
+    }
+
+    public function marquerLueClient(int $id, int $clientId): void
+    {
+        $this->notifications->markAsReadForClient($id, $clientId);
     }
 }

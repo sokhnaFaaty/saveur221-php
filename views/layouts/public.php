@@ -109,6 +109,9 @@ $profilActive = str_starts_with($chemin, '/profil');
     </div>
 </div>
 <script src="/assets/js/confirm-modal.js"></script>
+<?php if ($user && $user['role'] === 'CLIENT'): ?>
+<script src="/assets/js/notification.js"></script>
+<?php endif; ?>
 
 <body class="font-sans text-gray-800 bg-white">
 
@@ -137,6 +140,20 @@ $profilActive = str_starts_with($chemin, '/profil');
                         </a>
                     <?php endif; ?>
                     <?php if ($user && $user['role'] === 'CLIENT'): ?>
+<div class="relative">
+                            <button type="button" id="btn-notifications" onclick="basculerNotifications()" class="relative w-10 h-10 rounded-lg bg-primary-light text-primary hover:bg-primary hover:text-white transition flex items-center justify-center" aria-label="Notifications">
+                                <i class="fa-regular fa-bell"></i>
+                                <span id="badge-notifications" class="hidden absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center"></span>
+                            </button>
+
+                            <div id="panneau-notifications" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+                                <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                                    <p class="text-sm font-bold text-gray-900">Notifications</p>
+                                    <span id="nb-notifications-lues" class="text-[11px] text-gray-400"></span>
+                                </div>
+                                <div id="liste-notifications" class="max-h-80 overflow-y-auto"></div>
+                            </div>
+                        </div>
 <button onclick="ouvrirPanier()" class="relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-primary-light text-primary text-xs sm:text-sm font-semibold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap">
                             <i class="fa-solid fa-bag-shopping"></i> <span class="hidden sm:inline">Mon Panier</span>
                             <span id="badge-panier" class="hidden absolute -top-2 -right-2 bg-primary text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center"></span>

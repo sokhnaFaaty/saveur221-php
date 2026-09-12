@@ -142,10 +142,11 @@ CREATE TABLE avis (
 
 CREATE TABLE notifications (
     id SERIAL PRIMARY KEY,
-    type VARCHAR(30) NOT NULL CHECK (type IN ('NOUVELLE_COMMANDE', 'STOCK_FAIBLE', 'NOUVEL_AVIS')),
+    type VARCHAR(30) NOT NULL CHECK (type IN ('NOUVELLE_COMMANDE', 'STOCK_FAIBLE', 'NOUVEL_AVIS', 'COMMANDE_PRETE')),
     message TEXT NOT NULL,
     lien VARCHAR(255),
-    role_cible VARCHAR(20) NOT NULL CHECK (role_cible IN ('GERANT', 'ADMIN')),
+    role_cible VARCHAR(20) NOT NULL CHECK (role_cible IN ('GERANT', 'ADMIN', 'CLIENT')),
+    client_id INTEGER NULL REFERENCES clients(id),
     lue BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -188,6 +189,15 @@ ALTER TABLE produits ADD COLUMN calories INTEGER;
 
 ALTER TABLE paiements ADD COLUMN moyen VARCHAR(20) NOT NULL DEFAULT 'ESPECES'
     CHECK (moyen IN ('WAVE', 'ORANGE_MONEY', 'ESPECES'));
+
+-- Notifications ciblees client (commande prete)
+ALTER TABLE notifications ADD COLUMN client_id INTEGER NULL REFERENCES clients(id);
+ALTER TABLE notifications DROP CONSTRAINT notifications_type_check;
+ALTER TABLE notifications ADD CONSTRAINT notifications_type_check
+    CHECK (type IN ('NOUVELLE_COMMANDE', 'STOCK_FAIBLE', 'NOUVEL_AVIS', 'COMMANDE_PRETE'));
+ALTER TABLE notifications DROP CONSTRAINT notifications_role_cible_check;
+ALTER TABLE notifications ADD CONSTRAINT notifications_role_cible_check
+    CHECK (role_cible IN ('GERANT', 'ADMIN', 'CLIENT'));
     
 INSERT INTO clients (nom, prenom, telephone, adresse, email, mot_de_passe)
 VALUES ('Ndiaye', 'Aminata', '771111111', 'Almadies, Dakar', 'aminatandiaye@gmail.com',
