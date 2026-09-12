@@ -17,8 +17,12 @@
                 Email ou Téléphone <span class="font-normal normal-case">(+221)</span>
             </label>
             <input type="text" id="email" name="email" autocomplete="username" placeholder="aminata.ndiaye@gmail.com"
+                   value="<?= htmlspecialchars(ancienneValeur('email')) ?>"
                    class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm placeholder-gray-400
-                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition <?= erreurChamp('email') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('email')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
 
         <div>
@@ -28,7 +32,10 @@
             <div class="relative">
                 <input type="password" id="mot_de_passe" name="mot_de_passe" autocomplete="current-password" placeholder="............"
                        class="w-full px-4 py-2.5 pr-12 rounded-lg border border-gray-300 text-sm placeholder-gray-400
-                              focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                              focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition <?= erreurChamp('mot_de_passe') !== '' ? 'border-red-500' : '' ?>">
+                <?php if ($erreur = erreurChamp('mot_de_passe')): ?>
+                    <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+                <?php endif; ?>
                 <button type="button" data-pw-toggle="mot_de_passe" aria-label="Afficher le mot de passe"
                         class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 transition">
                     <i class="fa-solid fa-eye"></i>
@@ -60,6 +67,8 @@
         <i class="fa-solid fa-arrow-left"></i> Accueil
     </a>
 </p>
+
+<?php effacerErreursFormulaire(); ?>
 
 <script>
     document.querySelectorAll('[data-pw-toggle]').forEach((bouton) => {

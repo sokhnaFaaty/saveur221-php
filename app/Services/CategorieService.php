@@ -19,7 +19,7 @@ class CategorieService
     public function ajouterCategorie(string $libelle, ?string $description, ?string $image = null): Categorie
     {
         if (!Validator::estRempli($libelle)) {
-            throw new ValidationException('Le libelle de la categorie est obligatoire.');
+            throw new ValidationException('Le libelle de la categorie est obligatoire.', 'libelle');
         }
         $this->verifierUnicite($libelle, null);
         return $this->categories->create([
@@ -45,7 +45,7 @@ class CategorieService
             throw new CategorieInexistanteException("Aucune categorie trouvee avec l'id $id");
         }
         if (!Validator::estRempli($libelle)) {
-            throw new ValidationException('Le libelle de la categorie est obligatoire.');
+            throw new ValidationException('Le libelle de la categorie est obligatoire.', 'libelle');
         }
         $this->verifierUnicite($libelle, $id);
         $this->categories->update($id, [
@@ -65,7 +65,7 @@ class CategorieService
             }
             $existantNormalise = mb_strtolower(str_replace(' ', '', (string) $existant->libelle));
             if ($existantNormalise === $normalise) {
-                throw new ValidationException("Une categorie porte deja le libelle \"$libelle\".");
+                throw new ValidationException("Une categorie porte deja le libelle \"$libelle\".", 'libelle');
             }
         }
     }

@@ -5,33 +5,51 @@
     <form method="post" action="<?= $produit ? '/produits/' . $produit->id . '/update' : '/produits' ?>" enctype="multipart/form-data" class="space-y-4">
         <div>
             <label class="block text-sm font-semibold mb-1">Nom du plat</label>
-            <input type="text" name="libelle" value="<?= htmlspecialchars($produit->libelle ?? '') ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm">
+            <input type="text" name="libelle" value="<?= htmlspecialchars(ancienneValeur('libelle', (string) ($produit->libelle ?? ''))) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm <?= erreurChamp('libelle') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('libelle')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-semibold mb-1">Categorie</label>
-                <select name="categorie_id" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm bg-white">
+                <select name="categorie_id" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm bg-white <?= erreurChamp('categorie_id') !== '' ? 'border-red-500' : '' ?>">
                     <?php foreach ($categories as $c): ?>
-                    <option value="<?= $c->id ?>" <?= ($produit && $produit->categorieId === $c->id) ? 'selected' : '' ?>><?= htmlspecialchars($c->libelle) ?></option>
+                    <option value="<?= $c->id ?>" <?= (ancienneValeur('categorie_id', '') === (string) $c->id || (ancienneValeur('categorie_id', '') === '' && $produit && $produit->categorieId === $c->id)) ? 'selected' : '' ?>><?= htmlspecialchars($c->libelle) ?></option>
                     <?php endforeach; ?>
                 </select>
+                <?php if ($erreur = erreurChamp('categorie_id')): ?>
+                    <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+                <?php endif; ?>
             </div>
             <div>
                 <label class="block text-sm font-semibold mb-1">Prix (FCFA)</label>
-                <input type="text" name="prix" value="<?= htmlspecialchars((string) ($produit->prix ?? '')) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm">
+                <input type="text" name="prix" value="<?= htmlspecialchars(ancienneValeur('prix', (string) ($produit->prix ?? ''))) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm <?= erreurChamp('prix') !== '' ? 'border-red-500' : '' ?>">
+                <?php if ($erreur = erreurChamp('prix')): ?>
+                    <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+                <?php endif; ?>
             </div>
         </div>
         <div class="grid grid-cols-3 gap-4">
             <div><label class="block text-sm font-semibold mb-1">Stock initial</label>
-                <input type="text" name="quantite_stock" value="<?= htmlspecialchars((string) ($produit->quantiteStock ?? '')) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm"></div>
+                <input type="text" name="quantite_stock" value="<?= htmlspecialchars(ancienneValeur('quantite_stock', (string) ($produit->quantiteStock ?? ''))) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm <?= erreurChamp('quantite_stock') !== '' ? 'border-red-500' : '' ?>">
+                <?php if ($erreur = erreurChamp('quantite_stock')): ?><p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
+            </div>
             <div><label class="block text-sm font-semibold mb-1">Seuil alerte</label>
-                <input type="text" name="seuil_alerte" value="<?= htmlspecialchars((string) ($produit->seuilAlerte ?? '5')) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm"></div>
+                <input type="text" name="seuil_alerte" value="<?= htmlspecialchars(ancienneValeur('seuil_alerte', (string) ($produit->seuilAlerte ?? '5'))) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm <?= erreurChamp('seuil_alerte') !== '' ? 'border-red-500' : '' ?>">
+                <?php if ($erreur = erreurChamp('seuil_alerte')): ?><p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
+            </div>
             <div><label class="block text-sm font-semibold mb-1">Temps prep (min)</label>
-                <input type="text" name="temps_preparation" value="<?= htmlspecialchars((string) ($produit->tempsPreparation ?? '')) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm"></div>
+                <input type="text" name="temps_preparation" value="<?= htmlspecialchars(ancienneValeur('temps_preparation', (string) ($produit->tempsPreparation ?? ''))) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm <?= erreurChamp('temps_preparation') !== '' ? 'border-red-500' : '' ?>">
+                <?php if ($erreur = erreurChamp('temps_preparation')): ?><p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
+            </div>
         </div>
         <div>
             <label class="block text-sm font-semibold mb-1">Description detaillee</label>
-            <textarea name="description" rows="3" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm"><?= htmlspecialchars($produit->description ?? '') ?></textarea>
+            <textarea name="description" rows="3" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm <?= erreurChamp('description') !== '' ? 'border-red-500' : '' ?>"><?= htmlspecialchars(ancienneValeur('description', (string) ($produit->description ?? ''))) ?></textarea>
+            <?php if ($erreur = erreurChamp('description')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
         <div>
             <label class="block text-sm font-semibold mb-2">Image <span class="text-xs font-normal text-gray-400">(choisissez une option)</span></label>
@@ -59,6 +77,7 @@
         <button type="submit" class="w-full py-2.5 rounded-lg bg-primary text-white font-semibold text-sm hover:bg-primary-dark transition">Enregistrer</button>
     </form>
 </div>
+<?php effacerErreursFormulaire(); ?>
 <script>
     document.querySelectorAll('input[name="image_option"]').forEach((radio) => {
         radio.addEventListener('change', () => {

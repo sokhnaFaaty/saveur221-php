@@ -22,25 +22,25 @@ class ClientService
     {
         foreach (['nom', 'prenom', 'telephone', 'email', 'mot_de_passe'] as $champ) {
             if (!Validator::estRempli($data[$champ] ?? null)) {
-                throw new ValidationException("Le champ \"$champ\" est obligatoire.");
+                throw new ValidationException("Le champ \"$champ\" est obligatoire.", $champ);
             }
         }
 
         if (!Validator::estEmailValide($data['email'])) {
-            throw new ValidationException("L'adresse email n'est pas valide.");
+            throw new ValidationException("L'adresse email n'est pas valide.", 'email');
         }
         if (!Validator::estTelephoneValide($data['telephone'])) {
-            throw new ValidationException('Le numero de telephone n\'est pas valide (Senegal ou Gambie).');
+            throw new ValidationException('Le numero de telephone n\'est pas valide (Senegal ou Gambie).', 'telephone');
         }
         if (!Validator::estMotDePasseValide($data['mot_de_passe'])) {
-            throw new ValidationException('Le mot de passe doit contenir au moins 8 caracteres.');
+            throw new ValidationException('Le mot de passe doit contenir au moins 6 caracteres.', 'mot_de_passe');
         }
 
         if ($this->clients->findByEmail($data['email']) !== null) {
-            throw new EmailDejaUtiliseException('Un compte existe deja avec cet email.');
+            throw new EmailDejaUtiliseException('Un compte existe deja avec cet email.', 'email');
         }
         if ($this->clients->findByTelephone($data['telephone']) !== null) {
-            throw new TelephoneDejaUtiliseException('Un compte existe deja avec ce numero de telephone.');
+            throw new TelephoneDejaUtiliseException('Un compte existe deja avec ce numero de telephone.', 'telephone');
         }
 
         return $this->clients->create([

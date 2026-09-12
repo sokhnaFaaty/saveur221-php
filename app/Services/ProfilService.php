@@ -37,14 +37,14 @@ class ProfilService
     {
         foreach (['nom', 'prenom', 'email', 'telephone'] as $champ) {
             if (!Validator::estRempli($data[$champ] ?? null)) {
-                throw new ValidationException("Le champ \"$champ\" est obligatoire.");
+                throw new ValidationException("Le champ \"$champ\" est obligatoire.", $champ);
             }
         }
         if (!Validator::estEmailValide($data['email'])) {
-            throw new ValidationException("L'adresse email n'est pas valide.");
+            throw new ValidationException("L'adresse email n'est pas valide.", 'email');
         }
         if (!Validator::estTelephoneValide($data['telephone'])) {
-            throw new ValidationException('Le numero de telephone n\'est pas valide (Senegal ou Gambie).');
+            throw new ValidationException('Le numero de telephone n\'est pas valide (Senegal ou Gambie).', 'telephone');
         }
 
         $id = (int) ($sessionUser['id'] ?? 0);
@@ -53,7 +53,7 @@ class ProfilService
         if ($role === 'CLIENT') {
             $existant = $this->clients->findByEmail($data['email']);
             if ($existant !== null && $existant->id !== $id) {
-                throw new AppException('Un compte existe deja avec cet email.');
+                throw new AppException('Un compte existe deja avec cet email.', 'email');
             }
             $actuel = $this->clients->findById($id);
             $this->clients->update($id, [
@@ -73,7 +73,7 @@ class ProfilService
 
         $existant = $this->utilisateurs->findByEmail($data['email']);
         if ($existant !== null && $existant->id !== $id) {
-            throw new AppException('Un compte existe deja avec cet email.');
+            throw new AppException('Un compte existe deja avec cet email.', 'email');
         }
         $actuel = $this->utilisateurs->findById($id);
         $this->utilisateurs->updateProfil(
@@ -93,13 +93,13 @@ class ProfilService
     public function changerMotDePasse(array $sessionUser, string $ancien, string $nouveau, string $confirmation): void
     {
         if (!Validator::estRempli($ancien) || !Validator::estRempli($nouveau)) {
-            throw new ValidationException('Tous les champs du mot de passe sont obligatoires.');
+            throw new ValidationException('Tous les champs du mot de passe sont obligatoires.', 'nouveau_mot_de_passe');
         }
         if ($nouveau !== $confirmation) {
-            throw new ValidationException('La confirmation ne correspond pas au nouveau mot de passe.');
+            throw new ValidationException('La confirmation ne correspond pas au nouveau mot de passe.', 'confirmation');
         }
         if (!Validator::estMotDePasseValide($nouveau)) {
-            throw new ValidationException('Le nouveau mot de passe doit contenir au moins 6 caracteres.');
+            throw new ValidationException('Le nouveau mot de passe doit contenir au moins 6 caracteres.', 'nouveau_mot_de_passe');
         }
 
         $id = (int) ($sessionUser['id'] ?? 0);
@@ -107,7 +107,7 @@ class ProfilService
         $actuel = $role === 'CLIENT' ? $this->clients->findById($id) : $this->utilisateurs->findById($id);
 
         if ($actuel === null || !password_verify($ancien, $actuel->motDePasse)) {
-            throw new AppException("L'ancien mot de passe est incorrect.");
+            throw new AppException("L'ancien mot de passe est incorrect.", 'ancien_mot_de_passe');
         }
 
         $hash = password_hash($nouveau, PASSWORD_DEFAULT);

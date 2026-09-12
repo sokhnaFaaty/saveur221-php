@@ -17,8 +17,12 @@
                 Nom complet <span class="text-primary">*</span>
             </label>
             <input type="text" id="nom_complet" name="nom_complet" placeholder="Ex: Arminia Ndiaye" autocomplete="name"
+                   value="<?= htmlspecialchars(ancienneValeur('nom_complet')) ?>"
                    class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm placeholder-gray-400
-                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition <?= erreurChamp('nom_complet') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('nom_complet')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
 
         <div>
@@ -26,8 +30,12 @@
                 Téléphone <span class="font-normal normal-case">(221)</span> <span class="text-primary">*</span>
             </label>
             <input type="tel" id="telephone" name="telephone" autocomplete="tel" placeholder="Ex: 77 645 22 10"
+                   value="<?= htmlspecialchars(ancienneValeur('telephone')) ?>"
                    class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm placeholder-gray-400
-                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition <?= erreurChamp('telephone') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('telephone')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
 
         <div>
@@ -35,8 +43,12 @@
                 Adresse email <span class="text-primary">*</span>
             </label>
             <input type="email" id="email" name="email" autocomplete="email" placeholder="Ex: arminia.ndiaye@gmail.com"
+                   value="<?= htmlspecialchars(ancienneValeur('email')) ?>"
                    class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm placeholder-gray-400
-                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition <?= erreurChamp('email') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('email')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -46,21 +58,24 @@
             </label>
             <select id="quartier_de_livraison" name="quartier_de_livraison"
                     class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm bg-white
-                           focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
-                <option value="Almadies" selected>Almadies</option>
-                <option value="Plateau">Plateau</option>
-                <option value="Point E">Point E</option>
-                <option value="Yoff">Yoff</option>
-                <option value="Ouakam">Ouakam</option>
-                <option value="Ngor">Ngor</option>
-                <option value="Mermoz">Mermoz</option>
-                <option value="Fann">Fann</option>
-                <option value="Mamelles">Mamelles</option>
-                <option value="Sacré Coeur">Sacre Cœur</option>
-                <option value="Grand Yoff">Grand Yoff</option>
-                <option value="Liberté 6">Liberte 6</option>
-                <option value="Hann">Hann</option>
+                           focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition <?= erreurChamp('quartier_de_livraison') !== '' ? 'border-red-500' : '' ?>">
+                <option value="Almadies" <?= ancienneValeur('quartier_de_livraison') === 'Almadies' ? 'selected' : '' ?>>Almadies</option>
+                <option value="Plateau" <?= ancienneValeur('quartier_de_livraison') === 'Plateau' ? 'selected' : '' ?>>Plateau</option>
+                <option value="Point E" <?= ancienneValeur('quartier_de_livraison') === 'Point E' ? 'selected' : '' ?>>Point E</option>
+                <option value="Yoff" <?= ancienneValeur('quartier_de_livraison') === 'Yoff' ? 'selected' : '' ?>>Yoff</option>
+                <option value="Ouakam" <?= ancienneValeur('quartier_de_livraison') === 'Ouakam' ? 'selected' : '' ?>>Ouakam</option>
+                <option value="Ngor" <?= ancienneValeur('quartier_de_livraison') === 'Ngor' ? 'selected' : '' ?>>Ngor</option>
+                <option value="Mermoz" <?= ancienneValeur('quartier_de_livraison') === 'Mermoz' ? 'selected' : '' ?>>Mermoz</option>
+                <option value="Fann" <?= ancienneValeur('quartier_de_livraison') === 'Fann' ? 'selected' : '' ?>>Fann</option>
+                <option value="Mamelles" <?= ancienneValeur('quartier_de_livraison') === 'Mamelles' ? 'selected' : '' ?>>Mamelles</option>
+                <option value="Sacré Coeur" <?= ancienneValeur('quartier_de_livraison') === 'Sacré Coeur' ? 'selected' : '' ?>>Sacré Coeur</option>
+                <option value="Grand Yoff" <?= ancienneValeur('quartier_de_livraison') === 'Grand Yoff' ? 'selected' : '' ?>>Grand Yoff</option>
+                <option value="Liberté 6" <?= ancienneValeur('quartier_de_livraison') === 'Liberté 6' ? 'selected' : '' ?>>Liberte 6</option>
+                <option value="Hann" <?= ancienneValeur('quartier_de_livraison') === 'Hann' ? 'selected' : '' ?>>Hann</option>
             </select>
+            <?php if ($erreur = erreurChamp('quartier_de_livraison')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
 
         <div>
@@ -82,7 +97,10 @@
             <input type="password" id="mot_de_passe" name="mot_de_passe" minlength="6"
                    autocomplete="new-password" placeholder="Au moins 6 caractères"
                    class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm placeholder-gray-400
-                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition <?= erreurChamp('mot_de_passe') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('mot_de_passe')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
 
         <div>
@@ -92,7 +110,10 @@
             <input type="password" id="confirmation" name="confirmation" minlength="6"
                    autocomplete="new-password" placeholder="Répéter"
                    class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm placeholder-gray-400
-                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+                          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition <?= erreurChamp('confirmation') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('confirmation')): ?>
+                <p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -114,5 +135,7 @@
         <i class="fa-solid fa-arrow-left"></i> Accueil
     </a>
 </p>
+
+<?php effacerErreursFormulaire(); ?>
 
 </div>

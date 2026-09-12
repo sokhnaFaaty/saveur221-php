@@ -29,43 +29,50 @@
     <form method="post" action="/staff" enctype="multipart/form-data" class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
         <div>
             <label class="block text-sm font-semibold mb-1">Prénom</label>
-            <input type="text" name="prenom" placeholder="Ex : Awa" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+            <input type="text" name="prenom" placeholder="Ex : Awa" value="<?= htmlspecialchars(ancienneValeur('prenom')) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400 <?= erreurChamp('prenom') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('prenom')): ?><p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
         </div>
         <div>
             <label class="block text-sm font-semibold mb-1">Nom</label>
-            <input type="text" name="nom" placeholder="Ex : Diop" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+            <input type="text" name="nom" placeholder="Ex : Diop" value="<?= htmlspecialchars(ancienneValeur('nom')) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400 <?= erreurChamp('nom') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('nom')): ?><p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
         </div>
         <div>
             <label class="block text-sm font-semibold mb-1">Email professionnel</label>
-            <input type="email" name="email" placeholder="Ex : awa.diop@saveur221.sn" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+            <input type="email" name="email" placeholder="Ex : awa.diop@saveur221.sn" value="<?= htmlspecialchars(ancienneValeur('email')) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400 <?= erreurChamp('email') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('email')): ?><p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
         </div>
         <div>
             <label class="block text-sm font-semibold mb-1">Téléphone</label>
-            <input type="text" name="telephone" placeholder="Ex : 771234567" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+            <input type="text" name="telephone" placeholder="Ex : 771234567" value="<?= htmlspecialchars(ancienneValeur('telephone')) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400 <?= erreurChamp('telephone') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('telephone')): ?><p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
         </div>
         <div>
             <label class="block text-sm font-semibold mb-1">Adresse</label>
-            <input type="text" name="adresse" placeholder="Ex : Almadies, Dakar" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+            <input type="text" name="adresse" placeholder="Ex : Almadies, Dakar" value="<?= htmlspecialchars(ancienneValeur('adresse')) ?>" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400 <?= erreurChamp('adresse') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('adresse')): ?><p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
         </div>
         <div class="grid grid-cols-2 gap-3">
             <div>
                 <label class="block text-sm font-semibold mb-1">Rôle assigné</label>
-                <select name="role" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm bg-white">
-                    <option value="GERANT">Gérant</option>
-                    <option value="ADMIN">Admin</option>
+                <select name="role" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm bg-white <?= erreurChamp('role') !== '' ? 'border-red-500' : '' ?>">
+                    <option value="GERANT" <?= ancienneValeur('role', 'GERANT') === 'GERANT' ? 'selected' : '' ?>>Gérant</option>
+                    <option value="ADMIN" <?= ancienneValeur('role', 'GERANT') === 'ADMIN' ? 'selected' : '' ?>>Admin</option>
                 </select>
+                <?php if ($erreur = erreurChamp('role')): ?><p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
             </div>
             <div>
                 <label class="block text-sm font-semibold mb-1">Statut compte</label>
                 <select name="actif" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm bg-white">
-                    <option value="1">Actif</option>
-                    <option value="0">Inactif</option>
+                    <option value="1" <?= ancienneValeur('actif', '1') === '1' ? 'selected' : '' ?>>Actif</option>
+                    <option value="0" <?= ancienneValeur('actif', '1') === '0' ? 'selected' : '' ?>>Inactif</option>
                 </select>
             </div>
         </div>
         <div>
             <label class="block text-sm font-semibold mb-1">Mot de passe provisoire</label>
-            <input type="password" name="mot_de_passe" placeholder="Minimum 6 caractères" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400">
+            <input type="password" name="mot_de_passe" placeholder="Minimum 6 caractères" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm placeholder-gray-400 <?= erreurChamp('mot_de_passe') !== '' ? 'border-red-500' : '' ?>">
+            <?php if ($erreur = erreurChamp('mot_de_passe')): ?><p class="text-red-500 text-xs mt-1"><?= htmlspecialchars($erreur) ?></p><?php endif; ?>
         </div>
         <div>
             <label class="block text-sm font-semibold mb-2">Photo de profil <span class="text-xs font-normal text-gray-400">(téléverser ou lien)</span></label>
@@ -96,6 +103,9 @@
 </aside>
 
 <script>
+    if (document.querySelector('#drawer-staff p.text-red-500')) {
+        ouvrirDrawerStaff();
+    }
     function ouvrirDrawerStaff() {
         document.getElementById('overlay-staff').classList.remove('hidden');
         document.getElementById('drawer-staff').classList.remove('translate-x-full');
@@ -193,3 +203,4 @@
 <?php endif; ?>
 
 <?php include VIEW_PATH . '/partials/pagination.php'; ?>
+<?php effacerErreursFormulaire(); ?>

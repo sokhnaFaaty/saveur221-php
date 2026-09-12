@@ -26,8 +26,12 @@ class AuthController extends Controller
 
     public function login(): never
     {
-        $identifiant = trim((string) $this->value('email', ''));
-        $motDePasse = (string) $this->value('mot_de_passe', '');
+        $anciennes = [
+            'email' => (string) $this->value('email', ''),
+            'mot_de_passe' => (string) $this->value('mot_de_passe', ''),
+        ];
+        $identifiant = trim($anciennes['email']);
+        $motDePasse = $anciennes['mot_de_passe'];
         $seSouvenir = (bool) $this->value('se_souvenir', false);
 
         try {
@@ -35,8 +39,7 @@ class AuthController extends Controller
             flash('success', 'Connexion reussie.');
             View::redirect('/');
         } catch (AuthException $e) {
-            flash('error', $e->getMessage());
-            View::redirect('/connexion');
+            $this->redirigerErreurFormulaire($e, $anciennes, '/connexion');
         }
     }
 
@@ -54,11 +57,19 @@ class AuthController extends Controller
 
     public function register(): never
     {
-        $motDePasse = (string) $this->value('mot_de_passe', '');
-        $confirmation = (string) $this->value('confirmation', '');
+        $anciennes = [
+            'nom_complet'           => (string) $this->value('nom_complet', ''),
+            'telephone'             => (string) $this->value('telephone', ''),
+            'quartier_de_livraison' => (string) $this->value('quartier_de_livraison', ''),
+            'email'                 => (string) $this->value('email', ''),
+            'mot_de_passe'          => (string) $this->value('mot_de_passe', ''),
+            'confirmation'          => (string) $this->value('confirmation', ''),
+        ];
+        $motDePasse = $anciennes['mot_de_passe'];
+        $confirmation = $anciennes['confirmation'];
 
         if ($motDePasse !== $confirmation) {
-            flash('error', 'Les mots de passe ne correspondent pas.');
+            flashErreurs(['confirmation' => 'Les mots de passe ne correspondent pas.'], $anciennes);
             View::redirect('/inscription');
         }
 
@@ -66,11 +77,11 @@ class AuthController extends Controller
             $image = $this->uploads->upload($_FILES['image'] ?? []);
 
             $this->clientService->inscrire([
-                'nom'          => $this->decouperNomComplet((string) $this->value('nom_complet', ''))[1],
-                'prenom'       => $this->decouperNomComplet((string) $this->value('nom_complet', ''))[0],
-                'telephone'    => preg_replace('/\s+/', '', (string) $this->value('telephone', '')),
-                'adresse'      => (string) $this->value('quartier_de_livraison', ''),
-                'email'        => $this->value('email'),
+                'nom'          => $this->decouperNomComplet($anciennes['nom_complet'])[1],
+                'prenom'       => $this->decouperNomComplet($anciennes['nom_complet'])[0],
+                'telephone'    => preg_replace('/\s+/', '', $anciennes['telephone']),
+                'adresse'      => $anciennes['quartier_de_livraison'],
+                'email'        => $anciennes['email'],
                 'mot_de_passe' => $motDePasse,
                 'image'        => $image,
             ]);
@@ -78,8 +89,10 @@ class AuthController extends Controller
             flash('success', 'Compte cree avec succes, vous pouvez vous connecter.');
             View::redirect('/connexion');
         } catch (AppException $e) {
-            flash('error', $e->getMessage());
-            View::redirect('/inscription');
+            if (in_array($e->champ, ['nom', 'prenom'], true)) {
+                $e = new AppException($e->getMessage(), 'nom_complet');
+            }
+            $this->redirigerErreurFormulaire($e, $anciennes, '/inscription');
         }
     }
 

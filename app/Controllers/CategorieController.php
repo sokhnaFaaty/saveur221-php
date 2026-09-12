@@ -33,16 +33,20 @@ class CategorieController extends Controller
 
     public function store(): never
     {
+        $anciennes = [
+            'libelle'     => (string) $this->value('libelle', ''),
+            'description' => (string) $this->value('description', ''),
+        ];
         try {
             $image = $this->uploads->upload($_FILES['image'] ?? []);
             $this->categorieService->ajouterCategorie(
-                (string) $this->value('libelle', ''),
-                $this->value('description'),
+                $anciennes['libelle'],
+                $anciennes['description'],
                 $image
             );
             flash('success', 'Categorie creee avec succes.');
         } catch (AppException $e) {
-            flash('error', $e->getMessage());
+            $this->redirigerErreurFormulaire($e, $anciennes, '/categories/creer');
         }
         View::redirect('/categories');
     }
@@ -64,17 +68,21 @@ public function edit(int $id): string
 
     public function update(int $id): never
     {
+        $anciennes = [
+            'libelle'     => (string) $this->value('libelle', ''),
+            'description' => (string) $this->value('description', ''),
+        ];
         try {
             $image = $this->uploads->upload($_FILES['image'] ?? []);
             $this->categorieService->modifierCategorie(
                 $id,
-                (string) $this->value('libelle', ''),
-                $this->value('description'),
+                $anciennes['libelle'],
+                $anciennes['description'],
                 $image
             );
             flash('success', 'Categorie modifiee avec succes.');
         } catch (AppException $e) {
-            flash('error', $e->getMessage());
+            $this->redirigerErreurFormulaire($e, $anciennes, "/categories/$id/modifier");
         }
         View::redirect('/categories');
     }

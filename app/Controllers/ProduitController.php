@@ -93,6 +93,16 @@ class ProduitController extends Controller
     // Prive : GERANT/ADMIN uniquement
     public function store(): never
     {
+        $anciennes = [
+            'libelle'           => (string) $this->value('libelle', ''),
+            'description'       => (string) $this->value('description', ''),
+            'prix'              => (string) $this->value('prix', ''),
+            'quantite_stock'    => (string) $this->value('quantite_stock', ''),
+            'categorie_id'      => (string) $this->value('categorie_id', ''),
+            'seuil_alerte'      => (string) $this->value('seuil_alerte', '5'),
+            'temps_preparation' => (string) $this->value('temps_preparation', ''),
+            'calories'          => (string) $this->value('calories', ''),
+        ];
         try {
             $imageUrl = null;
             $fichier = $_FILES['image_file'] ?? [];
@@ -104,8 +114,8 @@ class ProduitController extends Controller
             }
 
             $this->produitService->ajouterProduit([
-                'libelle'           => $this->value('libelle'),
-                'description'       => $this->value('description'),
+                'libelle'           => $anciennes['libelle'],
+                'description'       => $anciennes['description'],
                 'prix'              => $this->valeurNumerique('prix', 0),
                 'quantite_stock'    => $this->valeurNumerique('quantite_stock', 0),
                 'categorie_id'      => $this->valeurNumerique('categorie_id', 0),
@@ -116,7 +126,7 @@ class ProduitController extends Controller
             ]);
             flash('success', 'Produit ajoute avec succes.');
         } catch (AppException $e) {
-            flash('error', $e->getMessage());
+            $this->redirigerErreurFormulaire($e, $anciennes, '/produits/creer');
         }
         
         View::redirect('/produits');
@@ -143,6 +153,16 @@ class ProduitController extends Controller
 
         public function update(int $id): never
     {
+        $anciennes = [
+            'libelle'           => (string) $this->value('libelle', ''),
+            'description'       => (string) $this->value('description', ''),
+            'prix'              => (string) $this->value('prix', ''),
+            'quantite_stock'    => (string) $this->value('quantite_stock', ''),
+            'categorie_id'      => (string) $this->value('categorie_id', ''),
+            'seuil_alerte'      => (string) $this->value('seuil_alerte', '5'),
+            'temps_preparation' => (string) $this->value('temps_preparation', ''),
+            'calories'          => (string) $this->value('calories', ''),
+        ];
         try {
             $imageUrl = null;
             $fichier = $_FILES['image_file'] ?? [];
@@ -154,8 +174,8 @@ class ProduitController extends Controller
             }
 
             $data = [
-                'libelle'           => $this->value('libelle'),
-                'description'       => $this->value('description'),
+                'libelle'           => $anciennes['libelle'],
+                'description'       => $anciennes['description'],
                 'prix'              => $this->valeurNumerique('prix', 0),
                 'quantite_stock'    => $this->valeurNumerique('quantite_stock', 0),
                 'categorie_id'      => $this->valeurNumerique('categorie_id', 0),
@@ -169,7 +189,7 @@ class ProduitController extends Controller
             $this->produitService->modifierProduit($id, $data);
             flash('success', 'Produit modifie avec succes.');
         } catch (AppException $e) {
-            flash('error', $e->getMessage());
+            $this->redirigerErreurFormulaire($e, $anciennes, "/produits/$id/modifier");
         }
         View::redirect('/produits');
     }

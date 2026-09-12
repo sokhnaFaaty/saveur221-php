@@ -39,6 +39,10 @@ class PaiementController extends Controller
 
     public function store(int $commandeId): never
     {
+        $anciennes = [
+            "montant_$commandeId" => (string) $this->value('montant', ''),
+            "moyen_$commandeId"   => (string) $this->value('moyen', ''),
+        ];
         try {
             $this->paiementService->enregistrerPaiement(
                 $commandeId,
@@ -47,7 +51,10 @@ class PaiementController extends Controller
             );
             flash('success', 'Paiement enregistre, recu genere.');
         } catch (AppException $e) {
-            flash('error', $e->getMessage());
+            if ($e->champ !== null) {
+                $e = new AppException($e->getMessage(), $e->champ . '_' . $commandeId);
+            }
+            $this->redirigerErreurFormulaire($e, $anciennes, '/commandes');
         }
         View::redirect('/commandes');
     }
